@@ -1,6 +1,5 @@
 <h1 align="center"> LittleAspNetCoreBook_Portuguese </h1>
-<p align="justify">
-- Esse repositório visa seguir as lições do Little Asp Net Core Book disponível em : https://s3.amazonaws.com/recaffeinate-files/LittleAspNetCoreBook.pdf , em portugues, para contribuir com a comunidade brasileira;  </p>
+- Esse repositório visa seguir as lições do Little Asp Net Core Book disponível em : https://s3.amazonaws.com/recaffeinate-files/LittleAspNetCoreBook.pdf , em portugues, para contribuir com a comunidade brasileira; 
 - Tudo o que estiver dentro de 'aspas simples' são comandos a serem digitados nos terminais sem as aspas;
 - Dica: após as palavras chaves das linhas de comando (cd, ls, mkdir, etc), pode-se digitar a primeira letra da pasta ou arquivo e a tecla Tab da o autocompletar;
 - Dowloads :  
