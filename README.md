@@ -3,11 +3,11 @@
 - Tudo o que estiver dentro de 'aspas simples' são comandos a serem digitados nos terminais sem as aspas;
 - Dica: após as palavras chaves das linhas de comando (cd, ls, mkdir, etc), pode-se digitar a primeira letra da pasta ou arquivo e a tecla Tab da o autocompletar;
 - Dowloads :  
-  - Editor utilizado (dica, pode ser outro de sua prefencia ou o VS mesmo) :Visual Studio Community  a partir do 2017 version 15.3 or mais atualizada https://visualstudio.microsoft.com/pt-br/vs/community/  ou  VSCode https://code.visualstudio.com/download, e na hora de instalar colocar as opções de .net e C#;
+  - Editor utilizado (dica, pode ser outro de sua prefência ou o VS mesmo) :Visual Studio Community  a partir do 2017 version 15.3 or mais atualizada https://visualstudio.microsoft.com/pt-br/vs/community/  ou  VSCode https://code.visualstudio.com/download, e na hora de instalar colocar as opções de .net e C#;
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
 - Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
 - Comandos : Criando um Hello World
-  - 'cd Documents' (no lugar de Documents a pasta que vc deseja cria);
+  - 'cd Documents' (no lugar de Documents a pasta que você deseja cria);
   - 'dotnet new console -o CsharpHelloWorld' , note que ele cria uma pasta de mesmo nome
   - 'cd CsharpHelloWorld',  isso dentro da pasta repare que ele cria um arquivo .csproj e um .cs, se caso não estiver dentro de um editor de o comando 'ls' para visualizar;
   - 'dotnet run' lembrando que você de estar exatamente dentro da pasta do projeto. No terminal deve retornar Hello Word!.
