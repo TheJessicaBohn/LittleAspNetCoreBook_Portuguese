@@ -18,22 +18,25 @@
   - 'dotnet new mvc --auth Individual -o AspNetCoreTodo', para criar um comando MVC;
   - 'cd AspNetCoreTodo' para entrar na nova pasta criada;
   - 'dotnet run' executa o programa e deve retornar:
-      info: Microsoft.Hosting.Lifetime[0]
-      Now listening on: https://localhost:5001
-      info: Microsoft.Hosting.Lifetime[0] 
-      Now listening on: http://localhost:5000 
-      info: Microsoft.Hosting.Lifetime[0] 
-      Application started. Press Ctrl+C to shut down.
-      info: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development 
-      info: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\xxxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo __
+     
+      **info: Microsoft.Hosting.Lifetime[0]<br />**
+      **Now listening on: https://localhost:5001<br />**
+      **info: Microsoft.Hosting.Lifetime[0]<br />**
+      **Now listening on: http://localhost:5000<br />**
+      **info: Microsoft.Hosting.Lifetime[0]<br />**
+      **Application started. Press Ctrl+C to shut down.<br />**
+      **info: Microsoft.Hosting.Lifetime[0]<br />**
+      **Hosting environment: Development<br />**
+      **info: Microsoft.Hosting.Lifetime[0]<br />**
+      **Content root path: C:\Users\xxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo<br />**
+   
    e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , pra apar o serviço
    Ctrl + C;
  - Conteúdo : ASP.NET Core project
    - Program.cs e Startup.cs são classes que configuram o servidor web e ASP.NET Core pipeline.
    - Models, Views, e Controllers são diretórios contêm os componentes da arquitetura Model-View-Controller (MVC).
-   - 
+   - wwwroot
    
 
  
+
