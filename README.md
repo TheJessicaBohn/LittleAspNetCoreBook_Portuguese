@@ -1,4 +1,4 @@
-#LittleAspNetCoreBook_Portuguese 
+# LittleAspNetCoreBook_Portuguese 
 - Esse repositório visa seguir as lições do Little Asp Net Core Book disponível em : https://s3.amazonaws.com/recaffeinate-files/LittleAspNetCoreBook.pdf , em portugues, para contribuir com a comunidade brasileira; 
 - Tudo o que estiver dentro de 'aspas simples' são comandos a serem digitados nos terminais sem as aspas;
 - Dica: após as palavras chaves das linhas de comando (cd, ls, mkdir, etc), pode-se digitar a primeira letra da pasta ou arquivo e a tecla Tab da o autocompletar;
@@ -18,16 +18,16 @@
   - 'dotnet new mvc --auth Individual -o AspNetCoreTodo', para criar um comando MVC;
   - 'cd AspNetCoreTodo' para entrar na nova pasta criada;
   - 'dotnet run' executa o programa e deve retornar:
-      __info: Microsoft.Hosting.Lifetime[0] __
-      __Now listening on: https://localhost:5001 __
-      __info: Microsoft.Hosting.Lifetime[0] __
-      __Now listening on: http://localhost:5000 __
-      __info: Microsoft.Hosting.Lifetime[0] __
-      __Application started. Press Ctrl+C to shut down. __
-      __info: Microsoft.Hosting.Lifetime[0] __
-      __Hosting environment: Development __
-      __info: Microsoft.Hosting.Lifetime[0] __
-      __Content root path: C:\Users\xxxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo __
+      info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: https://localhost:5001
+      info: Microsoft.Hosting.Lifetime[0] 
+      Now listening on: http://localhost:5000 
+      info: Microsoft.Hosting.Lifetime[0] 
+      Application started. Press Ctrl+C to shut down.
+      info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development 
+      info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\xxxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo __
    e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , pra apar o serviço
    Ctrl + C;
  - Conteúdo : ASP.NET Core project
