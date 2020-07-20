@@ -18,12 +18,12 @@
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
 - Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
 - Git Bash caso utilize o github https://git-scm.com/downloads, e depois nas variaveis de ambiente e na variavel Path adicione  C:\Program Files\Git\bin\ e  C:\Program Files\Git\cmd\
-- ##Comandos : Criando um Hello World
+- ## Comandos : Criando um Hello World
   - 'cd Documents' (no lugar de Documents a pasta que você deseja cria);
   - 'dotnet new console -o CsharpHelloWorld' , note que ele cria uma pasta de mesmo nome
   - 'cd CsharpHelloWorld',  isso dentro da pasta repare que ele cria um arquivo .csproj e um .cs, se caso não estiver dentro de um editor de o comando 'ls' para visualizar;
   - 'dotnet run' lembrando que você de estar exatamente dentro da pasta do projeto. No terminal deve retornar Hello Word!.
-- ##Comandos : Criando um ASP.NET Core project
+- ## Comandos : Criando um ASP.NET Core project
   - 'cd ..' para sair da pasta do CsharpHelloWorld;
   - 'mkdir AspNetCoreTodo', cria uma nova pasta onde após o mkdir é o nome e pode-se criar com outro nome de sua preferência;
   - 'cd AspNetCoreTodo' Entra na respectiva pasta, lembrando que, se o nome da mesma foi modificado, deve-se escrever o nome escolhido após cd;
@@ -50,7 +50,7 @@
    - **wwwroot** contém ativos estáticos que podem ser agrupados e compactados automaticamente, como CSS, JavaScript e arquivos de imagem;
    - **appsettings.json** contém as configuração de inicialização que o ASP.NETCore carrega; 
 
-- ##Basico de MVC :
+- ## Basico de MVC :
 
   **Por padrão o funcionamento dos elementos ocorre da seguinte forma:**<br />
   - O **Controller**:
@@ -59,11 +59,37 @@
     - A **View** é renderizada e exibida no navegador do usuário;
     - Então o usuário clica em um botão ou envia um formulário, que envia uma nova solicitação ao controlador e o ciclo se repete;
 
-- ##Comandos para o projeto ASP.NET Core : Controller
-  **Agora uqe sabemos o que é um controller vamos contruir um:**<br />
-  - 
+- ## Continuando o projeto ASP.NET Core : Controller
+  **Agora que sabemos o que é um controller vamos contruir um:**<br />
+  - Se abrirmos a pasta Controllers, veremos que ja existe um HomeController.cs que inclui três métodos de ação (Index, About, e Contact) que são mapeados pelo ASP.NET Core para esses URLs de rota;
+  - Pelo VS Code clicando na pasta, você pode criar um "new file" chamado TodoController não se esqueça da exentensão .cs;
+  - E cole o seguinte código:
   
-- ##Comandos: Usando o Git ou GitHub 
+  ```
+ using System;
+ using System.Collections.Generic;
+ using System.Linq;using System.Threading.Tasks;
+ using Microsoft.AspNetCore.Mvc;
+
+  namespace AspNetCoreTodo.Controllers
+  {
+    public class TodoController : Controller    
+    {
+    // Actions go here
+     }
+  }
+  ```
+ 
+  
+  - Substitua por 
+  
+  public IActionResult Index()
+    {// Get to-do items from database
+    // Put items into a model
+    // Render view using the model    }
+     }
+  
+- ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
   - 'git init' inicia um novo repositório na pasta raiz do projeto. Caso ocorra erro volte nos dowloads e baixe e configure o Git Bash. Ele deve criar uma pasta .git.
