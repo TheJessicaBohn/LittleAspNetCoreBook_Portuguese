@@ -16,5 +16,24 @@
   - 'mkdir AspNetCoreTodo', cria uma nova pasta onde após o mkdir é o nome e pode-se criar com outro nome de sua preferência;
   - 'cd AspNetCoreTodo' Entra na respectiva pasta, lembrando que, se o nome da mesma foi modificado, deve-se escrever o nome escolhido após cd;
   - 'dotnet new mvc --auth Individual -o AspNetCoreTodo', para criar um comando MVC;
+  - 'cd AspNetCoreTodo' para entrar na nova pasta criada;
+  - 'dotnet run' executa o programa e deve retornar
+    - info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: https://localhost:5001
+      info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: http://localhost:5000
+      info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+      info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+      info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\xxxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo
+   e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , pra apar o serviço
+   Ctrl + C;
+ - Conteúdo : ASP.NET Core project
+   - Program.cs e Startup.cs são classes que configuram o servidor web e ASP.NET Core pipeline.
+   - Models, Views, e Controllers são diretórios contêm os componentes da arquitetura Model-View-Controller (MVC).
+   - 
+   
   
  
