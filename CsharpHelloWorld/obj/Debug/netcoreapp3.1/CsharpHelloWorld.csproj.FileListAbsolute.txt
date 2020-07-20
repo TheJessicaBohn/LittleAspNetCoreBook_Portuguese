@@ -1,0 +1,13 @@
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\bin\Debug\netcoreapp3.1\CsharpHelloWorld.exe
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\bin\Debug\netcoreapp3.1\CsharpHelloWorld.deps.json
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\bin\Debug\netcoreapp3.1\CsharpHelloWorld.runtimeconfig.json
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\bin\Debug\netcoreapp3.1\CsharpHelloWorld.runtimeconfig.dev.json
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\bin\Debug\netcoreapp3.1\CsharpHelloWorld.dll
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\bin\Debug\netcoreapp3.1\CsharpHelloWorld.pdb
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.csprojAssemblyReference.cache
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.AssemblyInfoInputs.cache
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.AssemblyInfo.cs
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.csproj.CoreCompileInputs.cache
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.dll
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.pdb
+C:\Users\Jessica Bohn\Desktop\littleAspNet\CsharpHelloWorld\obj\Debug\netcoreapp3.1\CsharpHelloWorld.genruntimeconfig.cache
