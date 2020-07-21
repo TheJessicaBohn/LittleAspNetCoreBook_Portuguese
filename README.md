@@ -63,7 +63,7 @@
   **Agora que sabemos o que é um controller vamos contruir um:**<br />
   - Se abrirmos a pasta Controllers, veremos que ja existe um HomeController.cs que inclui três métodos de ação (Index, About, e Contact) que são mapeados pelo ASP.NET Core para esses URLs de rota;
   - Pelo VS Code clicando na pasta, você pode criar um "new file" chamado TodoController não se esqueça da exentensão .cs;
-  - E cole o seguinte código:
+  - E escreva o seguinte código:
   
  ```
  using System;
@@ -79,7 +79,7 @@
      }
   }
   ```
-  - Substitua por 
+   - Substitua "//Actions " go here por 
   ```
   public IActionResult Index()
     {// Get to-do items from database
@@ -87,10 +87,103 @@
     // Render view using the model    }
      }
   ```
+  - O objetivo do método IActionResult é retornar códigos de status HTTP como 200 (OK) e 404 (não encontrado), views, ou dados JSON.
+
+- **O Model**:
+  - Vamos criar um modelo que represente um item de tarefa pendente armazenado no banco de dados (às vezes chamado de entidade) e o modelo que será combinado com uma visualização (o MV no MVC) e enviado de volta ao navegador do usuário. 
+  - Primeiro criamos uma Classe chamada TodoItem.cs, dentro da pasta Models;
+  - Ela define o que o banco de dados precisará armazenar para cada item de tarefa: 
+    - Um ID : um guid ou um identificador globalmente exclusivos e são gerados aleatoriamente, para que você não precise se preocupar com o incremento automático
+    - Um título ou nome : valor do texto). Isso conterá a descrição do nome do item de pendências. O atributo [Required] informa que o campo é obrigatório.
+    - IsDone : valor booleano. 
+    - DueAt: informa se o item está completo e qual é a data do vencimento.
+    - Agora não importa qual seja a tecnologia de banco de dados subjacente. Pode ser SQL Server, MySQL, MongoDB, Redis ou algo mais exótico. Esse modelo define como será a linha ou entrada do banco de dados em C #, para que você não precise se preocupar com as coisas de baixo nível do banco de dados em seu código. Esse estilo simples de modelo às vezes é chamado de "objeto C # antigo simples" ou POCO.
+  - E escreva o seguinte código:
+  
+  ```
+  using System;
+  using System.ComponentModel.DataAnnotations;
+  namespace AspNetCoreTodo.Models 
+  {
+    public class TodoItem    
+    {
+        public Guid Id { get; set; }
+        public bool IsDone { get; set; }
+        [Required]
+        public string Title { get; set; }
+        public DateTimeOffset? DueAt { get; set; }   
+    }
+  }
+  ```
+ 
+ 
+- **A View model:**  
+  - Geralmente o usuario costuma procastinar então o modelo (entidade), que não exatamente o mesmo que o modelo que você deseja usar no MVC (o modelo de exibição)mas a exibição pode ser necessário exibir dois, dez ou cem itens de tarefas pendentes, Por esse motivo, o modelo de exibição deve ser uma classe separada que contém uma matriz de TodoItem;
+  - Crie uma classe em Models chamada TodoViewModel.cs
+  - E escreva o seguinte código:
+ ```  
+  namespace AspNetCoreTodo.Models 
+{
+    publicclassTodoViewModel    {
+        public TodoItem[] Items { get; set;}    
+  }
+}
+```
+- **A View:** 
+  - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C #.
+  - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
+  - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
+  - Sobre o o restante do HTML, está na pasta Views/Shared/_Layout.cshtml;
+  - Crie uma pasta "Todo" dentro do diretório Views;
+  - E dentro da pasta Todo crie um arquivo "Index.cshtml"
+  - E escreva o seguinte código:
+  ```  
+  @model TodoViewModel
+
+  @{    
+    ViewData["Title"] = "Manage your todo list";
+  }
+  <divclass="panel panel-default todo-panel">
+    <divclass="panel-heading">@ViewData["Title"]</div>
+    
+  <tableclass="table table-hover">
+    <thead>
+        <tr>
+            <td>&#x2714;</td>
+            <td>Item</td>
+            <td>Due</td>
+        </tr>
+    </thead>      
+    
+    @foreach (var item in Model.Items)      {
+        <tr>
+            <td>
+                <inputtype="checkbox"class="done-checkbox">
+                </td>
+                <td>@item.Title</td>
+                <td>@item.DueAt</td>
+        </tr>      
+    }
+  </table>
+
+  <divclass="panel-footer add-item-form">
+  <!-- TODO: Add item form -->
+  </div>
+  </div>
+  ```
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
   - 'git init' inicia um novo repositório na pasta raiz do projeto. Caso ocorra erro volte nos dowloads e baixe e configure o Git Bash. Ele deve criar uma pasta .git.
+
+- ## Termos:
+  - **Guids (orGUIDs)** são longas sequências de letras e números, como 43ec09f2-7f70-4f4b-9559-65011d5781bb. Como os guias são aleatórios e é improvável que sejam duplicados acidentalmente, eles são comumente usados como IDs únicos. Você também pode usar um número (inteiro) como ID da entidade do banco de dados, mas precisará configurar seu banco de dados para sempre aumentar o número quando novas linhas forem adicionadas ao banco de dados.
+ - **Booleano** (valor verdadeiro / falso), Por padrão, será falso para todos os novos itens. Posteriormente, pode-se mudar essa propriedade para true quando o usuário clicar na caixa de seleção de um item na visualização.
+ - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
+ - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
+ - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
+ - **get; set; ou (getter e setter)** leitura / gravação .
+ 
  
   
  
