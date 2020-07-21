@@ -65,7 +65,7 @@
   - Pelo VS Code clicando na pasta, você pode criar um "new file" chamado TodoController não se esqueça da exentensão .cs;
   - E cole o seguinte código:
   
-  ```
+ ```
  using System;
  using System.Collections.Generic;
  using System.Linq;using System.Threading.Tasks;
@@ -79,16 +79,14 @@
      }
   }
   ```
- 
-  
   - Substitua por 
-  
+  ```
   public IActionResult Index()
     {// Get to-do items from database
     // Put items into a model
     // Render view using the model    }
      }
-  
+  ```
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
