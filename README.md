@@ -201,8 +201,8 @@
  - Criando a interface:
    - Em C# tem a concepção de **Interfaçe**, onde as interfaces facilitam manter suas classes separadas e fáceis de testar.
    - Então por convenção, as interfaces são prefixadas com "I".
-   - Crie um novo arquivo  chamado ITodoItemService.cs no diretório Services:
-   - Escreva o seguinte código: //parei na pagina32
+   - Crie um novo diretório chamado Services e dentro dele um arquivo  chamado ITodoItemService.cs :
+   - Escreva o seguinte código: 
   
   ```
   
