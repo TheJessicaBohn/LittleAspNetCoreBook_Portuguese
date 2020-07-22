@@ -13,6 +13,7 @@
   - F5 para executar e breakpoints: no projeto aberto, clique na margem a esquerda do projeto ao lado da linha de código que se deseja analizar e pressione F5 para executar o projeto no modo de depuração;
   - Lâmpada :bulb:: se o seu código contiver riscos vermelhos, isso indica erros no compilador, entao pause o mouse sobre código vermelho e procure o ícone da lâmpada na margem esquerda e veja o que o menu da lâmpada sugere;
   - Compilação rápida: Command-Shift-B ou Control-Shift-B para executar a tarefa Build, que faz o mesmo que dotnetbuild.
+  -  A documentação oficial do ASP.NET Core se encontra em (athttps: //docs.asp.net).
 - Dowloads :  
   - Editor utilizado (dica, pode ser outro de sua prefência ou o VS mesmo) :Visual Studio Community  a partir do 2017 version 15.3 or mais atualizada https://visualstudio.microsoft.com/pt-br/vs/community/  ou  VSCode https://code.visualstudio.com/download, e na hora de instalar colocar as opções de .net e C#;
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
@@ -124,7 +125,7 @@
  ```  
   namespace AspNetCoreTodo.Models 
 {
-    publicclassTodoViewModel    {
+    public class TodoViewModel    {
         public TodoItem[] Items { get; set;}    
   }
 }
@@ -133,7 +134,6 @@
   - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C #.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
   - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
-  - Sobre o o restante do HTML, está na pasta Views/Shared/_Layout.cshtml;
   - Crie uma pasta "Todo" dentro do diretório Views;
   - E dentro da pasta Todo crie um arquivo "Index.cshtml"
   - E escreva o seguinte código:
@@ -171,6 +171,47 @@
   </div>
   </div>
   ```
+  
+-  ## Layout:
+  - Sobre o o restante do HTML, está na pasta Views/Shared/_Layout.cshtml, com templates Bootstrap e jQuery;
+  - Também contem algumas configurações simples de CSS
+  - O stylesheet está na pasta wwwroot/css
+  - E escreva o seguinte código para adicionar algumas novas features no final do código:
+   
+   ```
+  div.todo-panel {
+  margin-top: 15px;
+  }
+  tabletr.done {
+  text-decoration: line-through;
+  color: #888;
+ }
+   ```
+  
+- ## Criando uma classe:
+  - Pode-se faze-la diretamente no Controller porém por boas praticas e no mundo real o ideal é que o código seja separado, pois as classes seram muito maiores, deixando dificil a manipulação podento ter as seguintes preocupações:
+    - **Renderização de views** e manipulção de dados recebidos: é isso que o seu controlador já faz.
+    - **Executar lógica business**, ou código e lógica relacionados ao objetivo e "negócios" da sua aplicação. Por exemplo : lógica de negócios incluem o cálculo de um custo total com base nos preços e taxas de produtos ou verificar se um jogador tem pontos suficientes para subir de nível em um jogo. 
+    - **Manipulação de um banco de dados**.
+  - O ideal de um projeto organizado é mante-lo nas arquiteturas multi-tier ou n-tier;
+  - Neste projeto, você usaremos duas camadas de aplicativos:
+    - Uma camada de apresentação(**presentation layer**) composta pelos controladores e viwes que interagem com o usuário 
+    - E uma camada de serviço(**service layer**) que contém lógica de negócios e código do banco de dados. 
+    - como a camada de apresentação já existe vamos criar um serviço que lide com a lógica de negócios de tarefas pendentes e salva itens de tarefas pendentes em um banco de dados.
+ - Criando a interface:
+   - Em C# tem a concepção de **Interfaçe**, onde as interfaces facilitam manter suas classes separadas e fáceis de testar.
+   - Então por convenção, as interfaces são prefixadas com "I".
+   - Crie um novo arquivo  chamado ITodoItemService.cs no diretório Services:
+   - Escreva o seguinte código: //parei na pagina32
+  
+  ```
+  
+  ```
+  
+  
+   
+   
+  
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
@@ -182,7 +223,8 @@
  - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
  - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
  - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
- - **get; set; ou (getter e setter)** leitura / gravação .
+ - **get; set; ou (getter e setter)** leitura / gravação.
+ - ** Arquitetura n-tier**: A maioria dos projetos maiores usa uma arquitetura de três camadas: uma camada de apresentação, uma camada de lógica de serviço e uma camada de repositório de dados. Um repositório é uma classe que é focada apenas no código do banco de dados (sem lógica de negócios). Neste aplicativo, você os combinará em uma única camada de serviço por simplicidade, mas fique à vontade para experimentar diferentes maneiras de arquitetar o código.
  
  
   
