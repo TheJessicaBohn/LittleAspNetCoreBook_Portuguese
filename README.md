@@ -203,6 +203,7 @@
    - Crie um novo diretório chamado Services e dentro dele um arquivo  chamado ITodoItemService.cs :
    - Escreva o seguinte código: 
   
+ 
   ```
   using System;
   using System.Collections.Generic;
@@ -222,31 +223,31 @@
   - Com interface está definida, será criada a classe de serviço atual.
   - Na pasta Services crie um arquivo chamado "FakeTodoItemService.cs" e escreva o seginte código:
    ```
-  using System;
-  using System.Collections.Generic;
-  using System.Threading.Tasks;
-  using AspNetCoreTodo.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AspNetCoreTodo.Models;
 
-  namespace AspNetCoreTodo.Services
-  {
-      public class FakeTodoItemService : ITodoItemService    
-      {
-         public Task<TodoItem[]> GetIncompleteItemsAsync()       
-          {
-               var item1 = new TodoItem
-                 {
-                   Title = "Learn ASP.NET Core", 
-                    DueAt = DateTimeOffset.Now.AddDays(1)  
-                  };
-              var item2 = new TodoItem
-                 {
-                     Title = "Build awesome apps",
-                      DueAt = DateTimeOffset.Now.AddDays(2)
-                  };
-                  return Task.FromResult(new[] { item1, item2 }); 
-         }   
-      }
-  }
+namespace AspNetCoreTodo.Services
+{
+    public class FakeTodoItemService : ITodoItemService    
+    {
+        public Task<TodoItem[]> GetIncompleteItemsAsync()       
+         {
+             var item1 = new TodoItem
+                {
+                  Title = "Learn ASP.NET Core", 
+                  DueAt = DateTimeOffset.Now.AddDays(1)  
+                };
+             var item2 = new TodoItem
+                {
+                    Title = "Build awesome apps",
+                    DueAt = DateTimeOffset.Now.AddDays(2)
+                };
+                return Task.FromResult(new[] { item1, item2 }); 
+       }   
+    }
+}
    ```
    - Para testar  o controlador e a visualização e, em seguida, adicionar o código de banco de dados real, podemos ver que FakeTodoItemService implementa a interface ITodoItemService, mas sempre retorna o mesmo array de dois TodoItems. 
    
@@ -266,7 +267,7 @@
       public class TodoController : Controller    
       {
         private readonly ITodoItemService _todoItemService;
-        public TodoController(ITodoItemService todoItemService)
+        public TodoController(ITodoItemService todoItemService) 
         {
                 _todoItemService = todoItemService;    
         }
@@ -277,9 +278,7 @@
       }
    }
    ```
-   
-  
-   - Variavél ITodoItemService, deixa usar o serviço do metodo Index;
+   - Variavél ITodoItemServic, deixa usar o serviço do metodo Index;
    - A linha public TodoController(ITodoItemService todoItemService), define o construtor da classe;
    - Para configurar os serviços vá a classe chamada Startup.cs e modifique:
    ```
@@ -293,7 +292,6 @@
    
   
  
-  
  
  
   
