@@ -223,35 +223,36 @@
   - Com interface está definida, será criada a classe de serviço atual.
   - Na pasta Services crie um arquivo chamado "FakeTodoItemService.cs" e escreva o seginte código:
    ```
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AspNetCoreTodo.Models;
+  using System;
+  using System.Collections.Generic;
+  using System.Threading.Tasks;
+  using AspNetCoreTodo.Models;
 
-namespace AspNetCoreTodo.Services
-{
-    public class FakeTodoItemService : ITodoItemService    
-    {
-        public Task<TodoItem[]> GetIncompleteItemsAsync()       
-         {
-             var item1 = new TodoItem
-                {
-                  Title = "Learn ASP.NET Core", 
-                  DueAt = DateTimeOffset.Now.AddDays(1)  
-                };
-             var item2 = new TodoItem
-                {
-                    Title = "Build awesome apps",
-                    DueAt = DateTimeOffset.Now.AddDays(2)
-                };
-                return Task.FromResult(new[] { item1, item2 }); 
-       }   
+  namespace AspNetCoreTodo.Services
+  {
+      public class FakeTodoItemService : ITodoItemService    
+      {
+         public Task<TodoItem[]> GetIncompleteItemsAsync()       
+          {
+               var item1 = new TodoItem
+                  {
+                    Title = "Learn ASP.NET Core", 
+                    DueAt = DateTimeOffset.Now.AddDays(1)  
+                  };
+               var item2 = new TodoItem
+                 {
+                      Title = "Build awesome apps",
+                     DueAt = DateTimeOffset.Now.AddDays(2)
+                  };
+                  return Task.FromResult(new[] { item1, item2 }); 
+        }   
+      }
     }
-}
    ```
    - Para testar  o controlador e a visualização e, em seguida, adicionar o código de banco de dados real, podemos ver que FakeTodoItemService implementa a interface ITodoItemService, mas sempre retorna o mesmo array de dois TodoItems. 
    
 - ## Usando injeção de dependência:
+  - É utilizada quando uma solicitação chega e é roteada para o TodoController, o ASP.NET Core examina os serviços disponíveis e fornece automaticamente o FakeTodoItemService quando o controlador solicita umITodoItemService. Como os serviços são "injetados" no contêiner de serviços, esse padrão é chamado de injeção de dependência;
   - Vamos voltar em TodoController, tarabalhar com o ITodoItemService e escreva o seginte código:
      
    ```
@@ -282,13 +283,17 @@ namespace AspNetCoreTodo.Services
    - A linha public TodoController(ITodoItemService todoItemService), define o construtor da classe;
    - Para configurar os serviços vá a classe chamada Startup.cs e modifique:
    ```
+   using AspNetCoreTodo.Services;
    public void ConfigureServices(IServiceCollection services)
    {
       services.AddMvc();
+      services.AddSingleton<ITodoItemService, FakeTodoItemService>();
    }        
    ```
    - O método ConfigureServices adiciona coisas ao servicecontainer ou à coleção de serviços que o ASP.NET Core conhece;
    - A linha services.AddMvc adiciona os serviços internos do ASP.NETCore. Qualquer outro serviço que você deseja usar em seu aplicativo deve ser adicionado ao contêiner de serviço aqui em ConfigureServices.
+   - A linha services.AddSingleton<ITodoItemService, FakeTodoItemService>(); informa ao ASP.NET  para usar o FakeTodoItemService quando a interface ITodoItemService é solicitada em um construtor (ou em qualquer outro lugar);
+   - 
    
   
  
@@ -305,6 +310,7 @@ namespace AspNetCoreTodo.Services
   - 'git init' inicia um novo repositório na pasta raiz do projeto. Caso ocorra erro volte nos dowloads e baixe e configure o Git Bash. Ele deve criar uma pasta .git.
 
 - ## Termos:
+  - **AddSingleton** adiciona seu serviço ao contêiner de serviço como um singleton. Isso significa que apenas uma cópia do  da classe FakeTodoItemService é criada e é reutilizada sempre que o serviço é solicitado.
   - **Arquitetura n-tier**: A maioria dos projetos maiores usa uma arquitetura de três camadas: uma camada de apresentação, uma camada de lógica de serviço e uma camada de repositório de dados. Um repositório é uma classe que é focada apenas no código do banco de dados (sem lógica de negócios). Neste aplicativo, você os combinará em uma única camada de serviço por simplicidade, mas fique à vontade para experimentar diferentes maneiras de arquitetar o código.
   - **Booleano** (valor verdadeiro / falso), Por padrão, será falso para todos os novos itens. Posteriormente, pode-se mudar essa propriedade para true quando o usuário clicar na caixa de seleção de um item na visualização.
   - **get; set; ou (getter e setter)** leitura / gravação.
