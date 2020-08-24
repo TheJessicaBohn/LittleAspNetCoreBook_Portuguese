@@ -204,10 +204,21 @@
    - Escreva o seguinte código: 
   
   ```
- 
+  using System;
+  using System.Collections.Generic;
+  using System.Threading.Tasks;
+  using AspNetCoreTodo.Models;
+
+  namespace AspNetCoreTodo.Services
+  {
+      public interface ITodoItemService   
+      {        
+          Task<TodoItem[]> GetIncompleteItemsAsync();   
+      }
+  }
  
   ```
-  
+  - Observe que o namespace desse arquivo é AspNetCoreTodo.Services.Namespaces são uma maneira de organizar arquivos de código .NET e é comum que o namespace siga o diretório em que o arquivo está armazenado (AspNetCoreTodo.Services para arquivos no diretório Services e assim em).
   
    
    
