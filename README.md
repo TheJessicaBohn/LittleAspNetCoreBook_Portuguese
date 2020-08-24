@@ -187,7 +187,7 @@
  }
    ```
   
-- ## Criando uma classe:
+- ## Criando uma classe de serviço:
   - Pode-se fazê-la diretamente no Controller porém por boas praticas e no mundo real o ideal é que o código seja separado, pois as classes seram muito maiores, deixando dificil a manipulação podento ter as seguintes preocupações:
     - **Renderização de views** e manipulção de dados recebidos: é isso que o seu controlador já faz.
     - **Executar lógica business**, ou código e lógica relacionados ao objetivo e "negócios" da sua aplicação. Por exemplo: lógica de negócios incluem o cálculo de um custo total com base nos preços e taxas de produtos ou verificar se um jogador tem pontos suficientes para subir de nível em um jogo. 
@@ -219,7 +219,68 @@
  
   ```
   - Veja que o namespace desse arquivo é AspNetCoreTodo.Services. Em .NET e é comum que o namespace siga o diretório em que o arquivo está armazenado, pois Namespaces são uma maneira de organizar arquivos de código.
-  -
+  - Com interface está definida, será criada a classe de serviço atual.
+  - Na pasta Services crie um arquivo chamado "FakeTodoItemService.cs" e escreva o seginte código:
+   ```
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AspNetCoreTodo.Models;
+
+namespace AspNetCoreTodo.Services
+{
+    public class FakeTodoItemService : ITodoItemService    
+    {
+        public Task<TodoItem[]> GetIncompleteItemsAsync()       
+         {
+             var item1 = new TodoItem
+                {
+                  Title = "Learn ASP.NET Core", 
+                  DueAt = DateTimeOffset.Now.AddDays(1)  
+                };
+             var item2 = new TodoItem
+                {
+                    Title = "Build awesome apps",
+                    DueAt = DateTimeOffset.Now.AddDays(2)
+                };
+                return Task.FromResult(new[] { item1, item2 }); 
+       }   
+    }
+}
+   ```
+   - Para testar  o controlador e a visualização e, em seguida, adicionar o código de banco de dados real, podemos ver que FakeTodoItemService implementa a interface ITodoItemService, mas sempre retorna o mesmo array de dois TodoItems. 
+   
+- ## Usando injeção de dependência:
+  - Vamos voltar em TodoController, tarabalhar com o ITodoItemService e escreva o seginte código:
+     
+   ```
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AspNetCoreTodo.Services;
+    using Microsoft.AspNetCore.Mvc;
+
+    namespace AspNetCoreTodo.Controllers
+    {
+      public class TodoController : Controller    
+      {
+        private readonly ITodoItemService _todoItemService;
+        public TodoController(ITodoItemService todoItemService)
+        {
+                _todoItemService = todoItemService;    
+        }
+        public IActionResult Index()
+         {
+        
+         }
+      }
+   }
+   ```
+  
+ 
+ 
+  
   
    
    
@@ -234,10 +295,10 @@
   - **Booleano** (valor verdadeiro / falso), Por padrão, será falso para todos os novos itens. Posteriormente, pode-se mudar essa propriedade para true quando o usuário clicar na caixa de seleção de um item na visualização.
   - **get; set; ou (getter e setter)** leitura / gravação.
   - **Guids (orGUIDs)** são longas sequências de letras e números, como 43ec09f2-7f70-4f4b-9559-65011d5781bb. Como os guias são aleatórios e é improvável que sejam duplicados acidentalmente, eles são comumente usados como IDs únicos. Você também pode usar um número (inteiro) como ID da entidade do banco de dados, mas precisará configurar seu banco de dados para sempre aumentar o número quando novas linhas forem adicionadas ao banco de dados.
- - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
- - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
- - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
- -**Using** são instruções que se encontrão na parte superior do arquivo para importar:
+  - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
+   - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
+   - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
+  -**Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)"
  
  
  
