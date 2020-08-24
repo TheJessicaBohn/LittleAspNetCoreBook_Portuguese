@@ -293,15 +293,29 @@
    - O método ConfigureServices adiciona coisas ao servicecontainer ou à coleção de serviços que o ASP.NET Core conhece;
    - A linha services.AddMvc adiciona os serviços internos do ASP.NETCore. Qualquer outro serviço que você deseja usar em seu aplicativo deve ser adicionado ao contêiner de serviço aqui em ConfigureServices.
    - A linha services.AddSingleton<ITodoItemService, FakeTodoItemService>(); informa ao ASP.NET  para usar o FakeTodoItemService quando a interface ITodoItemService é solicitada em um construtor (ou em qualquer outro lugar);
-   - 
+
+ - ## Terminando o Controller:
+  - A última etapa é terminar o código do controlador. O controlador agora tem uma lista de itens de tarefas pendentes da camada de serviço e precisa colocar esses itens em um TodoViewModel e vincular esse modelo à visualização que você criou anteriormente:
+    ```
+    using AspNetCoreTodo.Services;
+    using AspNetCoreTodo.Models;
+    
+    public async Task<IActionResult> Index()
+      {
+        var items = await _todoItemService.GetIncompleteItemsAsync();
+
+        var model = new TodoViewModel()    
+       {       
+             Items = items    
+        };
+       return View(model);
+    ```
+        
+   
    
   
  
  
- 
-  
-  
-   
    
   
 - ## Comandos: Usando o Git ou GitHub 
