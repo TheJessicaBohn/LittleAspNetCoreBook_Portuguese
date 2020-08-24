@@ -218,7 +218,7 @@
   }
  
   ```
-  - Observe que o namespace desse arquivo é AspNetCoreTodo.Services.Namespaces são uma maneira de organizar arquivos de código .NET e é comum que o namespace siga o diretório em que o arquivo está armazenado (AspNetCoreTodo.Services para arquivos no diretório Services e assim em).
+  - Veja que o namespace desse arquivo é AspNetCoreTodo.Services. Em .NET e é comum que o namespace siga o diretório em que o arquivo está armazenado, pois Namespaces são uma maneira de organizar arquivos de código.
   
    
    
