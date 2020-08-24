@@ -27,7 +27,7 @@
 - ## Comandos : Criando um ASP.NET Core project
   - 'cd ..' para sair da pasta do CsharpHelloWorld;
   - 'mkdir AspNetCoreTodo', cria uma nova pasta onde após o mkdir é o nome e pode-se criar com outro nome de sua preferência;
-  - 'cd AspNetCoreTodo' Entra na respectiva pasta, lembrando que, se o nome da mesma foi modificado, deve-se escrever o nome escolhido após cd;
+  - 'cd AspNetCoreTodo' Entra na respectiva pasta, lembrando que, se o nome da mesma foi modificado, deve-se escrever o nome escolhido após o comando cd;
   - 'dotnet new mvc --auth Individual -o AspNetCoreTodo', para criar um projeto com comando MVC;
   - 'cd AspNetCoreTodo' para entrar na nova pasta criada;
   - 'dotnet run' executa o programa e deve retornar:
@@ -43,8 +43,7 @@
       **info: Microsoft.Hosting.Lifetime[0]<br />**
       **Content root path: C:\Users\xxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo<br />**
    
-   e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , pra apar o serviço
-   Ctrl + C;
+   e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , para parar o serviço 'Ctrl + C';
  - Conteúdo : ASP.NET Core project
    - **Program.cs** e **Startup.cs** são classes que configuram o servidor web e ASP.NET Core pipeline;
    - **Models, Views**, e **Controllers** são diretórios contêm os componentes da arquitetura Model-View-Controller (MVC);
@@ -199,7 +198,7 @@
     - E uma camada de serviço(**service layer**) que contém lógica de negócios e código do banco de dados. 
     - como a camada de apresentação já existe vamos criar um serviço que lide com a lógica de negócios de tarefas pendentes e salva itens de tarefas pendentes em um banco de dados.
  - Criando a interface:
-   - Em C# tem a concepção de **Interfaçe**, onde as interfaces facilitam manter suas classes separadas e fáceis de testar.
+   - Em C# tem a concepção de **Interface**, onde as interfaces facilitam manter suas classes separadas e fáceis de testar.
    - Então por convenção, as interfaces são prefixadas com "I".
    - Crie um novo diretório chamado Services e dentro dele um arquivo  chamado ITodoItemService.cs :
    - Escreva o seguinte código: 
