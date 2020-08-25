@@ -173,10 +173,10 @@
   ```
   
 -  ## Layout:
-  - Sobre o o restante do HTML, está na pasta Views/Shared/_Layout.cshtml, com templates Bootstrap e jQuery;
-  - Também contem algumas configurações simples de CSS
-  - O stylesheet está na pasta wwwroot/css
-  - E escreva o seguinte código para adicionar algumas novas features no final do código do arquivo site.css :
+   - Sobre o o restante do HTML, está na pasta Views/Shared/_Layout.cshtml, com templates Bootstrap e jQuery;
+   - Também contem algumas configurações simples de CSS
+   - O stylesheet está na pasta wwwroot/css
+   - E escreva o seguinte código para adicionar algumas novas features no final do código do arquivo site.css :
    
    ```
   div.todo-panel {
