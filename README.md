@@ -13,7 +13,7 @@
   - Lâmpada :bulb:: se o seu código contiver riscos vermelhos, isso indica erros no compilador, entao pause o mouse sobre código vermelho e procure o ícone da lâmpada na margem esquerda e veja o que o menu da lâmpada sugere;
   - Compilação rápida: Command-Shift-B ou Control-Shift-B para executar a tarefa Build, que faz o mesmo que dotnetbuild.
   -  A documentação oficial do ASP.NET Core se encontra em (athttps: //docs.asp.net).
-- Dowloads :  
+- **Dowloads :**  
   - Editor utilizado (dica, pode ser outro de sua prefência ou o VS mesmo) :Visual Studio Community  a partir do 2017 version 15.3 or mais atualizada https://visualstudio.microsoft.com/pt-br/vs/community/  ou  VSCode https://code.visualstudio.com/download, e na hora de instalar colocar as opções de .net e C#;
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
   - Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
