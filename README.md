@@ -19,7 +19,8 @@
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
   - Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
   - Git Bash caso utilize o github https://git-scm.com/downloads, e depois nas variaveis de ambiente e na variavel Path adicione  C:\Program Files\Git\bin\ e  C:\Program Files\Git\cmd\
-  -NuGet é a ferramenta do gerenciador de pacotes e o repositório oficial de pacotes (em https://www.nuget.org). Você pode pesquisar pacotes NuGet na web e instalá-los de sua máquina local por meio do terminal (ou da GUI, se estiver usando o Visual Studio).
+  - NuGet é a ferramenta do gerenciador de pacotes e é o repositório oficial de pacotes (em https://www.nuget.org). Ele é um "humanizador" de datas, horas, duraçõesnumeros e etc.
+  Você pode pesquisar pacotes NuGet na web e instalá-los de sua máquina local por meio do terminal (ou da GUI, se estiver usando o Visual Studio).
 - ## Comandos : Criando um Hello World
   - 'cd Documents' (no lugar de Documents a pasta que você deseja cria);
   - 'dotnet new console -o CsharpHelloWorld' , note que ele cria uma pasta de mesmo nome
@@ -346,14 +347,41 @@
      </ul>
      ```
   - ## Adicinar pacotes externos
-    - Um dos 
-    
-     
-   
+    - Vamos utilizar o Nuget, que possui link em Dowloads;
+    -Existem pacotes disponíveis no NuGet para tudo, desde analisar XML para aprendizado de máquina até postar no Twitter. O ASP.NET Core propriamente dito nada mais é do que uma coleção de pacotes NuGet que são adicionados ao seu projeto;
+    - **Instalação:**
+      - Na documentação vamos no link: https://docs.microsoft.com/en-us/nuget/install-nuget-client-tools e baixe o nuget.exe
+      - Coloque-o numa pasta adequada, ex.C: ;
+      - E por fim adicione à variavel de ambientes PATH.
+      - Após isso rode o coamando 'dotnet add package Humanizer' no teminal do VSCode;
+      - Então no AspNetCoreTodo.csproj, deve aparecer na referência a seguine linha:
+      ```
+      <PackageReference Include="Humanizer" Version="2.8.26" />
+       ```
+     - **Utilização:**
+      - Para utilizar o package no código precisamos utilizar um "using"
+      - Então em Views/Todo/Index.cshtml coloque:
+      ```
+       @model TodoViewModel
+       @using Humanizer
+      ```
+      - E atualize a linha
+       ```
+      <td>@item.DueAt.()</td>
+      para
+      <td>@item.DueAt.Humanize()</td>
+       ```
+       - Se atualizarmos o navegador poderemos ver a diferença da forma que os dados estão sendo apresentados, pois agora ele não fala mais a hora e data mas sim, quanto tempo foi passado.
+   - ##Uso de Banco de Dados
+     - O bancos de dados pode se conectar com SQLServer, PostgreSQL e MySQL, mas também funciona com bancos de dados NoSQL como Mongo. Mas aqui usaremos SQLite neste projeto para tornar as coisas fáceis de configurar;
+    - **Conectando ao Banco de Dados**
+      - Vamos precisar de:
+        - **Os pacotes do Entity Framework Core**: Eles estão incluídos por padrão em todos os projetos ASP.NET Core.
+        - **Um banco de dados**. O arquivo app.db na raiz do projeto é um pequeno banco de dados SQLite criado para você pelo dotnet new. SQLite é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado;
+        - **Uma classe de contexto de banco de dados**: O contexto do banco de dados é uma classe C # que fornece um ponto de entrada no banco de dados para que assim seu código poderá interagir com o banco de dados para ler e salvar itens. Já existe uma classe de contexto básica no arquivo Data/ApplicationDbContext.cs
+        - **Uma string de conexão** Esteja você se conectando a um banco de dados de arquivos local (como SQLite) ou a um banco de dados hospedado em outro lugar, você definirá uma string que contém o nome ou endereço do banco de dados ao qual se conectar. Isso já está configurado por defautl no appsettings.jsonfile: a string de conexão para o banco de dados SQLite isDataSource = app.db.
+        
   
- 
- 
-   
   
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
@@ -367,10 +395,11 @@
   - **get; set; ou (getter e setter)** leitura / gravação.
   - **Guids (orGUIDs)** são longas sequências de letras e números, como 43ec09f2-7f70-4f4b-9559-65011d5781bb. Como os guias são aleatórios e é improvável que sejam duplicados acidentalmente, eles são comumente usados como IDs únicos. Você também pode usar um número (inteiro) como ID da entidade do banco de dados, mas precisará configurar seu banco de dados para sempre aumentar o número quando novas linhas forem adicionadas ao banco de dados.
   - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
-   - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
-   - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
-   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
-   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
+  - **Um mapeador objeto-relacional (ORM)** torna mais fácil escrever códigos que interagem com um banco de dados, adicionando uma camada de abstração entre seu código e o próprio banco de dados. Hibernate em Java e ActiveRecord inRuby são dois ORMs bem conhecidos.Ainda existem vários ORMs para .NET, incluindo um criado pela Microsoft e incluído no ASP.NET Core por padrão: Entity Framework Core. EntityFramework Core torna mais fácil conectar-se a vários tipos de bancos de dados diferentes e permite usar o código C# para criar consultas de banco de dados que são mapeadas de volta para modelos C# (POCOs).
+  - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
+  - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
+  - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
+  - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
  
  
  
