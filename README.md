@@ -19,6 +19,7 @@
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
   - Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
   - Git Bash caso utilize o github https://git-scm.com/downloads, e depois nas variaveis de ambiente e na variavel Path adicione  C:\Program Files\Git\bin\ e  C:\Program Files\Git\cmd\
+  -NuGet é a ferramenta do gerenciador de pacotes e o repositório oficial de pacotes (em https://www.nuget.org). Você pode pesquisar pacotes NuGet na web e instalá-los de sua máquina local por meio do terminal (ou da GUI, se estiver usando o Visual Studio).
 - ## Comandos : Criando um Hello World
   - 'cd Documents' (no lugar de Documents a pasta que você deseja cria);
   - 'dotnet new console -o CsharpHelloWorld' , note que ele cria uma pasta de mesmo nome
@@ -311,7 +312,7 @@
        return View(model);
     ```
   - ## Testando:
-    - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run'
+    - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run';
     - Ele deve retrornar da seguinte forma no terminal:
     ```
     info: Microsoft.Hosting.Lifetime[0]
@@ -326,6 +327,7 @@
       Content root path: C:\Users\User\Desktop\LittleAspnet\AspNetCoreTodo\AspNetCoreTodo
      ``` 
      - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
+  
   - ## Atualizando o Layout:
     - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar nosvos elementos aos layout substituindo o seguinte código por:
       ``` 
@@ -343,6 +345,9 @@
           <li><a asp-controller="Todo"asp-action="Index">My to-dos</a></li>
      </ul>
      ```
+  - ## Adicinar pacotes externos
+    - Um dos 
+    
      
    
   
@@ -364,7 +369,8 @@
   - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
    - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
    - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
-  -**Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)"
+   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
+   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
  
  
  
