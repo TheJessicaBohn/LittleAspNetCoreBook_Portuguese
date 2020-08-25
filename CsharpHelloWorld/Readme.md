@@ -1,4 +1,4 @@
-# Após toda a configuração do Readme principal para gerar o um Hello World siga os seguintes passos;
+# Após toda a configuração do Readme principal para gerar o um Hello World siga os seguintes passos:
 
 - ## Comandos : Criando um Hello World
   - 'cd Documents' (no lugar de Documents a pasta que você deseja cria);
