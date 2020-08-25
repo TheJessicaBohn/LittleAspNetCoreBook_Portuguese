@@ -4,9 +4,8 @@
   - Um servidor de aplicativos da web (às vezes chamado de "back-end") usando o ASP.NET Core, C # e o padrão MVC;
   - Um banco de dados para armazenar itens de tarefas do usuário usando o mecanismo de banco de dados SQLite e um sistema chamado Entity Framework Core;
   - Páginas da Web e uma interface com a qual o usuário irá interagir via navegador, usando HTML, CSS e JavaScript (chamado de "front-end");
-  - Um formulário de login e verificações de segurança para manter a lista de tarefas de cada usuário.
-  
-- Tudo o que estiver dentro de 'aspas simples' são comandos a serem digitados nos terminais sem as aspas;
+  - Um formulário de login e verificações de segurança para manter a lista de tarefas de cada usuário;
+  - Tudo o que estiver dentro de 'aspas simples' são comandos a serem digitados nos terminais sem as aspas.
 - ## Dicas: 
   - Após as palavras chaves das linhas de comando (cd, ls, mkdir, etc), pode-se digitar a primeira letra da pasta ou arquivo e a tecla Tab da o autocompletar;
   - Se você está utilizando o Visual Studio Code : e for abrir a raiz pasta que está o projeto e for solicitado a instalação de arquivos ausentes, clique em sim;
