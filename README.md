@@ -129,7 +129,7 @@
 }
 ```
 - **A View:** 
-  - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C #.
+  - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
   - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
   - Crie uma pasta "Todo" dentro do diretório Views;
@@ -335,6 +335,15 @@
        </ul>
       ``` 
      - Substituir por 
+     ```
+     <ul class="nav navbar-nav">
+         <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+         <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+          <li><a asp-controller="Todo"asp-action="Index">My to-dos</a></li>
+     </ul>
+     ```
+     
    
   
  
