@@ -20,4 +20,4 @@
   - Git Bash caso utilize o github https://git-scm.com/downloads, e depois nas variaveis de ambiente e na variavel Path adicione  C:\Program Files\Git\bin\ e  C:\Program Files\Git\cmd\
   - NuGet é a ferramenta do gerenciador de pacotes e é o repositório oficial de pacotes (em https://www.nuget.org). Ele é um "humanizador" de datas, horas, duraçõesnumeros e etc.
   Você pode pesquisar pacotes NuGet na web e instalá-los de sua máquina local por meio do terminal (ou da GUI, se estiver usando o Visual Studio);
-  - Cada prjeto contem seu próprio readme.md dentro de sua respectiva pasta.
+  - Cada projeto contem seu próprio readme.md dentro de sua respectiva pasta.
