@@ -179,13 +179,13 @@
    - E escreva o seguinte código para adicionar algumas novas features no final do código do arquivo site.css :
    
    ```
-  div.todo-panel {
-  margin-top: 15px;
-  }
-  tabletr.done {
-  text-decoration: line-through;
-  color: #888;
- }
+    div.todo-panel {
+   margin-top: 15px;
+   }
+   tabletr.done {
+    text-decoration: line-through;
+   color: #888;
+   }
    ```
   
 - ## Criando uma classe de serviço:
@@ -296,7 +296,7 @@
    - A linha services.AddSingleton<ITodoItemService, FakeTodoItemService>(); informa ao ASP.NET  para usar o FakeTodoItemService quando a interface ITodoItemService é solicitada em um construtor (ou em qualquer outro lugar);
 
  - ## Terminando o Controller:
-  - A última etapa é terminar o código do controlador. O controlador agora tem uma lista de itens de tarefas pendentes da camada de serviço e precisa colocar esses itens em um TodoViewModel e vincular esse modelo à visualização que você criou anteriormente:
+    - A última etapa é terminar o código do controlador. O controlador agora tem uma lista de itens de tarefas pendentes da camada de serviço e precisa colocar esses itens em um TodoViewModel e vincular esse modelo à visualização que você criou anteriormente:
     ```
     using AspNetCoreTodo.Services;
     using AspNetCoreTodo.Models;
@@ -312,8 +312,8 @@
        return View(model);
     ```
   - ## Testando:
-    - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run';
-    - Ele deve retrornar da seguinte forma no terminal:
+      - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run';
+      - Ele deve retrornar da seguinte forma no terminal:
     ```
     info: Microsoft.Hosting.Lifetime[0]
       Now listening on: https://localhost:5001
@@ -329,7 +329,7 @@
      - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
   
   - ## Atualizando o Layout:
-    - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar nosvos elementos aos layout substituindo o seguinte código por:
+     - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar nosvos elementos aos layout substituindo o seguinte código por:
       ``` 
        <ul class="navbar-nav flex-grow-1">
            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
