@@ -17,8 +17,8 @@
 - Dowloads :  
   - Editor utilizado (dica, pode ser outro de sua prefência ou o VS mesmo) :Visual Studio Community  a partir do 2017 version 15.3 or mais atualizada https://visualstudio.microsoft.com/pt-br/vs/community/  ou  VSCode https://code.visualstudio.com/download, e na hora de instalar colocar as opções de .net e C#;
   - .NET Core SDK, incluindo o runtime https://dotnet.microsoft.com/download/dotnet-core?utm_source=getdotnetcorecli&utm_medium=referral;
-- Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
-- Git Bash caso utilize o github https://git-scm.com/downloads, e depois nas variaveis de ambiente e na variavel Path adicione  C:\Program Files\Git\bin\ e  C:\Program Files\Git\cmd\
+  - Após as instalações verifique por 'dotnet --version' e 'dotnet --info' no seu terminal ou power shell se ele foi instalado corretamente, se ele não retornar nenum erro ou comando desconhecido, está ok;
+  - Git Bash caso utilize o github https://git-scm.com/downloads, e depois nas variaveis de ambiente e na variavel Path adicione  C:\Program Files\Git\bin\ e  C:\Program Files\Git\cmd\
 - ## Comandos : Criando um Hello World
   - 'cd Documents' (no lugar de Documents a pasta que você deseja cria);
   - 'dotnet new console -o CsharpHelloWorld' , note que ele cria uma pasta de mesmo nome
@@ -310,8 +310,31 @@
         };
        return View(model);
     ```
-        
-   
+  - ## Testando:
+    - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run'
+    - Ele deve retrornar da seguinte forma no terminal:
+    ```
+    info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: https://localhost:5001
+    info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: http://localhost:5000
+    info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+    info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+    info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\User\Desktop\LittleAspnet\AspNetCoreTodo\AspNetCoreTodo
+     ``` 
+     - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
+  - ## Atualizando o Layout:
+    - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar nosvos elementos aos layout substituindo o seguinte código por:
+      ``` 
+       <ul class="navbar-nav flex-grow-1">
+           <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+           <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+       </ul>
+      ``` 
+     - Substituir por 
    
   
  
