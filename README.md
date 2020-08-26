@@ -12,6 +12,7 @@
   - F5 para executar e breakpoints: no projeto aberto, clique na margem a esquerda do projeto ao lado da linha de código que se deseja analizar e pressione F5 para executar o projeto no modo de depuração;
   - Lâmpada :bulb:: se o seu código contiver riscos vermelhos, isso indica erros no compilador, entao pause o mouse sobre código vermelho e procure o ícone da lâmpada na margem esquerda e veja o que o menu da lâmpada sugere;
   - Compilação rápida: Command-Shift-B ou Control-Shift-B para executar a tarefa Build, que faz o mesmo que dotnetbuild.
+  - Se caso não executar um comando e você receber um erro como  por "exemplo No executable found matching command"dotnet-ef" ", certifique-se de que está dentro da pasta certa. Esses comandos devem ser executados a partir do diretório raiz do projeto (onde está o arquivo Program.cs).
   -  A documentação oficial do ASP.NET Core se encontra em (athttps: //docs.asp.net);
     - Cada projeto contem seu próprio readme.md dentro de sua respectiva pasta.
 - ## Dowloads : 
