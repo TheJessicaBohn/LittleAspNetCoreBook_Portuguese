@@ -29,7 +29,7 @@
 - ## Basico de MVC :
 
   **Por padrão o funcionamento dos elementos ocorre da seguinte forma:**<br />
-  - O **Controller**:
+  - :video_game: O **Controller**:
     - Recebe uma solicitação e consulta algumas informações no banco de dados,
     - Cria um modelo com as informações e o anexa a uma view;
     - A **View** é renderizada e exibida no navegador do usuário;
@@ -65,7 +65,7 @@
   ```
   - O objetivo do método IActionResult é retornar códigos de status HTTP como 200 (OK) e 404 (não encontrado), views, ou dados JSON.
 
-- **O Model**:
+- :dancer: **O Model**:
   - Vamos criar um modelo que represente um item de tarefa pendente armazenado no banco de dados (às vezes chamado de entidade) e o modelo que será combinado com uma visualização (o MV no MVC) e enviado de volta ao navegador do usuário. 
   - Primeiro criamos uma Classe chamada TodoItem.cs, dentro da pasta Models;
   - Ela define o que o banco de dados precisará armazenar para cada item de tarefa: 
@@ -92,7 +92,7 @@
   }
   ```
  
-- **A View model:**  
+- :sunglasses: **A View model:**  
   - Geralmente o usuario costuma procastinar então o modelo (entidade), que não exatamente o mesmo que o modelo que você deseja usar no MVC (o modelo de exibição), mas a exibição pode ser necessário exibir dois, dez ou cem itens de tarefas pendentes, Por esse motivo, o modelo de exibição deve ser uma classe separada que contém uma matriz de TodoItem;
   - Crie uma classe em Models chamada TodoViewModel.cs
   - E escreva o seguinte código:
@@ -104,7 +104,7 @@
   }
 }
 ```
-- **A View:** 
+-:eyeglasses **A View:** 
   - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
   - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
@@ -147,7 +147,7 @@
   </div>
   ```
   
--  ## Layout:
+-  :book: ## Layout:
    - Sobre o o restante do HTML, está na pasta Views/Shared/_Layout.cshtml, com templates Bootstrap e jQuery;
    - Também contem algumas configurações simples de CSS
    - O stylesheet está na pasta wwwroot/css
@@ -163,7 +163,7 @@
    }
    ```
   
-- ## Criando uma classe de serviço:
+- :construction_worker: ## Criando uma classe de serviço:
   - Pode-se fazê-la diretamente no Controller porém por boas praticas e no mundo real o ideal é que o código seja separado, pois as classes seram muito maiores, deixando dificil a manipulação podento ter as seguintes preocupações:
     - **Renderização de views** e manipulção de dados recebidos: é isso que o seu controlador já faz.
     - **Executar lógica business**, ou código e lógica relacionados ao objetivo e "negócios" da sua aplicação. Por exemplo: lógica de negócios incluem o cálculo de um custo total com base nos preços e taxas de produtos ou verificar se um jogador tem pontos suficientes para subir de nível em um jogo. 
@@ -227,7 +227,7 @@
    ```
    - Para testar  o controlador e a visualização e, em seguida, adicionar o código de banco de dados real, podemos ver que FakeTodoItemService implementa a interface ITodoItemService, mas sempre retorna o mesmo array de dois TodoItems. 
    
-- ## Usando injeção de dependência:
+- :syringe: ## Usando injeção de dependência:
   - É utilizada quando uma solicitação chega e é roteada para o TodoController, o ASP.NET Core examina os serviços disponíveis e fornece automaticamente o FakeTodoItemService quando o controlador solicita umITodoItemService. Como os serviços são "injetados" no contêiner de serviços, esse padrão é chamado de injeção de dependência;
   - Vamos voltar em TodoController, tarabalhar com o ITodoItemService e escreva o seginte código:
      
@@ -386,6 +386,12 @@
   - Um DbSet representa uma tabela ou coleção no banco de dados. Ao criar uma propriedade DbSet <TodoItem> chamada Items, você está dizendo ao Entity Framework Core que deseja armazenar entidades TodoItem em um item chamado de tabela então para atualizar o banco de dados para refletir a alteração que foi feita é preciso criar uma migração.
 - ## Criando uma Migration
   - Como não existe no banco de dados, precisamos criar uma migration para atualizar o banco de dados com o seguinte comando 'dotnet ef migrations add AddItems'. AddItems é o nome da migration.
+  - No terminal deve retornar:
+  **Build started...<br/>**
+  **Build succeeded.<br/>**
+  **Done. To undo this action, use 'ef migrations remove'<br/>**
+  - Podemos verificar em Data/Migrations que alguns arquivos:
+  
   
   
   
