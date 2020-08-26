@@ -8,16 +8,16 @@
   - 'cd AspNetCoreTodo' para entrar na nova pasta criada;
   - 'dotnet run' executa o programa e deve retornar:
      
-      **info: Microsoft.Hosting.Lifetime[0]<br />**
-      **Now listening on: https://localhost:5001<br />**
-      **info: Microsoft.Hosting.Lifetime[0]<br />**
-      **Now listening on: http://localhost:5000<br />**
-      **info: Microsoft.Hosting.Lifetime[0]<br />**
-      **Application started. Press Ctrl+C to shut down.<br />**
-      **info: Microsoft.Hosting.Lifetime[0]<br />**
-      **Hosting environment: Development<br />**
-      **info: Microsoft.Hosting.Lifetime[0]<br />**
-      **Content root path: C:\Users\xxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo<br />**
+      **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Now listening on: https://localhost:5001<br/>**
+      **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Now listening on: http://localhost:5000<br/>**
+      **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Application started. Press Ctrl+C to shut down.<br/>**
+      **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Hosting environment: Development<br/>**
+      **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Content root path: C:\Users\xxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo<br/>**
    
    e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , para parar o serviço 'Ctrl + C';
  - Conteúdo : ASP.NET Core project
@@ -289,18 +289,18 @@
   - ## Testando:
       - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run';
       - Ele deve retrornar da seguinte forma no terminal:
-    ```
-    info: Microsoft.Hosting.Lifetime[0]
-      Now listening on: https://localhost:5001
-    info: Microsoft.Hosting.Lifetime[0]
-      Now listening on: http://localhost:5000
-    info: Microsoft.Hosting.Lifetime[0]
-      Application started. Press Ctrl+C to shut down.
-    info: Microsoft.Hosting.Lifetime[0]
-      Hosting environment: Development
-    info: Microsoft.Hosting.Lifetime[0]
-      Content root path: C:\Users\User\Desktop\LittleAspnet\AspNetCoreTodo\AspNetCoreTodo
-     ``` 
+   
+    **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Now listening on: https://localhost:5001<br/>**
+    **info: Microsoft.Hosting.Lifetime[0]<br/>**
+     **Now listening on: http://localhost:5000<br/>**
+    **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Application started. Press Ctrl+C to shut down.<br/>**
+    **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Hosting environment: Development<br/>**
+    **info: Microsoft.Hosting.Lifetime[0]<br/>**
+      **Content root path: C:\Users\User\Desktop\LittleAspnet\AspNetCoreTodo\AspNetCoreTodo<br/>**
+     
      - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
   
   - ## Atualizando o Layout:
