@@ -392,10 +392,55 @@
   - Podemos verificar em Data/Migrations que alguns arquivos:
  
   ![Alt text](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/Images/migrations.png)
+  - Com o 'comando dotnet ef migrations list', pode-ser ver as Migrations criadas em lista
+  ![Alt text](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/Images/Migrations_list.png)
+  - Quando foi executado o dotnet new o primeiro arquivo de migração (com um nome como 00000_CreateIdentitySchema.cs) foi criado e aplicado, como demonstra na imagem acima. Sua nova migração AddItem é prefixada com um timestamp.
+  - Se você abrir seu arquivo de migration Data/Migrations/_AddItems.cs, verá dois métodos chamados Up  e Down:
+  ```
+        public partial class AddItems : Migration
+      {
+          protected override void Up(MigrationBuilder migrationBuilder)
+          {
+              migrationBuilder.CreateTable(
+                  name: "Items",
+                  columns: table => new
+                  {
+                      Id = table.Column<Guid>(nullable: false),
+                      IsDone = table.Column<bool>(nullable: false),
+                      Title = table.Column<string>(nullable: false),
+                      DueAt = table.Column<DateTimeOffset>(nullable: true)
+                 },
+                 constraints: table =>
+                 {
+                     table.PrimaryKey("PK_Items", x => x.Id);
+                 });
+         }
+         protected override void Down(MigrationBuilder migrationBuilder)
+          {
+             migrationBuilder.DropTable(
+                  name: "Items");
+          }
+      }
+  }
   
-  
-  
-  
+  ```
+  - O método Up é executado na migração ao banco de dados. Visto que você adicionou um DbSet <TodoItem> ao contexto do banco de dados, EntityFramework Core criará uma tabela de itens (com colunas que correspondem a umTodoItem) quando a migration é aplicada. O método Down faz o oposto: se você precisar reverter a migration, a tabela de itens será descartada.
+ 
+- ## Solução alternativa para limitações do SQLite
+  - Existem algumas limitações do SQLite que atrapalham se você tentar executar a migration
+  - Uma soluçaõ paletiva (caso necessário): Comente ou remova as linhas "migrationBuilder.AddForeignKey" no método Up; 
+  - Comente ou remova quaisquer linhas migrationBuilder.DropForeignKey no método Down.
+- ## Aplicando a Migration a migração
+  - A etapa final após criar uma (ou mais) migrations é aplicá-las de fato ao banco de dados, podemos usar o comando 'dotnet ef database update' que fará com que o Entity Framework Core crie o Itemstable no banco de dados.
+  - Caso queira reverter o banco de dados, deve-se saber o nome da migration anterior: 'dotnet ef database update CreateIdentitySchema';
+    - Isso executará os métodos Down de qualquer migration mais recente do que a que você especificou.
+  - Se você precisar apagar completamente o banco de dados e reiniciar, execute 'dotnet ef database drop' e após 'dotnet ef database update' ;
+    -  Isso irá refazer o scaffold do banco de dados e trazê-lo para a migration atual;
+  - Agora o tanto o banco de dados quanto o contexto estão prontos para uso.
+- ## Criando uma nova classe de serviço
+  - Voltando ao capítulo de MVC, onde foi criado o FakeTodoItemService que continha itens de tarefas embutidos em código e tem-se agora um databasecontext 
+  -Po-se então criar uma nova classe de serviço que usará o Entity Framework Core para obter os itens reais do banco de dados. Exclua o arquivo FakeTodoItemService.cs e crie um novo arquivo:
+ 
 
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
