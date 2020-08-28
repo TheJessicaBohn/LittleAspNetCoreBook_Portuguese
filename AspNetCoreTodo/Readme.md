@@ -104,7 +104,7 @@
   }
 }
 ```
--:eyeglasses **A View:** 
+-:eyeglasses: **A View:** 
   - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
   - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
@@ -179,7 +179,6 @@
    - Crie um novo diretório chamado Services e dentro dele um arquivo  chamado ITodoItemService.cs :
    - Escreva o seguinte código: 
   
- 
   ```
   using System;
   using System.Collections.Generic;
@@ -391,6 +390,8 @@
   **Build succeeded.<br/>**
   **Done. To undo this action, use 'ef migrations remove'<br/>**
   - Podemos verificar em Data/Migrations que alguns arquivos:
+ 
+  ![alt text](https://raw.githubusercontent.comC:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\Images\migrations.png)
   
   
   
