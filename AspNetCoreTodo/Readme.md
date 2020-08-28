@@ -391,7 +391,7 @@
   **Done. To undo this action, use 'ef migrations remove'<br/>**
   - Podemos verificar em Data/Migrations que alguns arquivos:
  
-  ![alt text](https://raw.githubusercontent.com/C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\Images\migrations.png)
+  (https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/Images/migrations.png)
   
   
   
