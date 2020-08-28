@@ -500,7 +500,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
           <!-- TODO: Add item form -->
     </div>
     ```
-    
+   - Para manter as coisas separadas e organizadas, você criará o formulário como uma visualização parcial. Uma visualização parcial é uma pequena parte de uma visualização maior que fica em um arquivo separado.
     
   
   - O usuário adicionará novos itens de tarefas com um formulário simples abaixo da lista:
@@ -531,6 +531,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - **SQLite** é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado
   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
+ -  Parcial **ew é uma pequena parte de uma visualização maior que fica em um arquivo separado.
  - O método **Where** é um recurso do C # denominado LINQ (language integratedquery), que se inspira na programação funcional e facilita a expressão de consultas de banco de dados em código. Sob o capô, Entity Framework Core traduz o método Where em uma instrução como **SELECT * FROM Items WHERE IsDone = 0**, ou um documento de consulta equivalente em um banco de dados NoSQL.
  
  
