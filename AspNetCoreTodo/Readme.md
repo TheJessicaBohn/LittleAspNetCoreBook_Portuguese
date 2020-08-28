@@ -437,9 +437,79 @@
   - Se você precisar apagar completamente o banco de dados e reiniciar, execute 'dotnet ef database drop' e após 'dotnet ef database update' ;
     -  Isso irá refazer o scaffold do banco de dados e trazê-lo para a migration atual;
   - Agora o tanto o banco de dados quanto o contexto estão prontos para uso.
+
 - ## Criando uma nova classe de serviço
-  - Voltando ao capítulo de MVC, onde foi criado o FakeTodoItemService que continha itens de tarefas embutidos em código e tem-se agora um databasecontext 
-  -Po-se então criar uma nova classe de serviço que usará o Entity Framework Core para obter os itens reais do banco de dados. Exclua o arquivo FakeTodoItemService.cs e crie um novo arquivo:
+  - Voltando ao capítulo de MVC, onde foi criado o FakeTodoItemService que continha itens de tarefas embutidos em código e tem-se agora um databasecontext, 
+    - Pode-se então criar uma nova classe de serviço que usará o Entity Framework Core para obter os itens reais do banco de dados. Exclua o arquivo FakeTodoItemService.cs e crie um novo arquivo em Services/TodoItemService.cs:
+ ```
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AspNetCoreTodo.Data;
+using AspNetCoreTodo.Models;
+using Microsoft.EntityFrameworkCore;
+
+  namespace AspNetCoreTodo.Services
+  {
+          public class TodoItemService : ITodoItemService    
+          {
+              private readonly ApplicationDbContext _context;
+              public TodoItemService(ApplicationDbContext context) 
+              {           
+                  _context = context;       
+              }
+             public async Task<TodoItem[]> GetIncompleteItemsAsync()       
+              {
+                return await _context.Items               
+                 .Where(x => x.IsDone == false)           
+                 .ToArrayAsync();        
+              }    
+        
+         }
+  }
+  ```
+ 
+   - Notará-se o mesmo padrão de injeção de dependência que o capítulo de MVC,mas agora é o ApplicationDbContext que está sendo injetado. 
+      - O ApplicationDbContext já está sendo adicionado ao contêiner de serviço no método ConfigureServices, portanto, está disponível para injeção aqui.
+  - No código do método GetIncompleteItemsAsync é usado primeiro, a propriedade Items do contexto para acessar todos os itens de tarefas no DbSet: **var items = await _context.Items**;
+  - Então, o método Where é usado para filtrar apenas os itens que não estão completos: **.Where(x => x.IsDone == false)**
+  - E por ultimo o método ToArrayAsync solicita ao Entity Framework Core para obter todas as entidades que correspondem ao filtro e retorná-las como uma matriz. Esse metódo é assíncrono (retorna uma Tarefa), portanto, deve ser aguardado para obter seu valor.
+  
+- ## Atualizando o contêiner de serviço
+  - Como foi excluída a classe FakeTodoItemService, será necessário atualizar a linha em ConfigureServices que está conectando a interface ITodoItemService em AspNetCoreTodo\Startup.cs:
+
+```
+services.AddScoped<ITodoItemService, TodoItemService>();
+```
+  - AddScoped adiciona seu serviço ao contêiner de serviço usando o scopedlifecycle. Isso significa que uma nova instância da classe TodoItemService será criada durante cada solicitação da web. Isso é necessário para classes de serviço que interagem com um banco de dados.
+ - TodoController que depende de um ITodoItemService injetado ficará felizmente inconsciente da mudança nas classes de serviços, mas no futuro estará usando o Entity Framework Core e se comunicando com um banco de dados real.
+- ### Testando
+  - Inicie apalicação e abra o navegador no http://localhost:5000/todo. Os itens falsos sumiram e seu aplicativo está fazendo consultas reais no banco de dados. 
+- ## Adicionar mais recursos, New To-do items  
+  - Agora vamos adicionar novos itens de tarefas usando um formulário;
+  - Etapas: 
+    - Adicionar um formulário à visualização; 
+    - Criar uma nova ação no controlador para lidar com o formulário; 
+    - Adicionar código à camada de serviço para atualizar o banco de dados.
+  
+  - ### Adicionando um formulário:
+    - O Views/Todo/Index.cshtml tem um espaço reservado para o formulário Adicionar item:
+    ```
+    <div class="panel-footer add-item-form">
+          <!-- TODO: Add item form -->
+    </div>
+    ```
+    
+    
+  
+  - O usuário adicionará novos itens de tarefas com um formulário simples abaixo da lista:
+  
+
+  
+  
+ 
+  
  
 
 - ## Comandos: Usando o Git ou GitHub 
@@ -461,6 +531,8 @@
   - **SQLite** é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado
   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
+ - O método **Where** é um recurso do C # denominado LINQ (language integratedquery), que se inspira na programação funcional e facilita a expressão de consultas de banco de dados em código. Sob o capô, Entity Framework Core traduz o método Where em uma instrução como **SELECT * FROM Items WHERE IsDone = 0**, ou um documento de consulta equivalente em um banco de dados NoSQL.
+ 
  
  
  
