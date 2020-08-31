@@ -485,7 +485,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - AddScoped adiciona seu serviço ao contêiner de serviço usando o scopedlifecycle. Isso significa que uma nova instância da classe TodoItemService será criada durante cada solicitação da web. Isso é necessário para classes de serviço que interagem com um banco de dados.
  - TodoController que depende de um ITodoItemService injetado ficará felizmente inconsciente da mudança nas classes de serviços, mas no futuro estará usando o Entity Framework Core e se comunicando com um banco de dados real.
 - ### Testando
-  - Inicie apalicação e abra o navegador no http://localhost:5000/todo. Os itens falsos sumiram e seu aplicativo está fazendo consultas reais no banco de dados. 
+  - Inicie aplicação e abra o navegador no http://localhost:5000/todo. Os itens falsos sumiram e seu aplicativo está fazendo consultas reais no banco de dados. 
 - ## Adicionar mais recursos, New To-do items  
   - Agora vamos adicionar novos itens de tarefas usando um formulário;
   - Etapas: 
@@ -526,6 +526,11 @@ services.AddScoped<ITodoItemService, TodoItemService>();
  - Por contada linha @model, a visão parcial espera receber um objetoTodoItem quando for renderizado. Passar um novo TodoItem via html. PartialAsync inicializa o formulário com um item vazio.
  - Depois de vincularmos os dados da solicitação ao modelo, o ASP.NET Core também realiza a validação do modelo. A validação verifica se os dados vinculados ao modelo a partir da solicitação de entrada fazem sentido ou são válidos.
  - O atributo [Required] na propriedade Title informa ao validador de modelo do ASP.NET Core para considerar o Title inválido se estiver ausente ou em branco. Dê uma olhada no código da ação AddItem: o primeiro bloco verifica se o ModelState (o resultado da validação do modelo) é válido. É comum fazer esta verificação de validação logo no início da ação:
+ ```
+ ```
+ 
+ 
+ 
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
