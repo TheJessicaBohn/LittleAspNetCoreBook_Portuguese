@@ -504,14 +504,28 @@ services.AddScoped<ITodoItemService, TodoItemService>();
     
   
   - O usuário adicionará novos itens de tarefas com um formulário simples abaixo da lista:
-  
+  ```
+  [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(TodoItem newItem)
+        {
+          if (!ModelState.IsValid)    
+          {
+            return RedirectToAction("Index");    
+          }
+          var successful = await _todoItemService.AddItemAsync(newItem);
 
-  
-  
- 
-  
- 
-
+          if (!successful)    
+          {
+            return BadRequest("Could not add item.");   
+          }
+          return RedirectToAction("Index");
+        }
+  ```
+  - Pode-se ver que o AddItem aceita um parâmetro TodoItem. Quando é usado aqui como um parâmetro de ação, o ASP.NET Core executará automaticamente um processo chamado **model binding** (vinculação de modelo);
+ - O atributo **[ValidateAntiForgeryToken]** antes da ação informa ao ASP.NET Core que ele deve procurar (e verificar) o token de verificação oculto que foi adicionado ao formulário pelo auxiliar de tag asp-action. Esta é uma medida de segurança importante para evitar falsificação de solicitação entre sites(CSRF) ataques, em que seus usuários podem ser enganados para enviar dados de um site malicioso. O token de verificação garante que seu aplicativo seja realmente aquele que processou e enviou o formulário;
+ - Por contada linha @model, a visão parcial espera receber um objetoTodoItem quando for renderizado. Passar um novo TodoItem via html. PartialAsync inicializa o formulário com um item vazio.
+ - Depois de vincularmos os dados da solicitação ao modelo, o ASP.NET Core também realiza a validação do modelo. A validação verifica se os dados vinculados ao modelo a partir da solicitação de entrada fazem sentido ou são válidos.
+ -
 - ## Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
@@ -526,6 +540,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - **DueAt** é um DateTimeOffset, que é um tipo de C# que armazena um carimbo de data/hora junto com um deslocamento de fuso horário do UTC. Armazenar o deslocamento de data, hora e fuso horário juntos facilita o agendamento de datas com precisão em sistemas em fusos horários diferentes. Além disso temos o "?" ponto de interrogação após o tipo DateTimeOffset ? Essa marca a propriedade DueAt como anulável ou opcional. Se o "?" não foi incluído, todos os itens de pendências precisam ter uma data de vencimento.
   - **mapeador objeto-relacional (ORM)** torna mais fácil escrever códigos que interagem com um banco de dados, adicionando uma camada de abstração entre seu código e o próprio banco de dados. Hibernate em Java e ActiveRecord inRuby são dois ORMs bem conhecidos.Ainda existem vários ORMs para .NET, incluindo um criado pela Microsoft e incluído no ASP.NET Core por padrão: Entity Framework Core. EntityFramework Core torna mais fácil conectar-se a vários tipos de bancos de dados diferentes e permite usar o código C# para criar consultas de banco de dados que são mapeadas de volta para modelos C# (POCOs).
   - **Migrations** controlam as mudanças na estrutura do banco de dados ao longo do tempo, possibilitando reverter um conjunto de mudanças, ou criar um segundo banco de dados com a mesma estrutura do primeiro. Com as migrations, você tem um histórico completo de modificações, como adicionar ou remover colunas (e tabelas inteiras);
+  - O **model binding** analisa os dados em uma solicitação e tenta combinar de forma inteligente os campos de entrada com as propriedades no modelo. Em outras palavras, quando o usuário envia este formulário e seus POSTs de navegador para essa ação, o ASP.NET Core irá obter as informações do formulário e colocá-las na variável newItem. Durante a vinculação do modelo, todas as propriedades do modelo que não podem ser combinadas com os campos da solicitação são ignoradas. Uma vez que o formulário inclui apenas um elemento de entrada Título, você pode esperar que as outras propriedades onTodoItem (o sinalizador IsDone, a data DueAt) estarão vazias ou conterão valores padrões.
   - **Required** informa que o campo é obrigatório ao ASP.NET Core que essa sequência não pode ser nula ou vazia.
   - **Strings** em C# são sempre anuláveis, portanto, não há necessidade de marca-lás como anulável. As strings C # podem ser nulas, vazias ou conter texto.
   - **SQLite** é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado
