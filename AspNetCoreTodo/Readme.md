@@ -525,9 +525,9 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   ```
 
   - ## Adicionando Ações
-  - Quando um usuário clicar no formulário criado, o navegador irá construir uma solicitação POST em /Todo/AddItem em sua aplicação. Mas se você tentar agora, o ASP.NET Core retornará um erro 404Not Found, pois não há nenhuma ação que possa manipular a rota /Todo/AddItem.
-  
-  - O usuário adicionará novos itens de tarefas com um formulário simples abaixo da lista:
+  - Quando um usuário clicar no formulário criado, o navegador irá construir uma solicitação POST em /Todo/AddItem em sua aplicação. Mas se você tentar agora, o ASP.NET Core retornará um erro 404 Not Found, pois não há nenhuma ação que possa manipular a rota /Todo/AddItem.
+  - Você precisará criar uma nova ação chamada AddItem na classe TodoController: 
+ 
   ```
    [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddItem(TodoItem newItem)
@@ -550,6 +550,53 @@ services.AddScoped<ITodoItemService, TodoItemService>();
  - Por contada linha @model, a visão parcial espera receber um objetoTodoItem quando for renderizado. Passar um novo TodoItem via html. PartialAsync inicializa o formulário com um item vazio.
  - Depois de vincularmos os dados da solicitação ao modelo, o ASP.NET Core também realiza a validação do modelo. A validação verifica se os dados vinculados ao modelo a partir da solicitação de entrada fazem sentido ou são válidos.
  - O atributo [Required] na propriedade Title informa ao validador de modelo do ASP.NET Core para considerar o Title inválido se estiver ausente ou em branco. Dê uma olhada no código da ação AddItem: o primeiro bloco verifica se o ModelState (o resultado da validação do modelo) é válido. É comum fazer esta verificação de validação logo no início da ação:
+ ```
+if (!ModelState.IsValid)
+{
+    return RedirectToAction("Index");
+}
+```
+- Se o ModelState for inválido por qualquer motivo, o navegador será redirecionado para a rota /Todo/Index, que atualiza a página. Em seguida, o controlador chama a camada de serviço para fazer a operação real do banco de dados de salvar o novo item de tarefa:
+```
+var successful = await _todoItemService.AddItemAsync(newItem);
+if (!successful)
+{
+    return BadRequest(new { error = "Could not add item." });
+}
+```
+- Já o método AddItemAsync retornará verdadeiro ou falso dependendo se o item foi adicionado com sucesso ao banco de dados. Se falhar por algum motivo, ele retornará um erro HTTP 400 Bad Request somado a um objeto que contém uma mensagem de erro. 
+- E por fim, se tudo for concluído sem erros, a ação redireciona o navegador para a /Todo/Index, que atualiza a página e exibe a nova lista atualizada de itens de tarefas para o usuário;
+
+- ### Adicionando um método de serviço
+- Muito provavelmente seu código dará linhas vermelhas em AddItemAsync porque o método ainda não existe. Como foi feito aneriormente, você precisa adicionar um método à camada de serviço na interface ITodoItemService:
+```
+public interface ITodoItemService
+{
+    Task<TodoItem[]> GetIncompleteItemsAsync();
+
+    Task<bool> AddItemAsync(TodoItem newItem);
+}
+```
+- Então, a implementação real em TodoItemService:
+```
+public async Task<bool> AddItemAsync(TodoItem newItem)
+{
+    newItem.Id = Guid.NewGuid();
+    newItem.IsDone = false;
+    newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+
+    _context.Items.Add(newItem);
+
+    var saveResult = await _context.SaveChangesAsync();
+    return saveResult == 1;
+}
+```
+- A propriedade newItem.Title já foi definida pelo model binder do ASP.NET Core, portanto, esse método só precisa atribuir um ID e definir os valores padrão para as outras propriedades. Em seguida, o novo item é adicionado ao contexto do banco de dados. Na verdade, ele não é salvo até que você chameSaveChangesAsync (). Se a operação de salvamento foi bem sucedida, SaveChangesAsync () retornará 1.
+- ### Testando
+- Execute a aplicação e adicione alguns itens de teste à sua lista de tarefas com o formulário. Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicativo novamente.
+- Como um desafio extra, tente adicionar um seletor de data usando HTML e JavaScript e deixe o usuário escolher uma data (opcional) para a propriedadeDueAt. Em seguida, use essa data em vez de sempre fazer novas tarefas que vencem em 3 dias.
+
+
 
  
  
