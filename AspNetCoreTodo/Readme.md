@@ -30,10 +30,10 @@
 
   **Por padrão o funcionamento dos elementos ocorre da seguinte forma:**<br />
   - :video_game: O **Controller**:
-    - Recebe uma solicitação e consulta algumas informações no banco de dados,
+    - Recebe uma solicitação e consulta algumas informações no banco de dados;
     - Cria um modelo com as informações e o anexa a uma view;
     - A **View** é renderizada e exibida no navegador do usuário;
-    - Então o usuário clica em um botão ou envia um formulário, que envia uma nova solicitação ao controlador e o ciclo se repete;
+    - Então o usuário clica em um botão ou envia um formulário, que envia uma nova solicitação ao controlador e o ciclo se repete.
 
 - ## Continuando o projeto ASP.NET Core : Controller
   **Agora que sabemos o que é um controller vamos contruir um:**<br />
@@ -351,9 +351,9 @@
       - Vamos precisar de:
         - **1.Os pacotes do Entity Framework Core**: Eles estão incluídos por padrão em todos os projetos ASP.NET Core.
         - **2.Um banco de dados**. Pelo comando 'dotnet new mvc --auth Individual -o AspNetCoreTodo ' já é criado um pequeno banco de dados SQLite, na raiz do projeto chamado app.db;
-        - **3.Uma classe de contexto de banco de dados**: O contexto do banco de dados é uma classe C # que fornece um ponto de entrada no banco de dados para que assim seu código poderá interagir com o banco de dados para ler e salvar itens. Já existe uma classe de contexto básica no arquivo Data/ApplicationDbContext.cs
+        - **3.Uma classe de contexto de banco de dados**: O contexto do banco de dados é uma classe C# que fornece um ponto de entrada no banco de dados para que assim seu código poderá interagir com o banco de dados para ler e salvar itens. Já existe uma classe de contexto básica no arquivo Data/ApplicationDbContext.cs
         - **4.Uma string de conexão** Esteja você se conectando a um banco de dados de arquivos local (como SQLite) ou a um banco de dados hospedado em outro lugar, você definirá uma string que contém o nome ou endereço do banco de dados ao qual se conectar. Isso já está configurado por defautl no appsettings.jsonfile: a string de conexão para o banco de dados SQLite isDataSource = app.db.
-       - 1. Entity Framework Core, usa o contexto do banco de dados, junto com a string de conexão, para estabelecer uma conexão com o banco de dados. Então vamos precisar dizer para o Entity Framework Core qual contexto, string de conexão e provedor de banco de dados escrendo o seguinte código no método ConfigureServices da classe Startup.cs:
+       - Entity Framework Core, usa o contexto do banco de dados, junto com a string de conexão, para estabelecer uma conexão com o banco de dados. Então vamos precisar dizer para o Entity Framework Core qual contexto, string de conexão e provedor de banco de dados escrendo o seguinte código no método ConfigureServices da classe Startup.cs:
        ```
        public void ConfigureServices(IServiceCollection services)
         {
