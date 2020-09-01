@@ -29,6 +29,7 @@ namespace AspNetCoreTodo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            //services.AddSingleton<ITodoItemService, FakeTodoItemService>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(        
                     Configuration.GetConnectionString("DefaultConnection")));
