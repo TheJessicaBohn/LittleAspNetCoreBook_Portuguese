@@ -105,7 +105,7 @@
 }
 ```
 -:eyeglasses: **A View:** 
-  - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
+  - Uma View no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
   - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
   - Crie uma pasta "Todo" dentro do diretório Views;
@@ -303,7 +303,7 @@
      - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
   
   - ## Atualizando o Layout:
-     - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar nosvos elementos aos layout substituindo o seguinte código por:
+     - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar novos elementos aos layout substituindo o seguinte código por:
       ``` 
        <ul class="navbar-nav flex-grow-1">
            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
@@ -326,7 +326,7 @@
       - Na documentação vamos no link: https://docs.microsoft.com/en-us/nuget/install-nuget-client-tools e baixe o nuget.exe
       - Coloque-o numa pasta adequada, ex.C: ;
       - E por fim adicione à variavel de ambientes PATH.
-      - Após isso rode o coamando 'dotnet add package Humanizer' no teminal do VSCode;
+      - Após isso rode o comando 'dotnet add package Humanizer' no teminal do VSCode;
       - Então no AspNetCoreTodo.csproj, deve aparecer na referência a seguine linha:
       ```
       <PackageReference Include="Humanizer" Version="2.8.26" />
@@ -426,7 +426,7 @@
   ```
   - O método Up é executado na migração ao banco de dados. Visto que você adicionou um DbSet <TodoItem> ao contexto do banco de dados, EntityFramework Core criará uma tabela de itens (com colunas que correspondem a umTodoItem) quando a migration é aplicada. O método Down faz o oposto: se você precisar reverter a migration, a tabela de itens será descartada.
  
-- ## Solução alternativa para limitações do SQLite
+- ### Solução alternativa para limitações do SQLite
   - Existem algumas limitações do SQLite que atrapalham se você tentar executar a migration
   - Uma soluçaõ paletiva (caso necessário): Comente ou remova as linhas "migrationBuilder.AddForeignKey" no método Up; 
   - Comente ou remova quaisquer linhas migrationBuilder.DropForeignKey no método Down.
@@ -501,11 +501,35 @@ services.AddScoped<ITodoItemService, TodoItemService>();
     </div>
     ```
    - Para manter as coisas separadas e organizadas, você criará o formulário como uma visualização parcial. Uma visualização parcial é uma pequena parte de uma visualização maior que fica em um arquivo separado.
-    
+   -  crie um novo arquivo em Views/Todo/AddItemPartial.cshtml, com o seguinte código:
+   ```
+  @model TodoItem
+
+  <form asp-action="AddItem" method="POST">
+     <label asp-for="Title">Add a new item:</label>
+     <input asp-for="Title">
+      <button type="submit">Add</button>
+  </form>
+  ```
+  - O **asp-action** pode gerar uma URL para o formulário,mas nesse caso, os auxiliares asp-action substituídos pelo caminho real para a rota AddItem:
+  ```
+  <form action="/Todo/AddItem" method="POST">
+  ```
+  - Ao adicionar a tag asp ao elemento <form> também adiciona um campo oculto ao formulário que contém um token de verificação. Este token pode ser usado para evitar ataques de falsificação de solicitação entre sites (CSRF). Isso criou a view parcial. Agora, façamos a view principal Todo:
+  - Edite o seguinte campo em Views/Todo/Index.cshtml:
+  
+  ```
+    <div class="panel-footer add-item-form">
+    @await Html.PartialAsync("AddItemPartial", new TodoItem())
+    </div>
+  ```
+
+  - ## Adicionando Ações
+  - Quando um usuário clicar no formulário criado, o navegador irá construir uma solicitação POST em /Todo/AddItem em sua aplicação. Mas se você tentar agora, o ASP.NET Core retornará um erro 404Not Found, pois não há nenhuma ação que possa manipular a rota /Todo/AddItem.
   
   - O usuário adicionará novos itens de tarefas com um formulário simples abaixo da lista:
   ```
-  [ValidateAntiForgeryToken]
+   [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddItem(TodoItem newItem)
         {
           if (!ModelState.IsValid)    
@@ -526,8 +550,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
  - Por contada linha @model, a visão parcial espera receber um objetoTodoItem quando for renderizado. Passar um novo TodoItem via html. PartialAsync inicializa o formulário com um item vazio.
  - Depois de vincularmos os dados da solicitação ao modelo, o ASP.NET Core também realiza a validação do modelo. A validação verifica se os dados vinculados ao modelo a partir da solicitação de entrada fazem sentido ou são válidos.
  - O atributo [Required] na propriedade Title informa ao validador de modelo do ASP.NET Core para considerar o Title inválido se estiver ausente ou em branco. Dê uma olhada no código da ação AddItem: o primeiro bloco verifica se o ModelState (o resultado da validação do modelo) é válido. É comum fazer esta verificação de validação logo no início da ação:
- ```
- ```
+
  
  
  
@@ -551,7 +574,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - **SQLite** é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado
   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
- -  Parcial **ew é uma pequena parte de uma visualização maior que fica em um arquivo separado.
+ -  **Parcial View ** é uma pequena parte de uma visualização maior que fica em um arquivo separado.
  - O método **Where** é um recurso do C # denominado LINQ (language integratedquery), que se inspira na programação funcional e facilita a expressão de consultas de banco de dados em código. Sob o capô, Entity Framework Core traduz o método Where em uma instrução como **SELECT * FROM Items WHERE IsDone = 0**, ou um documento de consulta equivalente em um banco de dados NoSQL.
  
  
