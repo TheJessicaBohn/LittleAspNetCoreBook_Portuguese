@@ -105,7 +105,7 @@
 }
 ```
 -:eyeglasses: **A View:** 
-  - Uma Views no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
+  - Uma View no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
   - Se houver itens de pendências no Model.Items, a declaração de cada loop fará um loop sobre cada item de pendência e renderizará uma linha da tabela (elemento <tr>) contendo o nome e a data de vencimento do item. Uma caixa de seleção está desativada, permitindo que o usuário marque o item como completo.
   - Crie uma pasta "Todo" dentro do diretório Views;
@@ -303,7 +303,7 @@
      - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
   
   - ## Atualizando o Layout:
-     - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar nosvos elementos aos layout substituindo o seguinte código por:
+     - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar novos elementos aos layout substituindo o seguinte código por:
       ``` 
        <ul class="navbar-nav flex-grow-1">
            <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
@@ -326,7 +326,7 @@
       - Na documentação vamos no link: https://docs.microsoft.com/en-us/nuget/install-nuget-client-tools e baixe o nuget.exe
       - Coloque-o numa pasta adequada, ex.C: ;
       - E por fim adicione à variavel de ambientes PATH.
-      - Após isso rode o coamando 'dotnet add package Humanizer' no teminal do VSCode;
+      - Após isso rode o comando 'dotnet add package Humanizer' no teminal do VSCode;
       - Então no AspNetCoreTodo.csproj, deve aparecer na referência a seguine linha:
       ```
       <PackageReference Include="Humanizer" Version="2.8.26" />
@@ -426,7 +426,7 @@
   ```
   - O método Up é executado na migração ao banco de dados. Visto que você adicionou um DbSet <TodoItem> ao contexto do banco de dados, EntityFramework Core criará uma tabela de itens (com colunas que correspondem a umTodoItem) quando a migration é aplicada. O método Down faz o oposto: se você precisar reverter a migration, a tabela de itens será descartada.
  
-- ## Solução alternativa para limitações do SQLite
+- ### Solução alternativa para limitações do SQLite
   - Existem algumas limitações do SQLite que atrapalham se você tentar executar a migration
   - Uma soluçaõ paletiva (caso necessário): Comente ou remova as linhas "migrationBuilder.AddForeignKey" no método Up; 
   - Comente ou remova quaisquer linhas migrationBuilder.DropForeignKey no método Down.
@@ -501,11 +501,35 @@ services.AddScoped<ITodoItemService, TodoItemService>();
     </div>
     ```
    - Para manter as coisas separadas e organizadas, você criará o formulário como uma visualização parcial. Uma visualização parcial é uma pequena parte de uma visualização maior que fica em um arquivo separado.
-    
-  
-  - O usuário adicionará novos itens de tarefas com um formulário simples abaixo da lista:
+   -  crie um novo arquivo em Views/Todo/AddItemPartial.cshtml, com o seguinte código:
+   ```
+  @model TodoItem
+
+  <form asp-action="AddItem" method="POST">
+     <label asp-for="Title">Add a new item:</label>
+     <input asp-for="Title">
+      <button type="submit">Add</button>
+  </form>
   ```
-  [ValidateAntiForgeryToken]
+  - O **asp-action** pode gerar uma URL para o formulário,mas nesse caso, os auxiliares asp-action substituídos pelo caminho real para a rota AddItem:
+  ```
+  <form action="/Todo/AddItem" method="POST">
+  ```
+  - Ao adicionar a tag asp ao elemento <form> também adiciona um campo oculto ao formulário que contém um token de verificação. Este token pode ser usado para evitar ataques de falsificação de solicitação entre sites (CSRF). Isso criou a view parcial. Agora, façamos a view principal Todo:
+  - Edite o seguinte campo em Views/Todo/Index.cshtml:
+  
+  ```
+    <div class="panel-footer add-item-form">
+    @await Html.PartialAsync("AddItemPartial", new TodoItem())
+    </div>
+  ```
+
+  - ## Adicionando Ações
+  - Quando um usuário clicar no formulário criado, o navegador irá construir uma solicitação POST em /Todo/AddItem em sua aplicação. Mas se você tentar agora, o ASP.NET Core retornará um erro 404 Not Found, pois não há nenhuma ação que possa manipular a rota /Todo/AddItem.
+  - Você precisará criar uma nova ação chamada AddItem na classe TodoController: 
+ 
+  ```
+   [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddItem(TodoItem newItem)
         {
           if (!ModelState.IsValid)    
@@ -527,7 +551,53 @@ services.AddScoped<ITodoItemService, TodoItemService>();
  - Depois de vincularmos os dados da solicitação ao modelo, o ASP.NET Core também realiza a validação do modelo. A validação verifica se os dados vinculados ao modelo a partir da solicitação de entrada fazem sentido ou são válidos.
  - O atributo [Required] na propriedade Title informa ao validador de modelo do ASP.NET Core para considerar o Title inválido se estiver ausente ou em branco. Dê uma olhada no código da ação AddItem: o primeiro bloco verifica se o ModelState (o resultado da validação do modelo) é válido. É comum fazer esta verificação de validação logo no início da ação:
  ```
- ```
+if (!ModelState.IsValid)
+{
+    return RedirectToAction("Index");
+}
+```
+- Se o ModelState for inválido por qualquer motivo, o navegador será redirecionado para a rota /Todo/Index, que atualiza a página. Em seguida, o controlador chama a camada de serviço para fazer a operação real do banco de dados de salvar o novo item de tarefa:
+```
+var successful = await _todoItemService.AddItemAsync(newItem);
+if (!successful)
+{
+    return BadRequest(new { error = "Could not add item." });
+}
+```
+- Já o método AddItemAsync retornará verdadeiro ou falso dependendo se o item foi adicionado com sucesso ao banco de dados. Se falhar por algum motivo, ele retornará um erro HTTP 400 Bad Request somado a um objeto que contém uma mensagem de erro. 
+- E por fim, se tudo for concluído sem erros, a ação redireciona o navegador para a /Todo/Index, que atualiza a página e exibe a nova lista atualizada de itens de tarefas para o usuário;
+
+- ### Adicionando um método de serviço
+- Muito provavelmente seu código dará linhas vermelhas em AddItemAsync porque o método ainda não existe. Como foi feito aneriormente, você precisa adicionar um método à camada de serviço na interface ITodoItemService:
+```
+public interface ITodoItemService
+{
+    Task<TodoItem[]> GetIncompleteItemsAsync();
+
+    Task<bool> AddItemAsync(TodoItem newItem);
+}
+```
+- Então, a implementação real em TodoItemService:
+```
+public async Task<bool> AddItemAsync(TodoItem newItem)
+{
+    newItem.Id = Guid.NewGuid();
+    newItem.IsDone = false;
+    newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+
+    _context.Items.Add(newItem);
+
+    var saveResult = await _context.SaveChangesAsync();
+    return saveResult == 1;
+}
+```
+- A propriedade newItem.Title já foi definida pelo model binder do ASP.NET Core, portanto, esse método só precisa atribuir um ID e definir os valores padrão para as outras propriedades. Em seguida, o novo item é adicionado ao contexto do banco de dados. Na verdade, ele não é salvo até que você chameSaveChangesAsync (). Se a operação de salvamento foi bem sucedida, SaveChangesAsync () retornará 1.
+- ### Testando
+- Execute a aplicação e adicione alguns itens de teste à sua lista de tarefas com o formulário. Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicativo novamente.
+- Como um desafio extra, tente adicionar um seletor de data usando HTML e JavaScript e deixe o usuário escolher uma data (opcional) para a propriedadeDueAt. Em seguida, use essa data em vez de sempre fazer novas tarefas que vencem em 3 dias.
+
+
+
  
  
  
@@ -551,7 +621,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - **SQLite** é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado
   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
- -  Parcial **ew é uma pequena parte de uma visualização maior que fica em um arquivo separado.
+ -  **Parcial View ** é uma pequena parte de uma visualização maior que fica em um arquivo separado.
  - O método **Where** é um recurso do C # denominado LINQ (language integratedquery), que se inspira na programação funcional e facilita a expressão de consultas de banco de dados em código. Sob o capô, Entity Framework Core traduz o método Where em uma instrução como **SELECT * FROM Items WHERE IsDone = 0**, ou um documento de consulta equivalente em um banco de dados NoSQL.
  
  
