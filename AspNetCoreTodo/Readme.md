@@ -118,10 +118,10 @@
   @{    
     ViewData["Title"] = "Manage your todo list";
   }
-  <divclass="panel panel-default todo-panel">
-    <divclass="panel-heading">@ViewData["Title"]</div>
+  <div class="panel panel-default todo-panel">
+    <div class="panel-heading">@ViewData["Title"]</div>
     
-  <tableclass="table table-hover">
+  <table class="table table-hover">
     <thead>
         <tr>
             <td>&#x2714;</td>
@@ -141,7 +141,7 @@
     }
   </table>
 
-  <divclass="panel-footer add-item-form">
+  <div class="panel-footer add-item-form">
   <!-- TODO: Add item form -->
   </div>
   </div>
@@ -591,10 +591,124 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
     return saveResult == 1;
 }
 ```
-- A propriedade newItem.Title já foi definida pelo model binder do ASP.NET Core, portanto, esse método só precisa atribuir um ID e definir os valores padrão para as outras propriedades. Em seguida, o novo item é adicionado ao contexto do banco de dados. Na verdade, ele não é salvo até que você chameSaveChangesAsync (). Se a operação de salvamento foi bem sucedida, SaveChangesAsync () retornará 1.
+- A propriedade newItem.Title já foi definida pelo model binder do ASP.NET Core, portanto, esse método só precisa atribuir um ID e definir os valores padrão para as outras propriedades. Em seguida, o novo item é adicionado ao contexto do banco de dados. Na verdade, ele não é salvo até que você chame SaveChangesAsync(). Se a operação de salvamento foi bem sucedida, SaveChangesAsync () retornará 1.
 - ### Testando
-- Execute a aplicação e adicione alguns itens de teste à sua lista de tarefas com o formulário. Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicativo novamente.
-- Como um desafio extra, tente adicionar um seletor de data usando HTML e JavaScript e deixe o usuário escolher uma data (opcional) para a propriedadeDueAt. Em seguida, use essa data em vez de sempre fazer novas tarefas que vencem em 3 dias.
+- Execute a aplicação com o comando 'dotnet run' e de um Ctrl+Click na pagina para abrir.
+- Clique em "My to-dos" no canto superior direito da tela e adicione alguns itens de teste à sua lista de tarefas com o formulário.
+- Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicativo novamente.
+
+- ## Adicionando itens completos com uma caixa de seleção
+- Na view Views /Todo/Index.cshtml, uma caixa de seleção é exibida para cada item de tarefa:
+```
+<input type="checkbox" class="done-checkbox">
+```
+- Se clicarmos na caixa de seleção ainda não faz nada. Como feito anterioriormente, será adicionado esse comportamento usando formulários e ações.
+
+- ### Adicionando elementos de formulário à vista
+- Primeiro, atualize a view e envolva cada caixa de seleção com um elemento <form> em Views/Todo/Index.cshtml. Em seguida, adicione um elemento oculto contendo o ID do item:
+  
+  ```
+  <td>
+      <form asp-action="MarkDone" method="POST">
+          <input type="checkbox" class="done-checkbox">
+          <input type="hidden" name="id" value="@item.Id">
+      </form>
+  </td>
+  ```
+- Quando o loop foreach é executado na view e imprime uma linha para cada item a fazer, uma cópia deste formulário existirá em cada linha. A entrada oculta que contém o ID do item de tarefa torna possível para o código do controlador informar qual caixa foi marcada. (Sem ele, você seria capaz de dizer que alguma caixa foi marcada, mas não qual.)
+- Se executarmos a aplcação agora, as caixas de seleção ainda não farão nada, porque não há um botão de envio para dizer ao navegador para criar uma solicitação POST com os dados do formulário. O ideal é clicar na caixa de seleção para enviar o formulário automaticamente. Você pode conseguir isso adicionando algum JavaScript.
+
+- ### Adicionando código JavaScript
+- Encontre o arquivo site.js no diretório wwwroot/js e adicione este código:
+```
+$(document).ready(function() {
+
+    // Wire up all of the checkboxes to run markCompleted()
+    $('.done-checkbox').on('click', function(e) {
+        markCompleted(e.target);
+    });
+});
+
+function markCompleted(checkbox) {
+    checkbox.disabled = true;
+
+    var row = checkbox.closest('tr');
+    $(row).addClass('done');
+
+    var form = checkbox.closest('form');
+    form.submit();
+}
+```  
+- Este código primeiro usa jQuery (uma biblioteca auxiliar JavaScript) para anexar algum código ao clique, mesmo de todas as caixas de seleção na página com a caixa de seleção CSSclass done. Quando uma caixa de seleção é clicada, a função markCompleted () é executada.
+- A função markCompleted () faz algumas coisas:
+  - Adiciona o atributo disabled à caixa de seleção para que não possa ser clicado novamente. 
+  - Adiciona a classe CSS concluída à linha pai que contém a caixa de seleção, o que altera a aparência da linha com base nas regras CSS em style.css 
+  - Submete o formulário.
+  
+- ### Adicionando  uma ação ao controlador
+- Vamos precisar adicionar uma ação chamada MarkDone no TodoController:
+```
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> MarkDone(Guid id)
+{
+    if (id == Guid.Empty)
+    {
+        return RedirectToAction("Index");
+    }
+
+    var successful = await _todoItemService.MarkDoneAsync(id);
+    if (!successful)
+    {
+        return BadRequest("Could not mark item as done.");
+    }
+
+    return RedirectToAction("Index");
+}
+```
+- Vamos percorrer cada linha desse método de ação. Primeiro, o método aceita um parâmetro Guid chamado id na assinatura do método. Exceto a ação AddItem, que usava um modelo e vinculação / validação de modelo, o parâmetro id é muito simples. Se os dados da solicitação de entrada incluem um chamado id, o ASP.NET Core tentará analisá-lo como um guid. Isso funciona porque o elemento oculto adicionado ao formulário da caixa de seleção é chamado id.
+- Não está usando a vinculação de modelo, não há ModelState para verificar a validade. Em vez disso, pode-se verificar o valor guid diretamente para ter certeza de que é válido. Se por algum motivo o parâmetro id na solicitação estiver ausente ou não puder ser analisado como um guid, o id terá o valor Guid.Empty. Se for esse o caso, a ação informa ao navegador para redirecionar para /Todo/Index e atualizar a página.
+- Em seguida, o controlador precisa chamar a camada de serviço para atualizar o banco de dados. Isso será tratado por um novo método chamado MarkDoneAsyncon da interface ITodoItemService, que retornará verdadeiro ou falso dependendo do sucesso da atualização:
+```
+var successful = await _todoItemService.MarkDoneAsync(id);
+if (!successful)
+{
+    return BadRequest("Could not mark item as done.");
+}
+```
+- Finalmente, se tudo estiver certo, o navegador é redirecionado para a ação /Todo/Index e a página é atualizada. Com a view e o controlador atualizados, tudo o que resta é adicionar o método de serviço faltante.
+
+- ### Adicionando um método de serviço
+- Primeiro, adicione MarkDoneAsync à definição da interface Services/ITodoItemService.cs:
+```
+Task<bool> MarkDoneAsync(Guid id);
+```
+- Agora, adicione a implementação concreta em Services/TodoItemService.cs:
+```
+public async Task<bool> MarkDoneAsync(Guid id)
+{
+    var item = await _context.Items
+        .Where(x => x.Id == id)
+        .SingleOrDefaultAsync();
+
+    if (item == null) return false;
+
+    item.IsDone = true;
+
+    var saveResult = await _context.SaveChangesAsync();
+    return saveResult == 1; // One entity should have been updated
+}
+```
+- Este método usa Entity Framework Core e Where() para localizar um item por ID no banco de dados. O método SingleOrDefaultAsync() retornará o item ou nulo se ele não puder ser encontrado;
+- Depois de ter certeza de que o item não é nulo, é uma simples questão de definir a propriedade IsDone:
+```
+item.IsDone = true;
+```
+
+
+
+
+
+
 
 
 
