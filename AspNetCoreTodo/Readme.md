@@ -703,6 +703,68 @@ public async Task<bool> MarkDoneAsync(Guid id)
 ```
 item.IsDone = true;
 ```
+- A alteração da propriedade afeta apenas a cópia local do item até queSaveChangesAsync() seja chamado para persistir a alteração no banco de dados. SalveChangesAsync() retorna um número que indica quantas entidades foram atualizadas durante a operação de salvamento. Nesse caso, será 1 (o item foi atualizado) ou 0 (se algo deu errado).
+
+- #### Testando
+- Execute o aplicativo e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where() no método GetIncompleteItemsAsync().
+- Execute o aplicativo e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where () no método GetIncompleteItemsAsync().
+- No momento, o aplicativo contém uma única lista de tarefas compartilhada. Seria ainda mais útil se ele mantivesse o controle de listas de tarefas individuais para cada usuário.
+
+- ## Segurança e identidade
+**A segurança é uma grande preocupação de qualquer aplicativo da Web ou API moderno. É importante manter seus dados de usuário ou cliente protegidos e fora do alcance de invasores.**
+- Este é um tópico muito amplo, envolvendo coisas como:
+  - Sanitizando a entrada de dados para evitar ataques de injeção de SQL;
+  - Prevenção de ataques de domínio cruzado (CSRF) em formulários;
+  - Usando HTTPS (criptografia de conexão) para que os dados não possam ser interceptados enquanto viajam pela Internet;
+  - Dando aos usuários uma maneira de fazer login com segurança com uma senha ou outras credenciais;
+  - Projetando redefinição de senha, conta recuperação e fluxos de autenticação multifatorial.
+- O modelo MVC + Individual Authentication que você usou para criar o scaffold do projeto inclui várias classes construídas sobre o ASP.NET CoreIdentity, um sistema de autenticação e identidade que faz parte do ASP.NETCore. Fora da caixa, isso adiciona a capacidade de fazer login com um e-mail e uma senha.
+
+- ## O que é ASP.NET Core Identifica?
+- ASP.NET Core Identity é o sistema de identidade fornecido com ASP.NETCore. Como tudo o mais no ecossistema ASP.NET Core, é um conjunto de pacotes NuGet que podem ser instalados em qualquer projeto (e já estão incluídos se você usar o modelo padrão).
+- A identidade do ASP.NET Core cuida do armazenamento de contas de usuário, hashing e armazenamento de senhas e gerenciamento de funções para usuários. Suporta login de e-mail / senha, autenticação multifatorial, login social com provedores como Google e Facebook, bem como conexão com outros serviços usando protocolos como OAuth 2.0 e OpenID Connect.  
+- As visualizações Register e Login que vêm com o modelo MVC + IndividualAuthentication já tiram proveito do ASP.NET CoreIdentity e já funcionam! Tente registrar uma conta e fazer o login.
+
+- ## Requerimento de autenticação
+- Freqüentemente, você vai querer exigir que o usuário efetue login antes de poder acessar certas partes do seu aplicativo. Por exemplo, faz sentido mostrar a página inicial para todos (esteja você conectado ou não), mas apenas mostre sua lista de tarefas depois de se conectar.
+- Você pode usar o atributo [Authorize] no ASP.NET Core para exigir que um usuário conectado para uma ação específica ou um controlador inteiro. Para requerer autenticação para todas as ações do TodoController, adicione o atributo acima da primeira linha do controlador em Controllers/TodoController.cs:
+```
+using Microsoft.AspNetCore.Authorization;
+ // ...
+[Authorize]
+public class TodoController : Controller
+{
+    // ...
+}
+```
+- Tente executar o aplicativo e acessar / todo sem estar logado. Você será redirecionado para a página de login automaticamente.
+- O atributo [Authorize] está realmente fazendo uma verificação de autenticação aqui, não uma verificação de autorização (apesar do nome do atributo). Posteriormente, o atributo será usado para verificar a autenticação e autorização de bots.
+- ### Usando ID no aplicativo
+- Os próprios itens da lista de tarefas pendentes ainda são compartilhados entre todos os usuários, porque as entidades armazenadas de tarefas não estão vinculadas a um usuário específico. Agora que o atributo [Authorize] garante que você deve estar conectado para ver a exibição de tarefas, você pode filtrar a consulta do banco de dados com base em quem está conectado.
+- Primeiro, injete um UserManager <ApplicationUser> em Controllers/TodoController.cs:
+  ```
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+  // ...
+[Authorize]
+public class TodoController : Controller
+{
+    private readonly ITodoItemService _todoItemService;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public TodoController(ITodoItemService todoItemService,
+        UserManager<ApplicationUser> userManager)
+    {
+        _todoItemService = todoItemService;
+        _userManager = userManager;
+    }
+
+    // ...
+}
+```
+  
+
+
 
 
 
@@ -723,6 +785,7 @@ item.IsDone = true;
 - ## Termos:
   - **AddSingleton** adiciona seu serviço ao contêiner de serviço como um singleton. Isso significa que apenas uma cópia do  da classe FakeTodoItemService é criada e é reutilizada sempre que o serviço é solicitado.
   - **Arquitetura n-tier**: A maioria dos projetos maiores usa uma arquitetura de três camadas: uma camada de apresentação, uma camada de lógica de serviço e uma camada de repositório de dados. Um repositório é uma classe que é focada apenas no código do banco de dados (sem lógica de negócios). Neste aplicativo, você os combinará em uma única camada de serviço por simplicidade, mas fique à vontade para experimentar diferentes maneiras de arquitetar o código.
+  - **Authentication (Autenticação)** e **authorization (autorização)** são ideias distintas que costumam ser confundidas. A autenticação trata se um usuário está conectado, enquanto a autorização trata do que ele pode fazer após o login. Você pode pensar na autenticação como uma pergunta: "Eu sei quem é esse usuário?" Enquanto a autorização pergunta: "Este usuário tem permissão para fazer X?"
   - **Booleano** (valor verdadeiro / falso), Por padrão, será falso para todos os novos itens. Posteriormente, pode-se mudar essa propriedade para true quando o usuário clicar na caixa de seleção de um item na visualização.
   - **get; set; ou (getter e setter)** leitura / gravação.
   - **Guids (orGUIDs)** são longas sequências de letras e números, como 43ec09f2-7f70-4f4b-9559-65011d5781bb. Como os guias são aleatórios e é improvável que sejam duplicados acidentalmente, eles são comumente usados como IDs únicos. Você também pode usar um número (inteiro) como ID da entidade do banco de dados, mas precisará configurar seu banco de dados para sempre aumentar o número quando novas linhas forem adicionadas ao banco de dados.
