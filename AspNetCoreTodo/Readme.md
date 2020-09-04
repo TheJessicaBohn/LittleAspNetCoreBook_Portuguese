@@ -96,14 +96,14 @@
   - Geralmente o usuario costuma procastinar então o modelo (entidade), que não exatamente o mesmo que o modelo que você deseja usar no MVC (o modelo de exibição), mas a exibição pode ser necessário exibir dois, dez ou cem itens de tarefas pendentes, Por esse motivo, o modelo de exibição deve ser uma classe separada que contém uma matriz de TodoItem;
   - Crie uma classe em Models chamada TodoViewModel.cs
   - E escreva o seguinte código:
-	```  
-	namespace AspNetCoreTodo.Models 
-	{
-		public class TodoViewModel    {
+ ```  
+  namespace AspNetCoreTodo.Models 
+{
+    public class TodoViewModel    {
         public TodoItem[] Items { get; set;}    
-		}
-	}
-	```
+  }
+}
+```
 -:eyeglasses: **A View:** 
   - Uma View no ASP.NET Core são criados usando a linguagem de modelagem Razor, que combina código HTML e C#.
   - No começo da classe vemos,"@model" que diz diz ao Razor qual modelo esperar que a view está vinculada.
@@ -762,10 +762,6 @@ public class TodoController : Controller
     // ...
 }
 ```
-- Porém com essa sujestão do livro o compilador irá apontar uma questão na linha **UserManager<ApplicationUser> userManager)** mesmo com o uso do using Microsoft.AspNetCore.Identity;
-- Isso ocorrerá por conta que o livro segue a versão 2.0, e estou apresentando uma versão 3.1, apesar de sutil, já foi colocado algumas mudanças em códigos anteriores;
-- Então seguindo uma solução caso você também esteja utilizando uma versão 3.1 do .Net:
-
   
 
 
