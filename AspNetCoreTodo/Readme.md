@@ -1261,6 +1261,17 @@ Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` ser
 - Ao fazer login com uma conta de administrador, você verá um novo item no canto superior direito:
 ![Manage Users link](manage-users.png)
 
+### Mais recursos 
+> O ASP.NET Core Identity ajuda você a adicionar recursos de segurança e identidade, como login e registro ao seu aplicativo. Os novos modelos dotnet oferecem visualizações e controladores pré-construídos que lidam com esses cenários comuns para que você possa começar a trabalhar rapidamente. 
+> Há muito mais que o ASP.NET Core Identity pode fazer, como redefinição de senha e login social. 
+ #### Alternativas para ASP.NET Core Identity
+> ASP.NET Core Identity não é a única maneira de adicionar funcionalidade de identidade. Outra opção é um serviço de identidade hospedado na nuvem, como por exemplo o AzureActive Directory B2C ou Okta, para lidar com a identificação da sua aplicação. 
+- Você pode pensar nessas opções como parte de uma progressão: Segurança do tipo faça você mesmo: Não recomendado, a menos que você seja um especialista em segurança! 
+- Identidade ASP.NET Core: Você obtém muitos códigos de graça com os modelos, o que o torna muito fácil de iniciar. 
+- Você ainda precisará escrever algum código para cenários mais avançados e manter um banco de dados para armazenar informações do usuário. 
+- Serviços de identidade hospedados em nuvem. O serviço lida com cenários simples e avançados (autenticação multifator, recuperação de conta, federação) e reduz significativamente a quantidade de código que você precisa escrever e manter em seu aplicativo. 
+
+
 
 - Porém com essa sujestão do livro o compilador irá apontar uma questão na linha **UserManager<ApplicationUser> userManager)** mesmo com o uso do using Microsoft.AspNetCore.Identity;
 - Isso ocorrerá por conta que o livro segue a versão 2.0, e estou apresentando uma versão 3.1, apesar de sutil, já foi colocado algumas mudanças em códigos anteriores;
