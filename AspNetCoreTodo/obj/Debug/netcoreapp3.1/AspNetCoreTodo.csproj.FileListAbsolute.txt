@@ -279,3 +279,13 @@ C:\Users\Jessica Bohn\Desktop\Git\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo
 C:\Users\Jessica Bohn\Desktop\Git\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\staticwebassets\AspNetCoreTodo.StaticWebAssets.Manifest.cache
 C:\Users\Jessica Bohn\Desktop\Git\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\staticwebassets\AspNetCoreTodo.StaticWebAssets.xml
 C:\Users\Jessica Bohn\Desktop\Git\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.genruntimeconfig.cache
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.csprojAssemblyReference.cache
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.AssemblyInfo.cs
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.RazorAssemblyInfo.cache
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.RazorAssemblyInfo.cs
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.dll
+C:\Users\User\Desktop\LittleAspnet\LittleAspNetCoreBook_Portuguese\AspNetCoreTodo\obj\Debug\netcoreapp3.1\AspNetCoreTodo.pdb

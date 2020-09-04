@@ -762,19 +762,511 @@ public class TodoController : Controller
     // ...
 }
 ```
-  
+- A classe UserManager faz parte da identidade do ASP.NET Core. Pode-se usá-la para obter o usuário atual na ação Índice:
+
+```
+public async Task<IActionResult> Index()
+{
+    var currentUser = await _userManager.GetUserAsync(User);
+    if (currentUser == null) return Challenge();
+
+    var items = await _todoItemService
+        .GetIncompleteItemsAsync(currentUser);
+
+    var model = new TodoViewModel()
+    {
+        Items = items
+    };
+
+    return View(model);
+}
+```
+- O novo código na parte superior do método de ação usa o UserManager para pesquisar o usuário atual a partir da propriedade User disponível na ação: var currentUser = await _userManager.GetUserAsync(User);
+- Se houver um usuário conectado, a propriedade User contém um lightweighttobject com algumas (mas não todas) das informações do usuário. O UserManager usa isso para pesquisar os detalhes completos do usuário no banco de dados por meio do método GetUserAsync().
+- O valor de currentUser nunca deve ser nulo, porque o atributo [Authorize] está presente no controlador. No entanto, é uma boa idéia fazer uma verificação de sanidade, apenas para garantir. Você pode usar o método Challenge() para forçar o usuário a fazer login novamente se suas informações estiverem ausentes: 
+```
+if (currentUser == null) return Challenge();
+```
+- Como agora você está passando um parâmetro ApplicationUser paraGetIncompleteItemsAsync(), será necessário atualizar a interface em Services/ITodoItemService.cs:
+```
+public interface ITodoItemService
+{
+    Task<TodoItem[]> GetIncompleteItemsAsync(
+        ApplicationUser user);
+    
+    // ...
+}
+```
+- Como você alterou a interface ITodoItemService, também precisa atualizar a assinatura do método GetIncompleteItemsAsync() em Services/TodoItemService:
+```
+public async Task<TodoItem[]> GetIncompleteItemsAsync(
+    ApplicationUser user)
+```
+- A próxima etapa é atualizar a consulta do banco de dados e adicionar um filtro para mostrar apenas os itens criados pelo usuário atual. Antes de fazer isso, você precisa adicionar uma nova propriedade ao banco de dados.
+
+### Atualizando o banco de dados
+- Será preciso adicionar uma nova propriedade ao modelo de entidade TodoItem para que cada item possa "lembrar" o usuário que o possui em Models/TodoItem.cs:
+
+```
+public string UserId { get; set; }
+```
+- Como o modelo de entidade usado pelo contexto do banco de dados, foi atualizado, também precisa migrar o banco de dados. Crie uma nova migração usando `dotnet ef` no terminal:
+
+Isso cria uma nova migração chamada `AddItemUserId` que adicionará uma nova coluna à tabela` Items`, espelhando a mudança que você fez no modelo `TodoItem`.
+
+Use dotnet ef novamente para aplicá-lo ao banco de dados: `dotnet ef database update`;
+
+### Atualizando a classe de serviço
+
+- Com o banco de dados e o contexto do banco de dados atualizados, agora você pode atualizar o método `GetIncompleteItemsAsync()` **Controllers/TodoController.cs** e adicionar outra cláusula à instrução` Where`:
+```
+{
+    return await _context.Items
+        .Where(x => x.IsDone == false && x.UserId == user.Id)
+        .ToArrayAsync();
+}
+```
+- Se você executar o aplicativo e se registrar ou efetuar login, verá uma lista de tarefas vazia mais uma vez. Infelizmente, todos os itens que você tentar adicionar desaparecem no éter, porque você ainda não atualizou a ação `AddItem` para ficar ciente do usuário.
+
+### Atualizando as ações AddItem e MarkDone
+
+Você precisará usar o `UserManager` para obter o usuário atual nos métodos de ação` AddItem` e `MarkDone`, assim como você fez em` Index`.
+
+Aqui estão os dois métodos atualizados em **Controllers/TodoController.cs**:
+
+```
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> AddItem(TodoItem newItem)
+{
+    if (!ModelState.IsValid)
+    {
+        return RedirectToAction("Index");
+    }
+
+    var currentUser = await _userManager.GetUserAsync(User);
+    if (currentUser == null) return Challenge();
+
+    var successful = await _todoItemService
+        .AddItemAsync(newItem, currentUser);
+
+    if (!successful)
+    {
+        return BadRequest("Could not add item.");
+    }
+
+    return RedirectToAction("Index");
+}
+
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> MarkDone(Guid id)
+{
+    if (id == Guid.Empty)
+    {
+        return RedirectToAction("Index");
+    }
+
+    var currentUser = await _userManager.GetUserAsync(User);
+    if (currentUser == null) return Challenge();
+
+    var successful = await _todoItemService
+        .MarkDoneAsync(id, currentUser);
+    
+    if (!successful)
+    {
+        return BadRequest("Could not mark item as done.");
+    }
+
+    return RedirectToAction("Index");
+}
+```
+- Ambos os métodos de serviço agora devem aceitar um parâmetro ApplicationUser. Atualize a definição da interface em ITodoItemService:
+
+```
+Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user);
+
+Task<bool> MarkDoneAsync(Guid id, ApplicationUser user);
+```
+- E, finalmente, atualize as implementações do método de serviço no `TodoItemService`. No método `AddItemAsync`, defina a propriedade` UserId` ao construir um `novo TodoItem`:
+```
+public async Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user)
+{
+    newItem.Id = Guid.NewGuid();
+    newItem.IsDone = false;
+    newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+    newItem.UserId = user.Id;
+
+    // ...
+}
+```
+- A cláusula `Where` no método` MarkDoneAsync` também precisa verificar o ID do usuário, então um usuário invasor não pode completar os itens de outra pessoa adivinhando seus IDs:
+```
+public async Task<bool> MarkDoneAsync(Guid id, ApplicationUser user)
+{
+    var item = await _context.Items
+        .Where(x => x.Id == id && x.UserId == user.Id)
+        .SingleOrDefaultAsync();
+
+    // ...
+}
+```
+## Autorização com funções
+
+- As funções são uma abordagem comum para lidar com autorização e permissões em um aplicativo da web. Por exemplo, é comum criar uma função de Administrador que conceda aos usuários administradores mais permissões ou poder do que os usuários normais.
+
+- Neste projeto, você adicionará uma página Gerenciar usuários que apenas os administradores podem ver. Se usuários normais tentarem acessá-lo, verão um erro.
+
+### Adicionar uma página de gerenciamento de usuários
+
+Primeiro, crie um novo controlador em ** Controllers/ManageUsersController.cs **:
+
+```
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using AspNetCoreTodo.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace AspNetCoreTodo.Controllers
+{
+    [Authorize(Roles = "Administrator")]
+    public class ManageUsersController : Controller
+    {
+        private readonly UserManager<ApplicationUser>
+            _userManager;
+        
+        public ManageUsersController(
+            UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var admins = (await _userManager
+                .GetUsersInRoleAsync("Administrator"))
+                .ToArray();
+
+            var everyone = await _userManager.Users
+                .ToArrayAsync();
+
+            var model = new ManageUsersViewModel
+            {
+                Administrators = admins,
+                Everyone = everyone
+            };
+
+            return View(model);
+        }
+    }
+}
+```
+- Definir a propriedade `Roles` no atributo` [Autorize] `irá garantir que o usuário deve estar logado ** e ** atribuído a função de Administrador para visualizar a página.
+
+A seguir, crie um modelo de view em ** Controllers/ManageUsersController.cs **:
+
+```
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using AspNetCoreTodo.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace AspNetCoreTodo.Controllers
+{
+    [Authorize(Roles = "Administrator")]
+    public class ManageUsersController : Controller
+    {
+        private readonly UserManager<ApplicationUser>
+            _userManager;
+        
+        public ManageUsersController(
+            UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var admins = (await _userManager
+                .GetUsersInRoleAsync("Administrator"))
+                .ToArray();
+
+            var everyone = await _userManager.Users
+                .ToArrayAsync();
+
+            var model = new ManageUsersViewModel
+            {
+                Administrators = admins,
+                Everyone = everyone
+            };
+
+            return View(model);
+        }
+    }
+}
+```
+Definir a propriedade `Roles` no atributo` [Autorizar] `irá garantir que o usuário deve estar logado ** e ** atribuído a função de Administrador para visualizar a página.
+
+A seguir, crie um modelo de visualização em ** Models/ManageUsersViewModel.cs **:
+
+```
+using System.Collections.Generic;
+
+namespace AspNetCoreTodo.Models
+{
+    public class ManageUsersViewModel
+    {
+        public ApplicationUser[] Administrators { get; set; }
+
+        public ApplicationUser[] Everyone { get; set;}
+    }
+}
+```
+- Finalmente, crie uma pasta `Views/ManageUsers` e uma visão para a ação` Index` em ** Views/ManageUsers/Index.cshtml **:
+```
+@model ManageUsersViewModel
+
+@{
+    ViewData["Title"] = "Manage users";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Administrators</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Email</td>
+        </tr>
+    </thead>
+    
+    @foreach (var user in Model.Administrators)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Email</td>
+        </tr>
+    }
+</table>
+
+<h3>Everyone</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Email</td>
+        </tr>
+    </thead>
+    
+    @foreach (var user in Model.Everyone)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Email</td>
+        </tr>
+    }
+</table>
+```
+- Inicie o aplicativo e tente acessar /ManageUsers enquanto estiver conectado como um usuário normal. Você verá esta página de acesso negado:
+- Isso ocorre porque os usuários não são atribuídos à função Administrador automaticamente.
+
+### Crie uma conta de administrador de teste
+
+- Por razões de segurança óbvias, não é possível que ninguém registre uma nova conta de administrador. Na verdade, a função de Administrador ainda nem existe no banco de dados!
+
+Você pode adicionar a função de Administrador mais uma conta de administrador de teste ao banco de dados na primeira vez que o aplicativo for iniciado. Adicionar dados pela primeira vez ao banco de dados é chamado de inicialização ou ** propagação ** do banco de dados.
+
+Crie uma nova classe na raiz do projeto chamada ** SeedData.cs **:
+
+```
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AspNetCoreTodo.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace AspNetCoreTodo
+{
+    public static class SeedData
+    {
+        public static async Task InitializeAsync(
+            IServiceProvider services)
+        {
+            var roleManager = services
+                .GetRequiredService<RoleManager<IdentityRole>>();
+            await EnsureRolesAsync(roleManager);
+
+            var userManager = services
+                .GetRequiredService<UserManager<ApplicationUser>>();
+            await EnsureTestAdminAsync(userManager);
+        }
+    }
+}
+```
+
+- O método `InitializeAsync ()` usa um `IServiceProvider` (a coleção de serviços que é configurada no método` Startup.ConfigureServices () `) para obter o` RoleManager` e o `UserManager` da identidade do ASP.NET Core.
+
+- Adicione mais dois métodos abaixo do método `InitializeAsync ()`. Primeiro, o método `EnsureRolesAsync ()`:
+
+```
+private static async Task EnsureRolesAsync(
+    RoleManager<IdentityRole> roleManager)
+{
+    var alreadyExists = await roleManager
+        .RoleExistsAsync(Constants.AdministratorRole);
+    
+    if (alreadyExists) return;
+
+    await roleManager.CreateAsync(
+        new IdentityRole(Constants.AdministratorRole));
+}
+```
+- Este método verifica se existe uma função de `Administrador` no banco de dados. Se não, ele cria um. Em vez de digitar repetidamente a string `" Administrador "`, crie uma pequena classe chamada ** Constants.cs ** para conter o valor:
+```
+namespace AspNetCoreTodo
+{
+    public static class Constants
+    {
+        public const string AdministratorRole = "Administrator";
+    }
+}
+```
+
+> Se desejar, você pode atualizar o `ManageUsersController` para usar este valor constante também.
+
+Em seguida, escreva o método `EnsureTestAdminAsync ()` em ** SeedData.cs **:
 
 
+```
+private static async Task EnsureTestAdminAsync(
+    UserManager<ApplicationUser> userManager)
+{
+    var testAdmin = await userManager.Users
+        .Where(x => x.UserName == "admin@todo.local")
+        .SingleOrDefaultAsync();
+
+    if (testAdmin != null) return;
+
+    testAdmin = new ApplicationUser
+    {
+        UserName = "admin@todo.local",
+        Email = "admin@todo.local"
+    };
+    await userManager.CreateAsync(
+        testAdmin, "NotSecure123!!");
+    await userManager.AddToRoleAsync(
+        testAdmin, Constants.AdministratorRole);
+}
+```
+- Se ainda não houver um usuário com o nome de usuário admin@todo.local no banco de dados, este método irá criar um e atribuir uma senha temporária.
+- Após fazer o login pela primeira vez, você deve alterar a senha da conta para algo seguro! Em seguida, você precisa dizer ao seu aplicativo para executar esta lógica quando for inicializado. Modifique Program.cs e atualize `Main()` para chamar um novo método, `InitializeDatabase()` em **Program.cs**:
+```
+using Microsoft.Extensions.DependencyInjection;
+
+public static void Main(string[] args)
+{
+    var host = BuildWebHost(args);
+    InitializeDatabase(host);
+    host.Run();
+}
+``` 
+
+- Em seguida, adicione o novo método à classe abaixo de `Main ()`:
+```
+private static void InitializeDatabase(IWebHost host)
+{
+    using (var scope = host.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            SeedData.InitializeAsync(services).Wait();
+        }
+        catch (Exception ex)
+        {
+            var logger = services
+                .GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "Error occurred seeding the DB.");
+        }
+    }
+}
+```
+- Este método obtém a coleção de serviços que `SeedData.InitializeAsync()` precisa então executa o método para propagar o banco de dados. Se algo der errado, um erro será registrado.
+
+> Como `InitializeAsync ()` retorna uma `Task`, o método` Wait () `deve ser usado para garantir que ele termine antes que o aplicativo seja inicializado. Você normalmente usaria `await` para isso, mas por razões técnicas você não pode usar` await` na classe `Program`. Esta é uma rara exceção. Você deve usar `await` em qualquer outro lugar!
+
+Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` será criada e atribuída a função de Administrador. Tente fazer login com esta conta e navegar para `http: // localhost: 5000 / ManageUsers`. Você verá uma lista de todos os usuários registrados para o aplicativo.
+
+> Como um desafio extra, tente adicionar mais recursos de administração a esta página. Por exemplo, você pode adicionar um botão que dá ao administrador a capacidade de excluir uma conta de usuário.
+
+### Verifique a autorização em uma vista
+
+- O atributo `[Autorizar]` facilita a execução de uma verificação de autorização em um controlador ou método de ação, mas e se você precisar verificar a autorização em uma visualização? Por exemplo, seria bom exibir um link "Gerenciar usuários" na barra de navegação se o usuário conectado for um administrador.
+- Você pode injetar o `UserManager` diretamente em uma visualização para fazer esses tipos de verificações de autorização. Para manter suas visualizações limpas e organizadas, crie uma nova visualização parcial que adicionará um item à barra de navegação no layout em ** Views/Shared/_AdminActionsPartial.cshtml **:
+```
+@using Microsoft.AspNetCore.Identity
+@using AspNetCoreTodo.Models
+
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+@if (signInManager.IsSignedIn(User))
+{
+    var currentUser = await userManager.GetUserAsync(User);
+
+    var isAdmin = currentUser != null
+        && await userManager.IsInRoleAsync(
+            currentUser,
+            Constants.AdministratorRole);
+
+    if (isAdmin)
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-controller="ManageUsers" 
+                   asp-action="Index">
+                   Manage Users
+                </a>
+            </li>
+        </ul>
+    }
+}
+```
+> É convencional nomear visualizações parciais compartilhadas começando com um sublinhado `_`, mas não é obrigatório.
+
+- Esta view parcial usa primeiro o `SignInManager` para determinar rapidamente se o usuário está logado. Se não estiver, o resto do código da visão pode ser pulado. Se ** houver ** um usuário logado, o `UserManager` é usado para consultar seus detalhes e realizar uma verificação de autorização com` IsInRoleAsync() `. Se todas as verificações forem bem-sucedidas e o usuário for um administrador, um link ** Gerenciar usuários ** é adicionado à barra de navegação.
+
+- Para incluir este parcial no layout principal, edite `_Layout.cshtml` e adicione-o na seção navbar em **Views/Shared/_Layout.cshtml**:
+```
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <!-- existing code here -->
+    </ul>
+    @await Html.PartialAsync("_LoginPartial")
+    @await Html.PartialAsync("_AdminActionsPartial")
+</div>
+```
+- Ao fazer login com uma conta de administrador, você verá um novo item no canto superior direito:
+![Manage Users link](manage-users.png)
 
 
+- Porém com essa sujestão do livro o compilador irá apontar uma questão na linha **UserManager<ApplicationUser> userManager)** mesmo com o uso do using Microsoft.AspNetCore.Identity;
+- Isso ocorrerá por conta que o livro segue a versão 2.0, e estou apresentando uma versão 3.1, apesar de sutil, já foi colocado algumas mudanças em códigos anteriores;
+- Então seguindo uma solução caso você também esteja utilizando uma versão 3.1 do .Net:
 
 
-
-
-
-
-
- 
  
  
 - ## Comandos: Usando o Git ou GitHub 
@@ -798,8 +1290,8 @@ public class TodoController : Controller
   - **SQLite** é um gerenciador banco de dados leve que não exige nenhuma instalação de ferramenta para pode ser executado
   - **Tag Helpers(tags de ajuda)**: Antes que a visualização seja renderizada, o ASP.NET Cor substitui esses auxiliares de tag por atributos HTML reais, onde o ASP.NET Core o gera para você automaticamente. Exemplos: Os atributos asp-controller e asp-action no elemento <a>.
   - **Using** são instruções que se encontrão na parte superior do arquivo para importaras informações de outras classes, e evitar mensagens de erros como: "The type or namespace name 'TodoItem' could not be found (are you missing a using directive or an assembly reference?)".
- -  **Parcial View ** é uma pequena parte de uma visualização maior que fica em um arquivo separado.
- - O método **Where** é um recurso do C # denominado LINQ (language integratedquery), que se inspira na programação funcional e facilita a expressão de consultas de banco de dados em código. Sob o capô, Entity Framework Core traduz o método Where em uma instrução como **SELECT * FROM Items WHERE IsDone = 0**, ou um documento de consulta equivalente em um banco de dados NoSQL.
+  -  **Parcial View ** é uma pequena parte de uma visualização maior que fica em um arquivo separado.
+  - O método **Where** é um recurso do C # denominado LINQ (language integratedquery), que se inspira na programação funcional e facilita a expressão de consultas de banco de dados em código. Sob o capô, Entity Framework Core traduz o método Where em uma instrução como **SELECT * FROM Items WHERE IsDone = 0**, ou um documento de consulta equivalente em um banco de dados NoSQL.
  
  
  
