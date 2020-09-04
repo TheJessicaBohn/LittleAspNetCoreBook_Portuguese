@@ -1,11 +1,15 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   "FilePath": "c:\\Users\\Jessica Bohn\\Desktop\\Git\\LittleAspNetCoreBook_Portuguese\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
 =======
   "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\LittleAspNetCoreBook_Portuguese\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
 >>>>>>> Stashed changes
+=======
+  "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
+>>>>>>> parent of 6c26cd9... update
 =======
   "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\AspNetCoreTodo.csproj",
 >>>>>>> parent of 6c26cd9... update
@@ -14406,6 +14410,7 @@
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       "FilePath": "c:\\Users\\Jessica Bohn\\Desktop\\Git\\LittleAspNetCoreBook_Portuguese\\AspNetCoreTodo\\Views\\Home\\Privacy.cshtml",
       "TargetPath": "Views\\Home\\Privacy.cshtml",
@@ -14462,15 +14467,28 @@
     {
       "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\Shared\\Error.cshtml",
 >>>>>>> parent of 6c26cd9... update
+=======
+      "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\_ViewImports.cshtml",
+      "TargetPath": "Views\\_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\Shared\\Error.cshtml",
+>>>>>>> parent of 6c26cd9... update
       "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"
     },
     {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       "FilePath": "c:\\Users\\Jessica Bohn\\Desktop\\Git\\LittleAspNetCoreBook_Portuguese\\AspNetCoreTodo\\Views\\Todo\\AddItemPartial.cshtml",
       "TargetPath": "Views\\Todo\\AddItemPartial.cshtml",
+=======
+      "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
+      "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
+>>>>>>> parent of 6c26cd9... update
 =======
       "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\Shared\\_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views\\Shared\\_ValidationScriptsPartial.cshtml",
@@ -14512,6 +14530,7 @@
       "FileKind": "mvc"
     },
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       "FilePath": "c:\\Users\\Jessica Bohn\\Desktop\\Git\\LittleAspNetCoreBook_Portuguese\\AspNetCoreTodo\\Views\\Shared\\_Layout.cshtml",
@@ -14590,6 +14609,10 @@
     {
       "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\LittleAspNetCoreBook_Portuguese\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\Home\\Index.cshtml",
       "TargetPath": "AspNetCoreTodo\\Views\\Home\\Index.cshtml",
+=======
+      "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\_ViewStart.cshtml",
+      "TargetPath": "Views\\_ViewStart.cshtml",
+>>>>>>> parent of 6c26cd9... update
 =======
       "FilePath": "c:\\Users\\User\\Desktop\\LittleAspnet\\AspNetCoreTodo\\AspNetCoreTodo\\Views\\_ViewStart.cshtml",
       "TargetPath": "Views\\_ViewStart.cshtml",
