@@ -1,0 +1,33 @@
+ @model TodoViewModel
+ @using Humanizer
+
+  @{    
+    ViewData["Title"] = "Manage your todo list";
+  }
+  <divclass="panel panel-default todo-panel">
+    <divclass="panel-heading">@ViewData["Title"]</div>
+    
+  <tableclass="table table-hover">
+    <thead>
+        <tr>
+            <td>&#x2714;</td>
+            <td>Item</td>
+            <td>Due</td>
+        </tr>
+    </thead>      
+    
+    @foreach (var item in Model.Items)      {
+        <tr>
+            <td>
+                <inputtype="checkbox"class="done-checkbox">
+                </td>
+                <td>@item.Title</td>
+                <td>@item.DueAt.Humanize()</td>
+        </tr>      
+    }
+  </table>
+
+  <divclass="panel-footer add-item-form">
+  @await Html.PartialAsync("AddItemPartial", new TodoItem())
+  </div>
+  </div>
