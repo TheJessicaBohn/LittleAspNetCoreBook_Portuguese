@@ -1,6 +1,6 @@
 
 
-- ## Comandos : Criando um ASP.NET Core project
+ # Comandos : Criando um ASP.NET Core project
   - 'cd ..' para sair da pasta do CsharpHelloWorld;
   - 'mkdir AspNetCoreTodo', cria uma nova pasta onde após o mkdir é o nome e pode-se criar com outro nome de sua preferência;
   - 'cd AspNetCoreTodo' Entra na respectiva pasta, lembrando que, se o nome da mesma foi modificado, deve-se escrever o nome escolhido após o comando cd;
@@ -20,13 +20,13 @@
       **Content root path: C:\Users\xxxx\Desktop\littleAspNet\AspNetCoreTodo\AspNetCoreTodo<br/>**
    
    e após isso abra o navegado em http://localhost:5000, e ele deve aparecer a pagina com " Welcome Learn about building Web apps with ASP.NET Core." , para parar o serviço 'Ctrl + C';
- - Conteúdo : ASP.NET Core project
+ - **Conteúdo : ASP.NET Core project**
    - **Program.cs** e **Startup.cs** são classes que configuram o servidor web e ASP.NET Core pipeline;
    - **Models, Views**, e **Controllers** são diretórios contêm os componentes da arquitetura Model-View-Controller (MVC);
    - **wwwroot** contém ativos estáticos que podem ser agrupados e compactados automaticamente, como CSS, JavaScript e arquivos de imagem;
    - **appsettings.json** contém as configuração de inicialização que o ASP.NETCore carrega; 
 
-- ## Basico de MVC :
+ # Basico de MVC :
 
   **Por padrão o funcionamento dos elementos ocorre da seguinte forma:**<br />
   - :video_game: O **Controller**:
@@ -35,7 +35,7 @@
     - A **View** é renderizada e exibida no navegador do usuário;
     - Então o usuário clica em um botão ou envia um formulário, que envia uma nova solicitação ao controlador e o ciclo se repete.
 
-- ## Continuando o projeto ASP.NET Core : Controller
+ ## Continuando o projeto ASP.NET Core : Controller
   **Agora que sabemos o que é um controller vamos contruir um:**<br />
   - Se abrirmos a pasta Controllers, veremos que ja existe um HomeController.cs que inclui três métodos de ação (Index, About, e Contact) que são mapeados pelo ASP.NET Core para esses URLs de rota;
   - Pelo VS Code clicando na pasta Controllers, você pode criar um "new file" chamado TodoController não se esqueça da exentensão .cs;
@@ -285,7 +285,7 @@
         };
        return View(model);
     ```
-  - ## Testando:
+   ## Testando:
       - Agora para testar o projeto abra um terminal no seu VSCode e digite 'dotnet run';
       - Ele deve retrornar da seguinte forma no terminal:
    
@@ -302,7 +302,7 @@
      
      - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
   
-  - ## Atualizando o Layout:
+   ## Atualizando o Layout:
      - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar novos elementos aos layout substituindo o seguinte código por:
       ``` 
        <ul class="navbar-nav flex-grow-1">
@@ -319,7 +319,7 @@
           <li><a asp-controller="Todo"asp-action="Index">My to-dos</a></li>
      </ul>
      ```
-  - ## Adicinar pacotes externos
+   ## Adicinar pacotes externos
     - Vamos utilizar o Nuget, que possui link em Dowloads;
     -Existem pacotes disponíveis no NuGet para tudo, desde analisar XML para aprendizado de máquina até postar no Twitter. O ASP.NET Core propriamente dito nada mais é do que uma coleção de pacotes NuGet que são adicionados ao seu projeto;
     - **Instalação:**
@@ -366,7 +366,7 @@
        ```
   - Este código adiciona o ApplicationDbContext ao contêiner de serviço dizendo ao Entity Framework Core para usar o provedor de banco de dados SQLite, com a string de conexão da configuração (appsettings.json). O banco de dados está configurado e pronto para ser usado porém sem tabelas;
 
-- ## Atualizando o Contexto
+ ## Atualizando o Contexto
   - No arquivo Data/ApplicationDbContext.cs faça as modificações:
       ```
        public class ApplicationDbContext : IdentityDbContext
@@ -426,11 +426,11 @@
   ```
   - O método Up é executado na migração ao banco de dados. Visto que você adicionou um DbSet <TodoItem> ao contexto do banco de dados, EntityFramework Core criará uma tabela de itens (com colunas que correspondem a umTodoItem) quando a migration é aplicada. O método Down faz o oposto: se você precisar reverter a migration, a tabela de itens será descartada.
  
-- ### Solução alternativa para limitações do SQLite
+ ### Solução alternativa para limitações do SQLite
   - Existem algumas limitações do SQLite que atrapalham se você tentar executar a migration
   - Uma soluçaõ paletiva (caso necessário): Comente ou remova as linhas "migrationBuilder.AddForeignKey" no método Up; 
   - Comente ou remova quaisquer linhas migrationBuilder.DropForeignKey no método Down.
-- ## Aplicando a Migration a migração
+ ## Aplicando a Migration a migração
   - A etapa final após criar uma (ou mais) migrations é aplicá-las de fato ao banco de dados, podemos usar o comando 'dotnet ef database update' que fará com que o Entity Framework Core crie o Itemstable no banco de dados.
   - Caso queira reverter o banco de dados, deve-se saber o nome da migration anterior: 'dotnet ef database update CreateIdentitySchema';
     - Isso executará os métodos Down de qualquer migration mais recente do que a que você especificou.
@@ -438,7 +438,7 @@
     -  Isso irá refazer o scaffold do banco de dados e trazê-lo para a migration atual;
   - Agora o tanto o banco de dados quanto o contexto estão prontos para uso.
 
-- ## Criando uma nova classe de serviço
+ ## Criando uma nova classe de serviço
   - Voltando ao capítulo de MVC, onde foi criado o FakeTodoItemService que continha itens de tarefas embutidos em código e tem-se agora um databasecontext, 
     - Pode-se então criar uma nova classe de serviço que usará o Entity Framework Core para obter os itens reais do banco de dados. Exclua o arquivo FakeTodoItemService.cs e crie um novo arquivo em Services/TodoItemService.cs:
  ```
@@ -604,7 +604,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
 ```
 - Se clicarmos na caixa de seleção ainda não faz nada. Como feito anterioriormente, será adicionado esse comportamento usando formulários e ações.
 
-- ### Adicionando elementos de formulário à vista
+ ### Adicionando elementos de formulário à vista
 - Primeiro, atualize a view e envolva cada caixa de seleção com um elemento <form> em Views/Todo/Index.cshtml. Em seguida, adicione um elemento oculto contendo o ID do item:
   
   ```
@@ -618,7 +618,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
 - Quando o loop foreach é executado na view e imprime uma linha para cada item a fazer, uma cópia deste formulário existirá em cada linha. A entrada oculta que contém o ID do item de tarefa torna possível para o código do controlador informar qual caixa foi marcada. (Sem ele, você seria capaz de dizer que alguma caixa foi marcada, mas não qual.)
 - Se executarmos a aplcação agora, as caixas de seleção ainda não farão nada, porque não há um botão de envio para dizer ao navegador para criar uma solicitação POST com os dados do formulário. O ideal é clicar na caixa de seleção para enviar o formulário automaticamente. Você pode conseguir isso adicionando algum JavaScript.
 
-- ### Adicionando código JavaScript
+ ### Adicionando código JavaScript
 - Encontre o arquivo site.js no diretório wwwroot/js e adicione este código:
 ```
 $(document).ready(function() {
@@ -645,7 +645,7 @@ function markCompleted(checkbox) {
   - Adiciona a classe CSS concluída à linha pai que contém a caixa de seleção, o que altera a aparência da linha com base nas regras CSS em style.css 
   - Submete o formulário.
   
-- ### Adicionando  uma ação ao controlador
+ ### Adicionando  uma ação ao controlador
 - Vamos precisar adicionar uma ação chamada MarkDone no TodoController:
 ```
 [ValidateAntiForgeryToken]
@@ -677,7 +677,7 @@ if (!successful)
 ```
 - Finalmente, se tudo estiver certo, o navegador é redirecionado para a ação /Todo/Index e a página é atualizada. Com a view e o controlador atualizados, tudo o que resta é adicionar o método de serviço faltante.
 
-- ### Adicionando um método de serviço
+ ### Adicionando um método de serviço
 - Primeiro, adicione MarkDoneAsync à definição da interface Services/ITodoItemService.cs:
 ```
 Task<bool> MarkDoneAsync(Guid id);
@@ -705,12 +705,12 @@ item.IsDone = true;
 ```
 - A alteração da propriedade afeta apenas a cópia local do item até queSaveChangesAsync() seja chamado para persistir a alteração no banco de dados. SalveChangesAsync() retorna um número que indica quantas entidades foram atualizadas durante a operação de salvamento. Nesse caso, será 1 (o item foi atualizado) ou 0 (se algo deu errado).
 
-- #### Testando
+ #### Testando
 - Execute o aplicativo e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where() no método GetIncompleteItemsAsync().
 - Execute o aplicativo e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where () no método GetIncompleteItemsAsync().
 - No momento, o aplicativo contém uma única lista de tarefas compartilhada. Seria ainda mais útil se ele mantivesse o controle de listas de tarefas individuais para cada usuário.
 
-- ## Segurança e identidade
+ # Segurança e identidade
 **A segurança é uma grande preocupação de qualquer aplicativo da Web ou API moderno. É importante manter seus dados de usuário ou cliente protegidos e fora do alcance de invasores.**
 - Este é um tópico muito amplo, envolvendo coisas como:
   - Sanitizando a entrada de dados para evitar ataques de injeção de SQL;
@@ -720,12 +720,12 @@ item.IsDone = true;
   - Projetando redefinição de senha, conta recuperação e fluxos de autenticação multifatorial.
 - O modelo MVC + Individual Authentication que você usou para criar o scaffold do projeto inclui várias classes construídas sobre o ASP.NET CoreIdentity, um sistema de autenticação e identidade que faz parte do ASP.NETCore. Fora da caixa, isso adiciona a capacidade de fazer login com um e-mail e uma senha.
 
-- ## O que é ASP.NET Core Identifica?
+ ## O que é ASP.NET Core Identifica?
 - ASP.NET Core Identity é o sistema de identidade fornecido com ASP.NETCore. Como tudo o mais no ecossistema ASP.NET Core, é um conjunto de pacotes NuGet que podem ser instalados em qualquer projeto (e já estão incluídos se você usar o modelo padrão).
 - A identidade do ASP.NET Core cuida do armazenamento de contas de usuário, hashing e armazenamento de senhas e gerenciamento de funções para usuários. Suporta login de e-mail / senha, autenticação multifatorial, login social com provedores como Google e Facebook, bem como conexão com outros serviços usando protocolos como OAuth 2.0 e OpenID Connect.  
 - As visualizações Register e Login que vêm com o modelo MVC + IndividualAuthentication já tiram proveito do ASP.NET CoreIdentity e já funcionam! Tente registrar uma conta e fazer o login.
 
-- ## Requerimento de autenticação
+ ## Requerimento de autenticação
 - Freqüentemente, você vai querer exigir que o usuário efetue login antes de poder acessar certas partes do seu aplicativo. Por exemplo, faz sentido mostrar a página inicial para todos (esteja você conectado ou não), mas apenas mostre sua lista de tarefas depois de se conectar.
 - Você pode usar o atributo [Authorize] no ASP.NET Core para exigir que um usuário conectado para uma ação específica ou um controlador inteiro. Para requerer autenticação para todas as ações do TodoController, adicione o atributo acima da primeira linha do controlador em Controllers/TodoController.cs:
 ```
@@ -742,27 +742,29 @@ public class TodoController : Controller
 - ### Usando ID no aplicativo
 - Os próprios itens da lista de tarefas pendentes ainda são compartilhados entre todos os usuários, porque as entidades armazenadas de tarefas não estão vinculadas a um usuário específico. Agora que o atributo [Authorize] garante que você deve estar conectado para ver a exibição de tarefas, você pode filtrar a consulta do banco de dados com base em quem está conectado.
 - Primeiro, injete um UserManager <ApplicationUser> em Controllers/TodoController.cs:
-  ```
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-  // ...
-[Authorize]
-public class TodoController : Controller
-{
-    private readonly ITodoItemService _todoItemService;
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public TodoController(ITodoItemService todoItemService,
-        UserManager<ApplicationUser> userManager)
-    {
-        _todoItemService = todoItemService;
-        _userManager = userManager;
-    }
-
+  
+   ```
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     // ...
-}
-```
-- A classe UserManager faz parte da identidade do ASP.NET Core. Pode-se usá-la para obter o usuário atual na ação Índice:
+    [Authorize]
+    public class TodoController : Controller
+    {
+      private readonly ITodoItemService _todoItemService;
+      private readonly UserManager<ApplicationUser> _userManager;
+
+      public TodoController(ITodoItemService todoItemService,
+          UserManager<ApplicationUser> userManager)
+      {
+          _todoItemService = todoItemService;
+          _userManager = userManager;
+      }
+
+      // ...
+   }
+  ```
+
+  - A classe UserManager faz parte da identidade do ASP.NET Core. Pode-se usá-la para obter o usuário atual na ação Índice:
 
 ```
 public async Task<IActionResult> Index()
@@ -808,8 +810,9 @@ public async Task<TodoItem[]> GetIncompleteItemsAsync(
 - Será preciso adicionar uma nova propriedade ao modelo de entidade TodoItem para que cada item possa "lembrar" o usuário que o possui em Models/TodoItem.cs:
 
 ```
-public string UserId { get; set; }
+      public string UserId { get; set; }
 ```
+
 - Como o modelo de entidade usado pelo contexto do banco de dados, foi atualizado, também precisa migrar o banco de dados. Crie uma nova migração usando `dotnet ef` no terminal:
 
 Isso cria uma nova migração chamada `AddItemUserId` que adicionará uma nova coluna à tabela` Items`, espelhando a mudança que você fez no modelo `TodoItem`.
@@ -819,11 +822,12 @@ Use dotnet ef novamente para aplicá-lo ao banco de dados: `dotnet ef database u
 ### Atualizando a classe de serviço
 
 - Com o banco de dados e o contexto do banco de dados atualizados, agora você pode atualizar o método `GetIncompleteItemsAsync()` **Controllers/TodoController.cs** e adicionar outra cláusula à instrução` Where`:
+
 ```
-{
-    return await _context.Items
-        .Where(x => x.IsDone == false && x.UserId == user.Id)
-        .ToArrayAsync();
+  {
+      return await _context.Items
+          .Where(x => x.IsDone == false && x.UserId == user.Id)
+          .ToArrayAsync();
 }
 ```
 - Se você executar o aplicativo e se registrar ou efetuar login, verá uma lista de tarefas vazia mais uma vez. Infelizmente, todos os itens que você tentar adicionar desaparecem no éter, porque você ainda não atualizou a ação `AddItem` para ficar ciente do usuário.
@@ -1279,13 +1283,12 @@ Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` ser
 
 
  
- 
-- ## Comandos: Usando o Git ou GitHub 
+ # Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
   - 'git init' inicia um novo repositório na pasta raiz do projeto. Caso ocorra erro volte nos dowloads e baixe e configure o Git Bash. Ele deve criar uma pasta .git.
 
-- ## Termos:
+# Termos:
   - **AddSingleton** adiciona seu serviço ao contêiner de serviço como um singleton. Isso significa que apenas uma cópia do  da classe FakeTodoItemService é criada e é reutilizada sempre que o serviço é solicitado.
   - **Arquitetura n-tier**: A maioria dos projetos maiores usa uma arquitetura de três camadas: uma camada de apresentação, uma camada de lógica de serviço e uma camada de repositório de dados. Um repositório é uma classe que é focada apenas no código do banco de dados (sem lógica de negócios). Neste aplicativo, você os combinará em uma única camada de serviço por simplicidade, mas fique à vontade para experimentar diferentes maneiras de arquitetar o código.
   - **Authentication (Autenticação)** e **authorization (autorização)** são ideias distintas que costumam ser confundidas. A autenticação trata se um usuário está conectado, enquanto a autorização trata do que ele pode fazer após o login. Você pode pensar na autenticação como uma pergunta: "Eu sei quem é esse usuário?" Enquanto a autorização pergunta: "Este usuário tem permissão para fazer X?"
