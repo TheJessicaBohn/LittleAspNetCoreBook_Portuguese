@@ -1275,7 +1275,12 @@ Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` ser
 - Você ainda precisará escrever algum código para cenários mais avançados e manter um banco de dados para armazenar informações do usuário. 
 - Serviços de identidade hospedados em nuvem. O serviço lida com cenários simples e avançados (autenticação multifator, recuperação de conta, federação) e reduz significativamente a quantidade de código que você precisa escrever e manter em seu aplicativo. 
 
+# Testes Automatizados
+- Testes são uma parte importanre desenvolvimento, pois evitam bugs, e deixa código mais fácil caso haja necessidade de refatoração caso por quebras de funcinalidade ou mesmo a introdução de novos problemas;
+- **Teste de Unidade **, são pequenos estes para se poder ter certeza de que um metódo ou pedaço de código funcione adequadamente;
+- **Teste de integração**, ou testes funcionais  são testes maiores que simulam a aplicaçao na vida real testando as multiplas layers ou partes da sua aplicaçao;
 
+## 
 
 - Porém com essa sujestão do livro o compilador irá apontar uma questão na linha **UserManager<ApplicationUser> userManager)** mesmo com o uso do using Microsoft.AspNetCore.Identity;
 - Isso ocorrerá por conta que o livro segue a versão 2.0, e estou apresentando uma versão 3.1, apesar de sutil, já foi colocado algumas mudanças em códigos anteriores;
