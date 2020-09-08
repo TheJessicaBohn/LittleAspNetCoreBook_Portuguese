@@ -169,7 +169,7 @@
     - **Executar lógica business**, ou código e lógica relacionados ao objetivo e "negócios" da sua aplicação. Por exemplo: lógica de negócios incluem o cálculo de um custo total com base nos preços e taxas de produtos ou verificar se um jogador tem pontos suficientes para subir de nível em um jogo. 
     - **Manipulação de um banco de dados**.
   - O ideal de um projeto organizado é mante-lo nas arquiteturas multi-tier ou n-tier;
-  - Neste projeto, você usaremos duas camadas de aplicativos:
+  - Neste projeto, você usaremos duas camadas de aplicaçãos:
     - Uma camada de apresentação(**presentation layer**) composta pelos controladores e viwes que interagem com o usuário 
     - E uma camada de serviço(**service layer**) que contém lógica de negócios e código do banco de dados. 
     - como a camada de apresentação já existe vamos criar um serviço que lide com a lógica de negócios de tarefas pendentes e salva itens de tarefas pendentes em um banco de dados.
@@ -254,7 +254,7 @@
       }
    }
    ```
-   - Variavél ITodoItemServic, deixa usar o serviço do metodo Index;
+   - Variavél ITodoItemServic, deixa usar o serviço do metódo Index;
    - A linha public TodoController(ITodoItemService todoItemService), define o construtor da classe;
    - Para configurar os serviços vá a classe chamada Startup.cs e modifique:
    ```
@@ -266,7 +266,7 @@
    }        
    ```
    - O método ConfigureServices adiciona coisas ao servicecontainer ou à coleção de serviços que o ASP.NET Core conhece;
-   - A linha services.AddMvc adiciona os serviços internos do ASP.NETCore. Qualquer outro serviço que você deseja usar em seu aplicativo deve ser adicionado ao contêiner de serviço aqui em ConfigureServices.
+   - A linha services.AddMvc adiciona os serviços internos do ASP.NETCore. Qualquer outro serviço que você deseja usar em seu aplicação deve ser adicionado ao contêiner de serviço aqui em ConfigureServices.
    - A linha services.AddSingleton<ITodoItemService, FakeTodoItemService>(); informa ao ASP.NET  para usar o FakeTodoItemService quando a interface ITodoItemService é solicitada em um construtor (ou em qualquer outro lugar);
 
  - ## Terminando o Controller:
@@ -485,7 +485,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - AddScoped adiciona seu serviço ao contêiner de serviço usando o scopedlifecycle. Isso significa que uma nova instância da classe TodoItemService será criada durante cada solicitação da web. Isso é necessário para classes de serviço que interagem com um banco de dados.
  - TodoController que depende de um ITodoItemService injetado ficará felizmente inconsciente da mudança nas classes de serviços, mas no futuro estará usando o Entity Framework Core e se comunicando com um banco de dados real.
 - ### Testando
-  - Inicie aplicação e abra o navegador no http://localhost:5000/todo. Os itens falsos sumiram e seu aplicativo está fazendo consultas reais no banco de dados. 
+  - Inicie aplicação e abra o navegador no http://localhost:5000/todo. Os itens falsos sumiram e seu aplicação está fazendo consultas reais no banco de dados. 
 - ## Adicionar mais recursos, New To-do items  
   - Agora vamos adicionar novos itens de tarefas usando um formulário;
   - Etapas: 
@@ -546,7 +546,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
         }
   ```
   - Pode-se ver que o AddItem aceita um parâmetro TodoItem. Quando é usado aqui como um parâmetro de ação, o ASP.NET Core executará automaticamente um processo chamado **model binding** (vinculação de modelo);
- - O atributo **[ValidateAntiForgeryToken]** antes da ação informa ao ASP.NET Core que ele deve procurar (e verificar) o token de verificação oculto que foi adicionado ao formulário pelo auxiliar de tag asp-action. Esta é uma medida de segurança importante para evitar falsificação de solicitação entre sites(CSRF) ataques, em que seus usuários podem ser enganados para enviar dados de um site malicioso. O token de verificação garante que seu aplicativo seja realmente aquele que processou e enviou o formulário;
+ - O atributo **[ValidateAntiForgeryToken]** antes da ação informa ao ASP.NET Core que ele deve procurar (e verificar) o token de verificação oculto que foi adicionado ao formulário pelo auxiliar de tag asp-action. Esta é uma medida de segurança importante para evitar falsificação de solicitação entre sites(CSRF) ataques, em que seus usuários podem ser enganados para enviar dados de um site malicioso. O token de verificação garante que seu aplicação seja realmente aquele que processou e enviou o formulário;
  - Por contada linha @model, a visão parcial espera receber um objetoTodoItem quando for renderizado. Passar um novo TodoItem via html. PartialAsync inicializa o formulário com um item vazio.
  - Depois de vincularmos os dados da solicitação ao modelo, o ASP.NET Core também realiza a validação do modelo. A validação verifica se os dados vinculados ao modelo a partir da solicitação de entrada fazem sentido ou são válidos.
  - O atributo [Required] na propriedade Title informa ao validador de modelo do ASP.NET Core para considerar o Title inválido se estiver ausente ou em branco. Dê uma olhada no código da ação AddItem: o primeiro bloco verifica se o ModelState (o resultado da validação do modelo) é válido. É comum fazer esta verificação de validação logo no início da ação:
@@ -595,7 +595,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
 - ### Testando
 - Execute a aplicação com o comando 'dotnet run' e de um Ctrl+Click na pagina para abrir.
 - Clique em "My to-dos" no canto superior direito da tela e adicione alguns itens de teste à sua lista de tarefas com o formulário.
-- Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicativo novamente.
+- Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicação novamente.
 
 - ## Adicionando itens completos com uma caixa de seleção
 - Na view Views /Todo/Index.cshtml, uma caixa de seleção é exibida para cada item de tarefa:
@@ -706,12 +706,12 @@ item.IsDone = true;
 - A alteração da propriedade afeta apenas a cópia local do item até queSaveChangesAsync() seja chamado para persistir a alteração no banco de dados. SalveChangesAsync() retorna um número que indica quantas entidades foram atualizadas durante a operação de salvamento. Nesse caso, será 1 (o item foi atualizado) ou 0 (se algo deu errado).
 
  #### Testando
-- Execute o aplicativo e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where() no método GetIncompleteItemsAsync().
-- Execute o aplicativo e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where () no método GetIncompleteItemsAsync().
-- No momento, o aplicativo contém uma única lista de tarefas compartilhada. Seria ainda mais útil se ele mantivesse o controle de listas de tarefas individuais para cada usuário.
+- Execute o aplicação e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where() no método GetIncompleteItemsAsync().
+- Execute o aplicação e tente marcar alguns itens da lista. Atualize a página e eles desaparecerão completamente, por causa do filtro Where () no método GetIncompleteItemsAsync().
+- No momento, o aplicação contém uma única lista de tarefas compartilhada. Seria ainda mais útil se ele mantivesse o controle de listas de tarefas individuais para cada usuário.
 
  # Segurança e identidade
-**A segurança é uma grande preocupação de qualquer aplicativo da Web ou API moderno. É importante manter seus dados de usuário ou cliente protegidos e fora do alcance de invasores.**
+**A segurança é uma grande preocupação de qualquer aplicação da Web ou API moderno. É importante manter seus dados de usuário ou cliente protegidos e fora do alcance de invasores.**
 - Este é um tópico muito amplo, envolvendo coisas como:
   - Sanitizando a entrada de dados para evitar ataques de injeção de SQL;
   - Prevenção de ataques de domínio cruzado (CSRF) em formulários;
@@ -726,7 +726,7 @@ item.IsDone = true;
 - As visualizações Register e Login que vêm com o modelo MVC + IndividualAuthentication já tiram proveito do ASP.NET CoreIdentity e já funcionam! Tente registrar uma conta e fazer o login.
 
  ## Requerimento de autenticação
-- Freqüentemente, você vai querer exigir que o usuário efetue login antes de poder acessar certas partes do seu aplicativo. Por exemplo, faz sentido mostrar a página inicial para todos (esteja você conectado ou não), mas apenas mostre sua lista de tarefas depois de se conectar.
+- Freqüentemente, você vai querer exigir que o usuário efetue login antes de poder acessar certas partes do seu aplicação. Por exemplo, faz sentido mostrar a página inicial para todos (esteja você conectado ou não), mas apenas mostre sua lista de tarefas depois de se conectar.
 - Você pode usar o atributo [Authorize] no ASP.NET Core para exigir que um usuário conectado para uma ação específica ou um controlador inteiro. Para requerer autenticação para todas as ações do TodoController, adicione o atributo acima da primeira linha do controlador em Controllers/TodoController.cs:
 ```
 using Microsoft.AspNetCore.Authorization;
@@ -737,9 +737,9 @@ public class TodoController : Controller
     // ...
 }
 ```
-- Tente executar o aplicativo e acessar / todo sem estar logado. Você será redirecionado para a página de login automaticamente.
+- Tente executar o aplicação e acessar / todo sem estar logado. Você será redirecionado para a página de login automaticamente.
 - O atributo [Authorize] está realmente fazendo uma verificação de autenticação aqui, não uma verificação de autorização (apesar do nome do atributo). Posteriormente, o atributo será usado para verificar a autenticação e autorização de bots.
-- ### Usando ID no aplicativo
+- ### Usando ID no aplicação
 - Os próprios itens da lista de tarefas pendentes ainda são compartilhados entre todos os usuários, porque as entidades armazenadas de tarefas não estão vinculadas a um usuário específico. Agora que o atributo [Authorize] garante que você deve estar conectado para ver a exibição de tarefas, você pode filtrar a consulta do banco de dados com base em quem está conectado.
 - Primeiro, injete um UserManager <ApplicationUser> em Controllers/TodoController.cs:
   
@@ -830,7 +830,7 @@ Use dotnet ef novamente para aplicá-lo ao banco de dados: `dotnet ef database u
           .ToArrayAsync();
 }
 ```
-- Se você executar o aplicativo e se registrar ou efetuar login, verá uma lista de tarefas vazia mais uma vez. Infelizmente, todos os itens que você tentar adicionar desaparecem no éter, porque você ainda não atualizou a ação `AddItem` para ficar ciente do usuário.
+- Se você executar o aplicação e se registrar ou efetuar login, verá uma lista de tarefas vazia mais uma vez. Infelizmente, todos os itens que você tentar adicionar desaparecem no éter, porque você ainda não atualizou a ação `AddItem` para ficar ciente do usuário.
 
 ### Atualizando as ações AddItem e MarkDone
 
@@ -915,7 +915,7 @@ public async Task<bool> MarkDoneAsync(Guid id, ApplicationUser user)
 ```
 ## Autorização com funções
 
-- As funções são uma abordagem comum para lidar com autorização e permissões em um aplicativo da web. Por exemplo, é comum criar uma função de Administrador que conceda aos usuários administradores mais permissões ou poder do que os usuários normais.
+- As funções são uma abordagem comum para lidar com autorização e permissões em um aplicação da web. Por exemplo, é comum criar uma função de Administrador que conceda aos usuários administradores mais permissões ou poder do que os usuários normais.
 
 - Neste projeto, você adicionará uma página Gerenciar usuários que apenas os administradores podem ver. Se usuários normais tentarem acessá-lo, verão um erro.
 
@@ -1080,14 +1080,14 @@ namespace AspNetCoreTodo.Models
     }
 </table>
 ```
-- Inicie o aplicativo e tente acessar /ManageUsers enquanto estiver conectado como um usuário normal. Você verá esta página de acesso negado:
+- Inicie o aplicação e tente acessar /ManageUsers enquanto estiver conectado como um usuário normal. Você verá esta página de acesso negado:
 - Isso ocorre porque os usuários não são atribuídos à função Administrador automaticamente.
 
 ### Crie uma conta de administrador de teste
 
 - Por razões de segurança óbvias, não é possível que ninguém registre uma nova conta de administrador. Na verdade, a função de Administrador ainda nem existe no banco de dados!
 
-Você pode adicionar a função de Administrador mais uma conta de administrador de teste ao banco de dados na primeira vez que o aplicativo for iniciado. Adicionar dados pela primeira vez ao banco de dados é chamado de inicialização ou ** propagação ** do banco de dados.
+Você pode adicionar a função de Administrador mais uma conta de administrador de teste ao banco de dados na primeira vez que o aplicação for iniciado. Adicionar dados pela primeira vez ao banco de dados é chamado de inicialização ou ** propagação ** do banco de dados.
 
 Crie uma nova classe na raiz do projeto chamada ** SeedData.cs **:
 
@@ -1174,7 +1174,7 @@ private static async Task EnsureTestAdminAsync(
 }
 ```
 - Se ainda não houver um usuário com o nome de usuário admin@todo.local no banco de dados, este método irá criar um e atribuir uma senha temporária.
-- Após fazer o login pela primeira vez, você deve alterar a senha da conta para algo seguro! Em seguida, você precisa dizer ao seu aplicativo para executar esta lógica quando for inicializado. Modifique Program.cs e atualize `Main()` para chamar um novo método, `InitializeDatabase()` em **Program.cs**:
+- Após fazer o login pela primeira vez, você deve alterar a senha da conta para algo seguro! Em seguida, você precisa dizer ao seu aplicação para executar esta lógica quando for inicializado. Modifique Program.cs e atualize `Main()` para chamar um novo método, `InitializeDatabase()` em **Program.cs**:
 ```
 using Microsoft.Extensions.DependencyInjection;
 
@@ -1209,9 +1209,9 @@ private static void InitializeDatabase(IWebHost host)
 ```
 - Este método obtém a coleção de serviços que `SeedData.InitializeAsync()` precisa então executa o método para propagar o banco de dados. Se algo der errado, um erro será registrado.
 
-> Como `InitializeAsync ()` retorna uma `Task`, o método` Wait () `deve ser usado para garantir que ele termine antes que o aplicativo seja inicializado. Você normalmente usaria `await` para isso, mas por razões técnicas você não pode usar` await` na classe `Program`. Esta é uma rara exceção. Você deve usar `await` em qualquer outro lugar!
+> Como `InitializeAsync ()` retorna uma `Task`, o método` Wait () `deve ser usado para garantir que ele termine antes que o aplicação seja inicializado. Você normalmente usaria `await` para isso, mas por razões técnicas você não pode usar` await` na classe `Program`. Esta é uma rara exceção. Você deve usar `await` em qualquer outro lugar!
 
-Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` será criada e atribuída a função de Administrador. Tente fazer login com esta conta e navegar para `http: // localhost: 5000 / ManageUsers`. Você verá uma lista de todos os usuários registrados para o aplicativo.
+Da próxima vez que você iniciar o aplicação, a conta `admin @ todo.local` será criada e atribuída a função de Administrador. Tente fazer login com esta conta e navegar para `http: // localhost: 5000 / ManageUsers`. Você verá uma lista de todos os usuários registrados para o aplicação.
 
 > Como um desafio extra, tente adicionar mais recursos de administração a esta página. Por exemplo, você pode adicionar um botão que dá ao administrador a capacidade de excluir uma conta de usuário.
 
@@ -1266,26 +1266,74 @@ Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` ser
 ![Manage Users link](manage-users.png)
 
 ### Mais recursos 
-> O ASP.NET Core Identity ajuda você a adicionar recursos de segurança e identidade, como login e registro ao seu aplicativo. Os novos modelos dotnet oferecem visualizações e controladores pré-construídos que lidam com esses cenários comuns para que você possa começar a trabalhar rapidamente. 
+> O ASP.NET Core Identity ajuda você a adicionar recursos de segurança e identidade, como login e registro ao seu aplicação. Os novos modelos dotnet oferecem visualizações e controladores pré-construídos que lidam com esses cenários comuns para que você possa começar a trabalhar rapidamente. 
 > Há muito mais que o ASP.NET Core Identity pode fazer, como redefinição de senha e login social. 
  #### Alternativas para ASP.NET Core Identity
 > ASP.NET Core Identity não é a única maneira de adicionar funcionalidade de identidade. Outra opção é um serviço de identidade hospedado na nuvem, como por exemplo o AzureActive Directory B2C ou Okta, para lidar com a identificação da sua aplicação. 
 - Você pode pensar nessas opções como parte de uma progressão: Segurança do tipo faça você mesmo: Não recomendado, a menos que você seja um especialista em segurança! 
 - Identidade ASP.NET Core: Você obtém muitos códigos de graça com os modelos, o que o torna muito fácil de iniciar. 
 - Você ainda precisará escrever algum código para cenários mais avançados e manter um banco de dados para armazenar informações do usuário. 
-- Serviços de identidade hospedados em nuvem. O serviço lida com cenários simples e avançados (autenticação multifator, recuperação de conta, federação) e reduz significativamente a quantidade de código que você precisa escrever e manter em seu aplicativo. 
+- Serviços de identidade hospedados em nuvem. O serviço lida com cenários simples e avançados (autenticação multifator, recuperação de conta, federação) e reduz significativamente a quantidade de código que você precisa escrever e manter em seu aplicação. 
 
 # Testes Automatizados
 - Testes são uma parte importanre desenvolvimento, pois evitam bugs, e deixa código mais fácil caso haja necessidade de refatoração caso por quebras de funcinalidade ou mesmo a introdução de novos problemas;
-- **Teste de Unidade **, são pequenos estes para se poder ter certeza de que um metódo ou pedaço de código funcione adequadamente;
+- **Teste de Unidade**, são pequenos estes para se poder ter certeza de que um metódo ou pedaço de código funcione adequadamente;
 - **Teste de integração**, ou testes funcionais  são testes maiores que simulam a aplicaçao na vida real testando as multiplas layers ou partes da sua aplicaçao;
 
-## 
+## Testes de Unidade
+- Esses testes são pequenos, e testam o comportamento, de um metódo ou uma classe;
+- Quando o código que você está testando depende de outros métodos ou classes, os testes de unidade contam com a simulação dessas outras classes para que o teste se concentre apenas em uma coisa de cada vez;
+- Por exemplo, a classe `TodoController` tem duas dependências: um` ITodoItemService` e o `UserManager`. O `TodoItemService`, por sua vez, depende do` ApplicationDbContext`. (A ideia de que você pode desenhar uma linha de `TodoController`>` TodoItemService`> `ApplicationDbContext` é chamada de ** gráfico de dependência **).
+- Quando o aplicação é executado normalmente, o contêiner de serviço ASP.NET Core e o sistema de injeção de dependência injeta cada um desses objetos no gráfico de dependência quando `TodoController` ou` TodoItemService` é criado.
+- Quando você escreve um teste de unidade, por outro lado, você mesmo precisa lidar com o gráfico de dependência. É comum fornecer versões somente teste ou "simuladas" dessas dependências. Isso significa que você pode isolar apenas a lógica da classe ou método que está testando. (Isso é importante! Se você estiver testando um serviço, não quer ** também ** gravar acidentalmente em seu banco de dados.)
 
-- Porém com essa sujestão do livro o compilador irá apontar uma questão na linha **UserManager<ApplicationUser> userManager)** mesmo com o uso do using Microsoft.AspNetCore.Identity;
-- Isso ocorrerá por conta que o livro segue a versão 2.0, e estou apresentando uma versão 3.1, apesar de sutil, já foi colocado algumas mudanças em códigos anteriores;
-- Então seguindo uma solução caso você também esteja utilizando uma versão 3.1 do .Net:
+### Criando um projeto de teste
+- É uma boa prática criar um projeto separado para seus testes, para que sejam mantidos separados do código do seu aplicação. O novo projeto de teste deve residir em um diretório próximo (não dentro) do diretório do projeto principal.
+- Se você está atualmente no diretório do seu projeto, `cd` um nível acima. (Este diretório raiz também será chamado de `AspNetCoreTodo`). Em seguida, use este comando para criar um novo projeto de teste:
 
+```
+dotnet new xunit -o AspNetCoreTodo.UnitTests
+```
+- xUnit.NET é uma estrutura de teste popular para código .NET que pode ser usada para escrever testes de unidade e integração. Como tudo o mais, é um conjunto de pacotes NuGet que podem ser instalados em qualquer projeto. O template `dotnet new xunit` já inclui tudo que você precisa.
+
+- A estrutura de diretório agora deve ser semelhante a esta:
+```
+AspNetCoreTodo/
+    AspNetCoreTodo/
+        AspNetCoreTodo.csproj
+        Controllers/
+        (etc...)
+
+    AspNetCoreTodo.UnitTests/
+        AspNetCoreTodo.UnitTests.csproj
+```
+- Visto que o projeto de teste usará as classes definidas em seu projeto principal, será preciso adicionar uma referência ao projeto `AspNetCoreTodo`:
+```
+dotnet add reference ../AspNetCoreTodo/AspNetCoreTodo.csproj
+```
+- Exclua o arquivo UnitTest1.cs que é criado automaticamente.
+
+> Obs. Se estiver usando o Visual Studio Code, pode ser necessário fechar e reabrir a janela do Visual Studio Code para que o autocompletar de código funcione no novo projeto.
+
+### Escrevendo um teste de serviço
+
+Dê uma olhada na lógica no método `AddItemAsync ()` do `TodoItemService`:
+
+```
+public async Task<bool> AddItemAsync(
+    TodoItem newItem, ApplicationUser user)
+{
+    newItem.Id = Guid.NewGuid();
+    newItem.IsDone = false;
+    newItem.DueAt = DateTimeOffset.Now.AddDays(3);
+    newItem.UserId = user.Id;
+
+    _context.Items.Add(newItem);
+
+    var saveResult = await _context.SaveChangesAsync();
+    return saveResult == 1;
+}
+```
 
  
  # Comandos: Usando o Git ou GitHub 
@@ -1295,7 +1343,7 @@ Da próxima vez que você iniciar o aplicativo, a conta `admin @ todo.local` ser
 
 # Termos:
   - **AddSingleton** adiciona seu serviço ao contêiner de serviço como um singleton. Isso significa que apenas uma cópia do  da classe FakeTodoItemService é criada e é reutilizada sempre que o serviço é solicitado.
-  - **Arquitetura n-tier**: A maioria dos projetos maiores usa uma arquitetura de três camadas: uma camada de apresentação, uma camada de lógica de serviço e uma camada de repositório de dados. Um repositório é uma classe que é focada apenas no código do banco de dados (sem lógica de negócios). Neste aplicativo, você os combinará em uma única camada de serviço por simplicidade, mas fique à vontade para experimentar diferentes maneiras de arquitetar o código.
+  - **Arquitetura n-tier**: A maioria dos projetos maiores usa uma arquitetura de três camadas: uma camada de apresentação, uma camada de lógica de serviço e uma camada de repositório de dados. Um repositório é uma classe que é focada apenas no código do banco de dados (sem lógica de negócios). Neste aplicação, você os combinará em uma única camada de serviço por simplicidade, mas fique à vontade para experimentar diferentes maneiras de arquitetar o código.
   - **Authentication (Autenticação)** e **authorization (autorização)** são ideias distintas que costumam ser confundidas. A autenticação trata se um usuário está conectado, enquanto a autorização trata do que ele pode fazer após o login. Você pode pensar na autenticação como uma pergunta: "Eu sei quem é esse usuário?" Enquanto a autorização pergunta: "Este usuário tem permissão para fazer X?"
   - **Booleano** (valor verdadeiro / falso), Por padrão, será falso para todos os novos itens. Posteriormente, pode-se mudar essa propriedade para true quando o usuário clicar na caixa de seleção de um item na visualização.
   - **get; set; ou (getter e setter)** leitura / gravação.
