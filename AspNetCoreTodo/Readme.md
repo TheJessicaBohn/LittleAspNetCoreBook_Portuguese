@@ -96,7 +96,7 @@
   - Geralmente o usuario costuma procastinar então o modelo (entidade), que não exatamente o mesmo que o modelo que você deseja usar no MVC (o modelo de exibição), mas a exibição pode ser necessário exibir dois, dez ou cem itens de tarefas pendentes, Por esse motivo, o modelo de exibição deve ser uma classe separada que contém uma matriz de TodoItem;
   - Crie uma classe em Models chamada TodoViewModel.cs
   - E escreva o seguinte código:
- ```  
+ ```cshap=
   namespace AspNetCoreTodo.Models 
 {
     public class TodoViewModel    {
@@ -112,7 +112,7 @@
   - E dentro da pasta Todo crie um arquivo "Index.cshtml"
   - E escreva o seguinte código:
   
-  ```  
+  ```cshap=  
   @model TodoViewModel
 
   @{    
@@ -153,7 +153,7 @@
    - O stylesheet está na pasta wwwroot/css
    - E escreva o seguinte código para adicionar algumas novas features no final do código do arquivo site.css :
    
- ```
+ ```css=
  div.todo-panel {
  margin-top: 15px;
  }
@@ -179,7 +179,7 @@
    - Crie um novo diretório chamado Services e dentro dele um arquivo  chamado ITodoItemService.cs :
    - Escreva o seguinte código: 
   
- ```
+ ```cshap=
  using System;
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -198,7 +198,7 @@
   - Veja que o namespace desse arquivo é AspNetCoreTodo.Services. Em .NET e é comum que o namespace siga o diretório em que o arquivo está armazenado, pois Namespaces são uma maneira de organizar arquivos de código.
   - Com interface está definida, será criada a classe de serviço atual.
   - Na pasta Services crie um arquivo chamado "FakeTodoItemService.cs" e escreva o seginte código:
-   ```
+   ```cshap=
   using System;
   using System.Collections.Generic;
   using System.Threading.Tasks;
@@ -231,7 +231,7 @@
   - É utilizada quando uma solicitação chega e é roteada para o TodoController, o ASP.NET Core examina os serviços disponíveis e fornece automaticamente o FakeTodoItemService quando o controlador solicita umITodoItemService. Como os serviços são "injetados" no contêiner de serviços, esse padrão é chamado de injeção de dependência;
   - Vamos voltar em TodoController, tarabalhar com o ITodoItemService e escreva o seginte código:
      
-   ```
+   ```cshap=
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -258,7 +258,7 @@
    - Variavél ITodoItemServic, deixa usar o serviço do metódo Index;
    - A linha public TodoController(ITodoItemService todoItemService), define o construtor da classe;
    - Para configurar os serviços vá a classe chamada Startup.cs e modifique:
-   ```
+   ```cshap=
    using AspNetCoreTodo.Services;
    public void ConfigureServices(IServiceCollection services)
    {
@@ -272,7 +272,7 @@
 
  - ## Terminando o Controller:
     - A última etapa é terminar o código do controlador. O controlador agora tem uma lista de itens de tarefas pendentes da camada de serviço e precisa colocar esses itens em um TodoViewModel e vincular esse modelo à visualização que você criou anteriormente:
-  ```charp
+  ```charp=
     using AspNetCoreTodo.Services;
     using AspNetCoreTodo.Models;
     
@@ -302,18 +302,18 @@
     **info: Microsoft.Hosting.Lifetime[0]<br/>**
       **Content root path: C:\Users\User\Desktop\LittleAspnet\AspNetCoreTodo\AspNetCoreTodo<br/>**
      
-     - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
+   - Na pagina http://localhost:5000/ vai aparecer a seguinte mensagem  My to-dos na barra de navegação. Para fazer isso, você pode editar o arquivo de layout compartilhado.
   
    ## Atualizando o Layout:
 - No arquivo de layout Views/Shared/_Layout.cshtml contém o HTML "base" para cada view. Dessa Forma podemos colocar novos elementos aos layout substituindo o seguinte código por:
-```html
+```html=
      <ul class="navbar-nav flex-grow-1">
       <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
       <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
      </ul>
 ``` 
  - Substituir por
-```html
+```html=
      <ul class="nav navbar-nav">
          <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
          <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
@@ -337,12 +337,12 @@
     - **Utilização:**
       - Para utilizar o package no código precisamos utilizar um "using"
       - Então em Views/Todo/Index.cshtml coloque:
-```charp
+```charp=
        @model TodoViewModel
        @using Humanizer
 ```
     - E atualize a linha
-```charp
+```charp=
       <td>@item.DueAt.()</td>
       para
       <td>@item.DueAt.Humanize()</td>
@@ -359,7 +359,7 @@
         - **3.Uma classe de contexto de banco de dados**: O contexto do banco de dados é uma classe C# que fornece um ponto de entrada no banco de dados para que assim seu código poderá interagir com o banco de dados para ler e salvar itens. Já existe uma classe de contexto básica no arquivo Data/ApplicationDbContext.cs
         - **4.Uma string de conexão** Esteja você se conectando a um banco de dados de arquivos local (como SQLite) ou a um banco de dados hospedado em outro lugar, você definirá uma string que contém o nome ou endereço do banco de dados ao qual se conectar. Isso já está configurado por defautl no appsettings.jsonfile: a string de conexão para o banco de dados SQLite isDataSource = app.db.
        - Entity Framework Core, usa o contexto do banco de dados, junto com a string de conexão, para estabelecer uma conexão com o banco de dados. Então vamos precisar dizer para o Entity Framework Core qual contexto, string de conexão e provedor de banco de dados escrendo o seguinte código no método ConfigureServices da classe Startup.cs:
-```charp
+```charp=
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddMvc();
@@ -373,7 +373,7 @@ public void ConfigureServices(IServiceCollection services)
 
  ## Atualizando o Contexto
   - No arquivo Data/ApplicationDbContext.cs faça as modificações:
-```charp
+```charp=
   public class ApplicationDbContext : IdentityDbContext
   {
      public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
@@ -398,7 +398,7 @@ public void ConfigureServices(IServiceCollection services)
   ![Alt text](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/Images/Migrations_list.png)
   - Quando foi executado o dotnet new o primeiro arquivo de migração (com um nome como 00000_CreateIdentitySchema.cs) foi criado e aplicado, como demonstra na imagem acima. Sua nova migração AddItem é prefixada com um timestamp.
   - Se você abrir seu arquivo de migration Data/Migrations/_AddItems.cs, verá dois métodos chamados Up  e Down:
- ```charp
+ ```charp=
  public partial class AddItems : Migration
  {
    protected override void Up(MigrationBuilder migrationBuilder)
@@ -442,7 +442,7 @@ protected override void Down(MigrationBuilder migrationBuilder)
  ## Criando uma nova classe de serviço
   - Voltando ao capítulo de MVC, onde foi criado o FakeTodoItemService que continha itens de tarefas embutidos em código e tem-se agora um databasecontext, 
     - Pode-se então criar uma nova classe de serviço que usará o Entity Framework Core para obter os itens reais do banco de dados. Exclua o arquivo FakeTodoItemService.cs e crie um novo arquivo em Services/TodoItemService.cs:
- ```
+ ```cshap=
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -477,10 +477,10 @@ using Microsoft.EntityFrameworkCore;
   - Então, o método Where é usado para filtrar apenas os itens que não estão completos: **.Where(x => x.IsDone == false)**
   - E por ultimo o método ToArrayAsync solicita ao Entity Framework Core para obter todas as entidades que correspondem ao filtro e retorná-las como uma matriz. Esse metódo é assíncrono (retorna uma Tarefa), portanto, deve ser aguardado para obter seu valor.
   
-- ## Atualizando o contêiner de serviço
+ ## Atualizando o contêiner de serviço
   - Como foi excluída a classe FakeTodoItemService, será necessário atualizar a linha em ConfigureServices que está conectando a interface ITodoItemService em AspNetCoreTodo\Startup.cs:
 
-```
+```cshap=
 services.AddScoped<ITodoItemService, TodoItemService>();
 ```
   - AddScoped adiciona seu serviço ao contêiner de serviço usando o scopedlifecycle. Isso significa que uma nova instância da classe TodoItemService será criada durante cada solicitação da web. Isso é necessário para classes de serviço que interagem com um banco de dados.
@@ -503,7 +503,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
     ```
    - Para manter as coisas separadas e organizadas, você criará o formulário como uma visualização parcial. Uma visualização parcial é uma pequena parte de uma visualização maior que fica em um arquivo separado.
    -  crie um novo arquivo em Views/Todo/AddItemPartial.cshtml, com o seguinte código:
- ```html
+ ```html=
   @model TodoItem
 
   <form asp-action="AddItem" method="POST">
@@ -513,13 +513,13 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   </form>
   ```
   - O **asp-action** pode gerar uma URL para o formulário,mas nesse caso, os auxiliares asp-action substituídos pelo caminho real para a rota AddItem:
-  ```html
+  ```html=
   <form action="/Todo/AddItem" method="POST">
   ```
   - Ao adicionar a tag asp ao elemento <form> também adiciona um campo oculto ao formulário que contém um token de verificação. Este token pode ser usado para evitar ataques de falsificação de solicitação entre sites (CSRF). Isso criou a view parcial. Agora, façamos a view principal Todo:
   - Edite o seguinte campo em Views/Todo/Index.cshtml:
   
-  ```
+  ```html=
     <div class="panel-footer add-item-form">
     @await Html.PartialAsync("AddItemPartial", new TodoItem())
     </div>
@@ -529,7 +529,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   - Quando um usuário clicar no formulário criado, o navegador irá construir uma solicitação POST em /Todo/AddItem em sua aplicação. Mas se você tentar agora, o ASP.NET Core retornará um erro 404 Not Found, pois não há nenhuma ação que possa manipular a rota /Todo/AddItem.
   - Você precisará criar uma nova ação chamada AddItem na classe TodoController: 
  
- ```csharp
+ ```csharp=
    [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddItem(TodoItem newItem)
         {
@@ -595,7 +595,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
 - A propriedade newItem.Title já foi definida pelo model binder do ASP.NET Core, portanto, esse método só precisa atribuir um ID e definir os valores padrão para as outras propriedades. Em seguida, o novo item é adicionado ao contexto do banco de dados. Na verdade, ele não é salvo até que você chame SaveChangesAsync(). Se a operação de salvamento foi bem sucedida, SaveChangesAsync () retornará 1.
  ### Testando
 - Execute a aplicação com o comando `dotnet run` e de um `Ctrl+Click` na pagina para abrir.
--Clique em "My to-dos" no canto superior direito da tela e adicione alguns itens de teste à sua lista de tarefas com o formulário.
+- Clique em "My to-dos" no canto superior direito da tela e adicione alguns itens de teste à sua lista de tarefas com o formulário.
 - Como os itens estão sendo armazenados no banco de dados, eles ainda estarão lá, mesmo depois de você parar e iniciar o aplicação novamente.
 
  ## Adicionando itens completos com uma caixa de seleção
