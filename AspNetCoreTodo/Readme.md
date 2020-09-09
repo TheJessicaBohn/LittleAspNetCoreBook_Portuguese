@@ -1335,6 +1335,46 @@ public async Task<bool> AddItemAsync(
 }
 ```
 
+- Este método toma uma série de decisões ou suposições sobre o novo item (em outras palavras, executa a lógica de negócios no novo item) antes de realmente salvá-lo no banco de dados:
+
+* A propriedade `UserId` deve ser definida para o ID do usuário
+* Novos itens devem estar sempre incompletos (`IsDone = false`)
+* O título do novo item deve ser copiado de `newItem.Title`
+* Novos itens sempre devem ser entregues em 3 dias a partir de agora
+
+- Imagine se você ou outra pessoa refatorasse o método `AddItemAsync ()` e esquecesse parte desta lógica de negócios. O comportamento do seu aplicativo pode mudar sem que você perceba! Você pode evitar isso escrevendo um teste que verifica se essa lógica de negócios não mudou (mesmo se a implementação interna do método mudar).
+
+> Pode parecer improvável agora que você introduza uma mudança na lógica de negócios sem perceber, mas fica muito mais difícil controlar as decisões e suposições em um projeto grande e complexo. Quanto maior for o seu projeto, mais importante será ter verificações automatizadas para garantir que nada mudou!
+
+Para escrever um teste de unidade que irá verificar a lógica no `TodoItemService`, crie uma nova classe em seu projeto de teste em **AspNetCoreTodo.UnitTests/TodoItemServiceShould.cs**;
+```csharp=
+using System;
+using System.Threading.Tasks;
+using AspNetCoreTodo.Data;
+using AspNetCoreTodo.Models;
+using AspNetCoreTodo.Services;
+using Microsoft.EntityFrameworkCore;
+using Xunit;
+
+namespace AspNetCoreTodo.UnitTests
+{
+    public class TodoItemServiceShould
+    {
+        [Fact]
+        public async Task AddNewItemAsIncompleteWithDueDate()
+        {
+            // ...
+        }
+    }
+}
+```
+
+> Existem muitas maneiras diferentes de nomear e organizar testes, todas com diferentes prós e contras. Eu gosto de postfixar minhas classes de teste com `Deve` para criar uma frase legível com o nome do método de teste, mas sinta-se à vontade para usar seu próprio estilo!
+
+- O atributo `[Fact]` vem do pacote xUnit.NET e marca este método como um método de teste.
+- O `TodoItemService` requer um` ApplicationDbContext`, que normalmente está conectado ao seu banco de dados. Você não vai querer usar isso para testes. Em vez disso, você pode usar o provedor de banco de dados na memória do Entity Framework Core em seu código de teste. Como todo o banco de dados existe na memória, ele é apagado toda vez que o teste é reiniciado. E, por ser um provedor Entity Framework Core adequado, o `TodoItemService` não vai saber a diferença!
+- Use um `DbContextOptionsBuilder` para configurar o provedor de banco de dados na memória e, em seguida, faça uma chamada para` AddItemAsync () `:
+
  
  # Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
