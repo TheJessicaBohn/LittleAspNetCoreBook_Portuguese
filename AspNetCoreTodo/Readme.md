@@ -1275,7 +1275,6 @@ Da próxima vez que você iniciar o aplicação, a conta `admin @ todo.local` se
 - Você ainda precisará escrever algum código para cenários mais avançados e manter um banco de dados para armazenar informações do usuário. 
 - Serviços de identidade hospedados em nuvem. O serviço lida com cenários simples e avançados (autenticação multifator, recuperação de conta, federação) e reduz significativamente a quantidade de código que você precisa escrever e manter em seu aplicação. 
 
-
  # Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
