@@ -1372,10 +1372,32 @@ namespace AspNetCoreTodo.UnitTests
 > Existem muitas maneiras diferentes de nomear e organizar testes, todas com diferentes prós e contras. Eu gosto de postfixar minhas classes de teste com `Deve` para criar uma frase legível com o nome do método de teste, mas sinta-se à vontade para usar seu próprio estilo!
 
 - O atributo `[Fact]` vem do pacote xUnit.NET e marca este método como um método de teste.
-- O `TodoItemService` requer um` ApplicationDbContext`, que normalmente está conectado ao seu banco de dados. Você não vai querer usar isso para testes. Em vez disso, você pode usar o provedor de banco de dados na memória do Entity Framework Core em seu código de teste. Como todo o banco de dados existe na memória, ele é apagado toda vez que o teste é reiniciado. E, por ser um provedor Entity Framework Core adequado, o `TodoItemService` não vai saber a diferença!
-- Use um `DbContextOptionsBuilder` para configurar o provedor de banco de dados na memória e, em seguida, faça uma chamada para` AddItemAsync () `:
+- O `TodoItemService` requer um` ApplicationDbContext`, que normalmente está conectado ao seu banco de dados. 
+- isso não será usado para testes. Em vez disso, você pode usar o provedor de banco de dados na memória do Entity Framework Core em seu código de teste;
+- Como todo o banco de dados existe na memória, ele é apagado toda vez que o teste é reiniciado. E, por ser um provedor Entity Framework Core adequado;
+- Em `TodoItemService` use um `DbContextOptionsBuilder` para configurar o provedor de banco de dados na memória e, em seguida, faça uma chamada para` AddItemAsync() `:
 
- 
+ ```csharp= 
+  [Fact]
+        public async Task AddNewItem()
+        {
+           var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: "Test_AddNewItem").Options;
+
+        	// Set up a context (connection to the "DB") for writing
+        	using (var context = new ApplicationDbContext(options))
+        	{
+                var service = new TodoItemService(context);
+                var fakeUser = new ApplicationUser
+                {
+                     Id = "fake-000",
+                     UserName = "fake@example.com"
+                };
+
+    await service.AddItemAsync(new TodoItem {Title = "Testing?"}, fakeUser);
+        }
+}
+```
  # Comandos: Usando o Git ou GitHub 
   - **Por segurança e facilidade de compartilhamento, entre outras funcionalidades é utilizado o Github, além disso ele serve como o seu curriculo de programador;**
   - 'cd ..' saia da pasta do projeto;
