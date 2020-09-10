@@ -26,7 +26,18 @@ namespace AspNetCoreTodo.UnitTests
                      UserName = "fake@example.com"
                 };
 
-    await service.AddItemAsync(new TodoItem {Title = "Testing?"}, fakeUser);
+             await service.AddItemAsync(new TodoItem {Title = "Testing?"}, fakeUser);
         }
+         // Use a separate context to read the data back from the DB
+            using (var inMemoryContext = new ApplicationDbContext(options))
+            {
+                Assert.Equal(1, await inMemoryContext.Items.CountAsync());
+                
+                var item = await inMemoryContext.Items.FirstAsync();
+                Assert.Equal("fake-000", item.OwnerId);
+                Assert.Equal("Testing?", item.Title);
+                Assert.Equal(false, item.IsDone);
+                Assert.True(DateTimeOffset.Now.AddDays(3) - item.DueAt < TimeSpan.FromSeconds(1));
+            }
     }
 }
