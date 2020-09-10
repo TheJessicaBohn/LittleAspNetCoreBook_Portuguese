@@ -121,3 +121,46 @@ namespace AspNetCoreTodo.UnitTests
         }
 }
 ```
+- A última linha cria um novo item de tarefa chamado `Testing?`, E diz ao serviço para salvá-lo no banco de dados (na memória).
+- Para verificar se a lógica de negócios foi executada corretamente, escreva mais algum código abaixo do bloco `using` existente:
+```csharp=
+// Use a separate context to read data back from the "DB"
+using (var context = new ApplicationDbContext(options))
+{
+    var itemsInDatabase = await context
+        .Items.CountAsync();
+    Assert.Equal(1, itemsInDatabase);
+    
+    var item = await context.Items.FirstAsync();
+    Assert.Equal("Testing?", item.Title);
+    Assert.Equal(false, item.IsDone);
+
+    // Item should be due 3 days from now (give or take a second)
+    var difference = DateTimeOffset.Now.AddDays(3) - item.DueAt;
+    Assert.True(difference < TimeSpan.FromSeconds(1));
+}
+```
+- A primeira afirmação é uma verificação de sanidade: nunca deve haver mais de um item salvo no banco de dados na memória. Assumindo que isso seja verdade, o teste recupera o item salvo com `FirstAsync` e, em seguida, afirma que as propriedades estão definidas com os valores esperados.
+> Os testes de unidade e integração geralmente seguem o padrão AAA (Arrange-Act-Assert): objetos e dados são configurados primeiro, depois alguma ação é executada e, finalmente, o teste verifica (afirma) se o comportamento esperado ocorreu.
+- Afirmar um valor de data e hora é um pouco complicado, pois comparar duas datas para igualdade falhará se até mesmo os componentes de milissegundos forem diferentes. Em vez disso, o teste verifica se o valor `DueAt` está a menos de um segundo do valor esperado.
+
+### Executando o teste
+
+- No terminal, execute este comando (certifique-se de que ainda está no diretório `AspNetCoreTodo.UnitTests`): `dotnet test`
+- O comando `test` verifica o projeto atual em busca de testes (marcados com atributos` [Fact] `neste caso), e executa todos os testes que encontra. Você verá uma saída semelhante a:
+```
+Starting test execution, please wait...
+ Discovering: AspNetCoreTodo.UnitTests
+ Discovered:  AspNetCoreTodo.UnitTests
+ Starting:    AspNetCoreTodo.UnitTests
+ Finished:    AspNetCoreTodo.UnitTests
+
+Total tests: 1. Passed: 1. Failed: 0. Skipped: 0.
+Test Run Successful.
+Test execution time: 1.9074 Seconds
+```
+- Agora você tem um teste fornecendo cobertura de teste do `TodoItemService`. Como um desafio extra, tente escrever testes de unidade que garantam:
+
+* O método `MarkDoneAsync ()` retorna falso se for passado um ID que não existe
+* O método `MarkDoneAsync ()` retorna verdadeiro quando torna um item válido como completo
+* O método `GetIncompleteItemsAsync ()` retorna apenas os itens pertencentes a um determinado usuário
