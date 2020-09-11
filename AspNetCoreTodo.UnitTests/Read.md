@@ -42,7 +42,7 @@ dotnet add reference ../AspNetCoreTodo/AspNetCoreTodo.csproj
 
 Dê uma olhada na lógica no método `AddItemAsync ()` do `TodoItemService`:
 
-```csharp=
+```csharp
 public async Task<bool> AddItemAsync(
     TodoItem newItem, ApplicationUser user)
 {
@@ -70,7 +70,7 @@ public async Task<bool> AddItemAsync(
 > Pode parecer improvável agora que você introduza uma mudança na lógica de negócios sem perceber, mas fica muito mais difícil controlar as decisões e suposições em um projeto grande e complexo. Quanto maior for o seu projeto, mais importante será ter verificações automatizadas para garantir que nada mudou!
 
 Para escrever um teste de unidade que irá verificar a lógica no `TodoItemService`, crie uma nova classe em seu projeto de teste em **AspNetCoreTodo.UnitTests/TodoItemServiceShould.cs**;
-```csharp=
+```csharp
 using System;
 using System.Threading.Tasks;
 using AspNetCoreTodo.Data;
@@ -100,7 +100,7 @@ namespace AspNetCoreTodo.UnitTests
 - Como todo o banco de dados existe na memória, ele é apagado toda vez que o teste é reiniciado. E, por ser um provedor Entity Framework Core adequado;
 - Em `TodoItemService` use um `DbContextOptionsBuilder` para configurar o provedor de banco de dados na memória e, em seguida, faça uma chamada para` AddItemAsync() `:
 
- ```csharp= 
+ ```csharp
   [Fact]
         public async Task AddNewItem()
         {
@@ -123,7 +123,7 @@ namespace AspNetCoreTodo.UnitTests
 ```
 - A última linha cria um novo item de tarefa chamado `Testing?`, E diz ao serviço para salvá-lo no banco de dados (na memória).
 - Para verificar se a lógica de negócios foi executada corretamente, escreva mais algum código abaixo do bloco `using` existente:
-```csharp=
+```csharp
 // Use a separate context to read data back from the "DB"
 using (var context = new ApplicationDbContext(options))
 {
