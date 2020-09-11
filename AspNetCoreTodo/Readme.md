@@ -41,7 +41,7 @@
   - Pelo VS Code clicando na pasta Controllers, você pode criar um "new file" chamado TodoController não se esqueça da exentensão .cs;
   - E escreva o seguinte código:
   
- ```csharp=
+ ```csharp
  using System;
  using System.Collections.Generic;
  using System.Linq;using System.Threading.Tasks;
