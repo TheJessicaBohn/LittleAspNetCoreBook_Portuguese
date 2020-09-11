@@ -24,5 +24,5 @@
   Você pode pesquisar pacotes NuGet na web e instalá-los de sua máquina local por meio do terminal (ou da GUI, se estiver usando o Visual Studio);
   
   ##Links dos Readmes:
-  - [AspNetCoreTodo](Readme.md)  
+  - [AspNetCoreTodo](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/AspNetCoreTodo/Readme.md)  
 
