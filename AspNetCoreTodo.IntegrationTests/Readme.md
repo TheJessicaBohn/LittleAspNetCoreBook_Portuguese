@@ -126,8 +126,8 @@ namespace AspNetCoreTodo.IntegrationTests
 ## Executando o teste
 
 - Execute o teste no terminal com `dotnet test`. Se tudo estiver funcionando bem, você verá uma mensagem de sucesso:
-```csharp
-Starting test execution, please wait...
+```
+ Starting test execution, please wait...
  Discovering: AspNetCoreTodo.IntegrationTests
  Discovered:  AspNetCoreTodo.IntegrationTests
  Starting:    AspNetCoreTodo.IntegrationTests
