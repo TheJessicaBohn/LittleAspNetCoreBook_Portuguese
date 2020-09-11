@@ -1,5 +1,5 @@
 # LittleAspNetCoreBook_Portuguese 
-- Esse repositório visa seguir as lições do Little Asp Net Core Book disponível em : https://s3.amazonaws.com/recaffeinate-files/LittleAspNetCoreBook.pdf , em portugues, para contribuir com a comunidade brasileira; 
+- Esse repositório é um guia de criação de projeto ASP.NET MVC que visa seguir as lições do Little Asp Net Core Book disponível em : https://s3.amazonaws.com/recaffeinate-files/LittleAspNetCoreBook.pdf , em portugues, para contribuir com a comunidade brasileira; 
 - ## O que você vai aprender a criar com as lições do livro de acordo com o prórpio livro :
   - Um servidor de aplicativos da web (às vezes chamado de "back-end") usando o ASP.NET Core, C # e o padrão MVC;
   - Um banco de dados para armazenar itens de tarefas do usuário usando o mecanismo de banco de dados SQLite e um sistema chamado Entity Framework Core;
@@ -24,5 +24,11 @@
   Você pode pesquisar pacotes NuGet na web e instalá-los de sua máquina local por meio do terminal (ou da GUI, se estiver usando o Visual Studio);
   
   ##Links dos Readmes:
+   **A ordem dos links segue a ordem de capitulos do livro**</br>
+  - [CsharpHelloWorld](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/CsharpHelloWorld/Readme.md)
   - [AspNetCoreTodo](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/AspNetCoreTodo/Readme.md)  
+  - [UnitTests](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/AspNetCoreTodo.UnitTests/Read.md)
+  - [IntegrationTests](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/AspNetCoreTodo.IntegrationTests/Readme.md)
+  - [Azure_Deployment](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/README_Azure_Deployment.md)
+  - [Docker_Deployment](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/README_Docker_Deployment.md)
 
