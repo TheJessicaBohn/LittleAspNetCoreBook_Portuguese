@@ -10,7 +10,7 @@
 - Se você está atualmente no diretório do seu projeto, `cd` um nível acima para o diretório raiz` AspNetCoreTodo`. Use este comando para criar um novo projeto de teste:`dotnet new xunit -o AspNetCoreTodo.IntegrationTests`
 - Sua estrutura de diretório agora deve ser semelhante a esta:
 
-```
+```csharp
 AspNetCoreTodo/
     AspNetCoreTodo/
         AspNetCoreTodo.csproj
@@ -33,7 +33,7 @@ AspNetCoreTodo/
 - Existem algumas coisas que precisam ser configuradas no servidor de teste antes de cada teste. Em vez de bagunçar o teste com este código de configuração, você pode manter essa configuração em uma classe separada. 
 - Crie uma nova classe chamada `TestFixture`em **AspNetCoreTodo.IntegrationTests/TestFixture.cs **
 
-```csharp=
+```csharp
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -80,7 +80,7 @@ namespace AspNetCoreTodo.IntegrationTests
 - Esta classe se encarrega de configurar um `TestServer`, e ajudará a manter os testes limpos e organizados.
 - Crie uma nova classe chamada `TodoRouteShould`em **AspNetCoreTodo.IntegrationTests/TodoRouteShould.cs **
 
-```csharp=
+```csharp
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -126,7 +126,7 @@ namespace AspNetCoreTodo.IntegrationTests
 ## Executando o teste
 
 - Execute o teste no terminal com `dotnet test`. Se tudo estiver funcionando bem, você verá uma mensagem de sucesso:
-```
+```csharp
 Starting test execution, please wait...
  Discovering: AspNetCoreTodo.IntegrationTests
  Discovered:  AspNetCoreTodo.IntegrationTests
