@@ -41,7 +41,7 @@
   - Pelo VS Code clicando na pasta Controllers, você pode criar um "new file" chamado TodoController não se esqueça da exentensão .cs;
   - E escreva o seguinte código:
   
- ```
+ ```csharp=
  using System;
  using System.Collections.Generic;
  using System.Linq;using System.Threading.Tasks;
@@ -56,7 +56,7 @@
   }
   ```
    - Substitua "//Actions " go here por 
-  ```
+  ```csharp=
   public IActionResult Index()
     {// Get to-do items from database
     // Put items into a model
@@ -76,7 +76,7 @@
     - Agora não importa qual seja a tecnologia de banco de dados implícito. Pode ser SQL Server, MySQL, MongoDB, Redis ou algo mais exótico. Esse modelo define como será a linha ou entrada do banco de dados em C #, para que você não precise se preocupar com as coisas de baixo nível do banco de dados em seu código. Esse estilo simples de modelo às vezes é chamado de "objeto C # antigo simples" ou POCO.
   - E escreva o seguinte código:
   
-  ```
+  ```csharp=
   using System;
   using System.ComponentModel.DataAnnotations;
   namespace AspNetCoreTodo.Models 
@@ -96,7 +96,7 @@
   - Geralmente o usuario costuma procastinar então o modelo (entidade), que não exatamente o mesmo que o modelo que você deseja usar no MVC (o modelo de exibição), mas a exibição pode ser necessário exibir dois, dez ou cem itens de tarefas pendentes, Por esse motivo, o modelo de exibição deve ser uma classe separada que contém uma matriz de TodoItem;
   - Crie uma classe em Models chamada TodoViewModel.cs
   - E escreva o seguinte código:
- ```cshap=
+ ```csharp=
   namespace AspNetCoreTodo.Models 
 {
     public class TodoViewModel    {
@@ -112,7 +112,7 @@
   - E dentro da pasta Todo crie um arquivo "Index.cshtml"
   - E escreva o seguinte código:
   
-  ```cshap=  
+  ```csharp=  
   @model TodoViewModel
 
   @{    
@@ -179,7 +179,7 @@
    - Crie um novo diretório chamado Services e dentro dele um arquivo  chamado ITodoItemService.cs :
    - Escreva o seguinte código: 
   
- ```cshap=
+ ```csharp=
  using System;
  using System.Collections.Generic;
  using System.Threading.Tasks;
@@ -198,7 +198,7 @@
   - Veja que o namespace desse arquivo é AspNetCoreTodo.Services. Em .NET e é comum que o namespace siga o diretório em que o arquivo está armazenado, pois Namespaces são uma maneira de organizar arquivos de código.
   - Com interface está definida, será criada a classe de serviço atual.
   - Na pasta Services crie um arquivo chamado "FakeTodoItemService.cs" e escreva o seginte código:
-   ```cshap=
+   ```csharp=
   using System;
   using System.Collections.Generic;
   using System.Threading.Tasks;
@@ -231,7 +231,7 @@
   - É utilizada quando uma solicitação chega e é roteada para o TodoController, o ASP.NET Core examina os serviços disponíveis e fornece automaticamente o FakeTodoItemService quando o controlador solicita umITodoItemService. Como os serviços são "injetados" no contêiner de serviços, esse padrão é chamado de injeção de dependência;
   - Vamos voltar em TodoController, tarabalhar com o ITodoItemService e escreva o seginte código:
      
-   ```cshap=
+   ```csharp=
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -258,7 +258,7 @@
    - Variavél ITodoItemServic, deixa usar o serviço do metódo Index;
    - A linha public TodoController(ITodoItemService todoItemService), define o construtor da classe;
    - Para configurar os serviços vá a classe chamada Startup.cs e modifique:
-   ```cshap=
+   ```csharp=
    using AspNetCoreTodo.Services;
    public void ConfigureServices(IServiceCollection services)
    {
@@ -337,12 +337,12 @@
     - **Utilização:**
       - Para utilizar o package no código precisamos utilizar um "using"
       - Então em Views/Todo/Index.cshtml coloque:
-```charp=
+```csharp=
        @model TodoViewModel
        @using Humanizer
 ```
     - E atualize a linha
-```charp=
+```csharp=
       <td>@item.DueAt.()</td>
       para
       <td>@item.DueAt.Humanize()</td>
@@ -359,7 +359,7 @@
         - **3.Uma classe de contexto de banco de dados**: O contexto do banco de dados é uma classe C# que fornece um ponto de entrada no banco de dados para que assim seu código poderá interagir com o banco de dados para ler e salvar itens. Já existe uma classe de contexto básica no arquivo Data/ApplicationDbContext.cs
         - **4.Uma string de conexão** Esteja você se conectando a um banco de dados de arquivos local (como SQLite) ou a um banco de dados hospedado em outro lugar, você definirá uma string que contém o nome ou endereço do banco de dados ao qual se conectar. Isso já está configurado por defautl no appsettings.jsonfile: a string de conexão para o banco de dados SQLite isDataSource = app.db.
        - Entity Framework Core, usa o contexto do banco de dados, junto com a string de conexão, para estabelecer uma conexão com o banco de dados. Então vamos precisar dizer para o Entity Framework Core qual contexto, string de conexão e provedor de banco de dados escrendo o seguinte código no método ConfigureServices da classe Startup.cs:
-```charp=
+```csharp=
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddMvc();
@@ -373,7 +373,7 @@ public void ConfigureServices(IServiceCollection services)
 
  ## Atualizando o Contexto
   - No arquivo Data/ApplicationDbContext.cs faça as modificações:
-```charp=
+```csharp=
   public class ApplicationDbContext : IdentityDbContext
   {
      public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
@@ -398,7 +398,7 @@ public void ConfigureServices(IServiceCollection services)
   ![Alt text](https://github.com/TheJessicaBohn/LittleAspNetCoreBook_Portuguese/blob/master/Images/Migrations_list.png)
   - Quando foi executado o dotnet new o primeiro arquivo de migração (com um nome como 00000_CreateIdentitySchema.cs) foi criado e aplicado, como demonstra na imagem acima. Sua nova migração AddItem é prefixada com um timestamp.
   - Se você abrir seu arquivo de migration Data/Migrations/_AddItems.cs, verá dois métodos chamados Up  e Down:
- ```charp=
+ ```csharp=
  public partial class AddItems : Migration
  {
    protected override void Up(MigrationBuilder migrationBuilder)
@@ -442,7 +442,7 @@ protected override void Down(MigrationBuilder migrationBuilder)
  ## Criando uma nova classe de serviço
   - Voltando ao capítulo de MVC, onde foi criado o FakeTodoItemService que continha itens de tarefas embutidos em código e tem-se agora um databasecontext, 
     - Pode-se então criar uma nova classe de serviço que usará o Entity Framework Core para obter os itens reais do banco de dados. Exclua o arquivo FakeTodoItemService.cs e crie um novo arquivo em Services/TodoItemService.cs:
- ```cshap=
+ ```csharp=
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -480,7 +480,7 @@ using Microsoft.EntityFrameworkCore;
  ## Atualizando o contêiner de serviço
   - Como foi excluída a classe FakeTodoItemService, será necessário atualizar a linha em ConfigureServices que está conectando a interface ITodoItemService em AspNetCoreTodo\Startup.cs:
 
-```cshap=
+```csharp=
 services.AddScoped<ITodoItemService, TodoItemService>();
 ```
   - AddScoped adiciona seu serviço ao contêiner de serviço usando o scopedlifecycle. Isso significa que uma nova instância da classe TodoItemService será criada durante cada solicitação da web. Isso é necessário para classes de serviço que interagem com um banco de dados.
@@ -496,7 +496,7 @@ services.AddScoped<ITodoItemService, TodoItemService>();
   
   - ### Adicionando um formulário:
     - O Views/Todo/Index.cshtml tem um espaço reservado para o formulário Adicionar item:
-    ```
+    ```html=
     <div class="panel-footer add-item-form">
           <!-- TODO: Add item form -->
     </div>
