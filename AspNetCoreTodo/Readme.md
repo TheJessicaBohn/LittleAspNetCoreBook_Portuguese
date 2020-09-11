@@ -112,7 +112,7 @@
   - E dentro da pasta Todo crie um arquivo "Index.cshtml"
   - E escreva o seguinte código:
   
-  ```csharp  
+  ```html
   @model TodoViewModel
 
   @{    
@@ -153,7 +153,7 @@
    - O stylesheet está na pasta wwwroot/css
    - E escreva o seguinte código para adicionar algumas novas features no final do código do arquivo site.css :
    
- ```css=
+ ```css
  div.todo-panel {
  margin-top: 15px;
  }
@@ -337,7 +337,7 @@
     - **Utilização:**
       - Para utilizar o package no código precisamos utilizar um "using"
       - Então em Views/Todo/Index.cshtml coloque:
-```csharp
+```html
        @model TodoViewModel
        @using Humanizer
 ```
@@ -600,7 +600,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
 
  ## Adicionando itens completos com uma caixa de seleção
 - Na view Views /Todo/Index.cshtml, uma caixa de seleção é exibida para cada item de tarefa:
-```csharp
+```html
 <input type="checkbox" class="done-checkbox">
 ```
 - Se clicarmos na caixa de seleção ainda não faz nada. Como feito anteriormente, será adicionado esse comportamento usando formulários e ações.
@@ -608,7 +608,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem)
  ### Adicionando elementos de formulário à vista
 - Primeiro, atualize a view e envolva cada caixa de seleção com um elemento <form> em Views/Todo/Index.cshtml. Em seguida, adicione um elemento oculto contendo o ID do item:
   
-  ```csharp
+  ```html
   <td>
       <form asp-action="MarkDone" method="POST">
           <input type="checkbox" class="done-checkbox">
@@ -903,7 +903,7 @@ public async Task<bool> AddItemAsync(TodoItem newItem, ApplicationUser user)
 }
 ```
 - A cláusula `Where` no método` MarkDoneAsync` também precisa verificar o ID do usuário, então um usuário invasor não pode completar os itens de outra pessoa adivinhando seus IDs:
-```
+```csharp
 public async Task<bool> MarkDoneAsync(Guid id, ApplicationUser user)
 {
     var item = await _context.Items
@@ -1033,7 +1033,7 @@ namespace AspNetCoreTodo.Models
 }
 ```
 - Finalmente, crie uma pasta `Views/ManageUsers` e uma visão para a ação` Index` em ** Views/ManageUsers/Index.cshtml **:
-```csharp
+```html
 @model ManageUsersViewModel
 
 @{
@@ -1218,7 +1218,7 @@ Da próxima vez que você iniciar o aplicação, a conta `admin @ todo.local` se
 
 - O atributo `[Autorizar]` facilita a execução de uma verificação de autorização em um controlador ou método de ação, mas e se você precisar verificar a autorização em uma visualização? Por exemplo, seria bom exibir um link "Gerenciar usuários" na barra de navegação se o usuário conectado for um administrador.
 - Você pode injetar o `UserManager` diretamente em uma visualização para fazer esses tipos de verificações de autorização. Para manter suas visualizações limpas e organizadas, crie uma nova visualização parcial que adiciona um item à barra de navegação no layout em ** Views/Shared/_AdminActionsPartial.cshtml **:
-```csharp
+```html
 @using Microsoft.AspNetCore.Identity
 @using AspNetCoreTodo.Models
 
@@ -1252,7 +1252,7 @@ Da próxima vez que você iniciar o aplicação, a conta `admin @ todo.local` se
 - Esta view parcial usa primeiro o `SignInManager` para determinar rapidamente se o usuário está logado. Se não estiver, o resto do código da visão pode ser pulado. Se ** houver ** um usuário logado, o `UserManager` é usado para consultar seus detalhes e realizar uma verificação de autorização com` IsInRoleAsync() `. Se todas as verificações forem bem-sucedidas e o usuário for um administrador, um link ** Gerenciar usuários ** é adicionado à barra de navegação.
 
 - Para incluir este parcial no layout principal, edite `_Layout.cshtml` e adicione-o na seção navbar em **Views/Shared/_Layout.cshtml**:
-```
+```html
 <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
         <!-- existing code here -->
